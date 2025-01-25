@@ -12,7 +12,7 @@ export function Footer() {
             <div className='flex items-center gap-2'>
               <Building2 className='size-6 text-blue-500' />
               <span className='text-lg font-bold text-gray-900 dark:text-white'>
-                Construct It
+                Hive
               </span>
             </div>
             <p className='text-sm text-gray-600 dark:text-zinc-400'>
@@ -116,7 +116,7 @@ export function Footer() {
 
         <div className='mt-16 border-t border-white/[0.1] pt-8'>
           <p className='text-center text-sm text-zinc-400'>
-            © {new Date().getFullYear()} Construct It. All rights reserved.
+            © {new Date().getFullYear()} Hive All rights reserved.
           </p>
         </div>
       </div>

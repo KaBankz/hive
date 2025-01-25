@@ -15,7 +15,7 @@ export default function SignUpPage() {
             Create an Account
           </h1>
           <p className='text-sm text-gray-600 dark:text-zinc-400'>
-            Join thousands of construction managers using Construct It
+            Join thousands of construction managers using Hive
           </p>
         </div>
 

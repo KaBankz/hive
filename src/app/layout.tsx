@@ -18,7 +18,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Construct It - Construction Management Reimagined',
+  title: 'Hive - Construction Management Reimagined',
   description:
     'The most powerful dashboard for construction managers. Track projects, manage resources, and make data-driven decisions in real-time.',
 };

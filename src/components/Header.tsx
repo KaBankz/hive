@@ -27,7 +27,7 @@ export async function Header() {
           className='flex items-center space-x-2 transition-opacity hover:opacity-80'>
           <Building2 className='size-6 text-blue-500' />
           <span className='text-lg font-bold text-gray-900 dark:text-white'>
-            Construct It
+            Hive
           </span>
         </Link>
         <nav className='hidden space-x-8 sm:flex'>
