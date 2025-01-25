@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { MessageCircle, X } from 'lucide-react';
+import { MessageCircle, Upload, X } from 'lucide-react';
 
 type Message = {
   id: string;
@@ -15,8 +15,16 @@ export function ChatButton() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
+  const [uploadedPdf, setUploadedPdf] = useState<File | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handlePdfUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file && file.type === 'application/pdf') {
+      setUploadedPdf(file);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputMessage.trim()) return;
 
@@ -30,16 +38,41 @@ export function ChatButton() {
     setMessages((prev) => [...prev, newMessage]);
     setInputMessage('');
 
-    // Add automated response
-    setTimeout(() => {
+    try {
+      const formData = new FormData();
+      formData.append('question', inputMessage.trim());
+
+      if (uploadedPdf) {
+        formData.append('file', uploadedPdf);
+      }
+
+      const response = await fetch('http://192.168.1.16:5000/ask', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      // Remove markdown formatting using regex
+      const cleanResponse = data.answer.replace(/[*_`#\[\]]/g, '');
+
       const responseMessage: Message = {
         id: Date.now().toString(),
-        text: 'Fuck You 🖕',
+        text: cleanResponse,
         sender: 'system',
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, responseMessage]);
-    }, 1000); // Add 1 second delay to make it feel more natural
+    } catch (error) {
+      console.error('Error sending message:', error);
+      const errorMessage: Message = {
+        id: Date.now().toString(),
+        text: 'Sorry, there was an error processing your message.',
+        sender: 'system',
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, errorMessage]);
+    }
   };
 
   return (
@@ -58,7 +91,7 @@ export function ChatButton() {
           <div className='fixed bottom-4 right-4 flex h-[600px] w-96 flex-col rounded-lg bg-white shadow-xl dark:bg-zinc-900'>
             {/* Header */}
             <div className='flex items-center justify-between border-b p-4 dark:border-zinc-700'>
-              <h2 className='text-lg font-semibold'>ConstructoBot</h2>
+              <h2 className='text-lg font-semibold'>HiveMind</h2>
               <button
                 onClick={() => setIsOpen(false)}
                 className='text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
@@ -99,6 +132,28 @@ export function ChatButton() {
 
             {/* Input Area */}
             <div className='border-t p-4 dark:border-zinc-700'>
+              <div className='mb-2 flex items-center gap-2'>
+                <input
+                  type='file'
+                  accept='.pdf'
+                  onChange={handlePdfUpload}
+                  className='hidden'
+                  id='pdf-upload'
+                />
+                <label
+                  htmlFor='pdf-upload'
+                  className='flex cursor-pointer items-center gap-2 rounded-lg border border-gray-300 px-3 py-1.5 text-sm hover:bg-gray-100 dark:border-zinc-700 dark:hover:bg-zinc-800'>
+                  <Upload className='size-4' />
+                  {uploadedPdf ? uploadedPdf.name : 'Upload PDF'}
+                </label>
+                {uploadedPdf && (
+                  <button
+                    onClick={() => setUploadedPdf(null)}
+                    className='text-sm text-red-500 hover:text-red-600'>
+                    Remove
+                  </button>
+                )}
+              </div>
               <form className='flex gap-2' onSubmit={handleSubmit}>
                 <input
                   type='text'
