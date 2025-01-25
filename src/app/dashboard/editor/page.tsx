@@ -790,7 +790,39 @@ export default function EditorPage() {
                           )
                         );
                       case 'photos':
-                        return null; // Remove photos section
+                        return (
+                          <div
+                            key='photos'
+                            className='overflow-hidden rounded-lg border border-gray-200 bg-white/50'>
+                            <div className='border-b border-gray-200 bg-gray-50/50 px-6 py-4'>
+                              <h2 className='text-center text-sm font-semibold uppercase text-gray-700'>
+                                Site Photos
+                              </h2>
+                            </div>
+                            <div className='grid grid-cols-2 gap-6 p-6'>
+                              {[
+                                '/site1.jpeg',
+                                '/site2.jpeg',
+                                '/site3.jpeg',
+                                '/site4.jpeg',
+                              ].map((photo, idx) => (
+                                <div key={idx} className='space-y-3'>
+                                  <div className='relative aspect-[4/3] w-full overflow-hidden rounded-lg'>
+                                    <Image
+                                      src={photo}
+                                      alt={`Site photo ${idx + 1}`}
+                                      fill
+                                      className='object-cover'
+                                    />
+                                  </div>
+                                  <p className='text-sm text-gray-500'>
+                                    Construction progress photo {idx + 1}
+                                  </p>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        );
                     }
                   })}
                 </div>
