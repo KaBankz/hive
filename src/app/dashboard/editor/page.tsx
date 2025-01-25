@@ -386,15 +386,15 @@ export default function EditorPage() {
       <div className='flex h-full'>
         {/* Document Preview */}
         <div className='flex-1'>
-          <div className='h-full overflow-auto'>
+          <div className='h-full overflow-auto bg-gray-100 dark:bg-zinc-900'>
             <div className='mx-auto h-screen max-w-7xl p-8'>
               <div
                 id='document-container'
-                className='mx-auto w-[8.27in] rounded-lg bg-white p-8 shadow-lg ring-1 ring-black/[0.1] dark:bg-black dark:ring-white/[0.1]'>
+                className='mx-auto w-[8.27in] rounded-lg bg-white p-8 shadow-lg ring-1 ring-black/[0.1]'>
                 {/* Company Header */}
-                <div className='mb-12 border-b border-gray-200 pb-6 dark:border-white/[0.1]'>
+                <div className='mb-12 border-b border-gray-200 pb-6'>
                   <div className='flex items-center justify-between'>
-                    <h1 className='text-xl font-semibold text-blue-500 dark:text-blue-400'>
+                    <h1 className='text-xl font-semibold text-blue-500'>
                       {dailyReportData.companyName}
                     </h1>
                     <Image
@@ -418,36 +418,36 @@ export default function EditorPage() {
                         return (
                           <div
                             key='reportInfo'
-                            className='overflow-hidden rounded-lg border border-gray-200 bg-white/50 dark:border-white/[0.1] dark:bg-white/[0.02]'>
+                            className='overflow-hidden rounded-lg border border-gray-200 bg-white/50'>
                             <table className='w-full'>
                               <thead>
-                                <tr className='border-b border-gray-200 bg-gray-50/50 dark:border-white/[0.1] dark:bg-black/20'>
-                                  <th className='p-4 text-left text-sm font-medium text-gray-600 dark:text-gray-300'>
+                                <tr className='border-b border-gray-200 bg-gray-50/50'>
+                                  <th className='p-4 text-left text-sm font-medium text-gray-600'>
                                     Date
                                   </th>
-                                  <th className='p-4 text-left text-sm font-medium text-gray-600 dark:text-gray-300'>
+                                  <th className='p-4 text-left text-sm font-medium text-gray-600'>
                                     Project #
                                   </th>
-                                  <th className='p-4 text-left text-sm font-medium text-gray-600 dark:text-gray-300'>
+                                  <th className='p-4 text-left text-sm font-medium text-gray-600'>
                                     Project Name
                                   </th>
-                                  <th className='p-4 text-left text-sm font-medium text-gray-600 dark:text-gray-300'>
+                                  <th className='p-4 text-left text-sm font-medium text-gray-600'>
                                     Printed By
                                   </th>
                                 </tr>
                               </thead>
                               <tbody>
                                 <tr>
-                                  <td className='p-4 font-medium text-gray-900 dark:text-white'>
+                                  <td className='p-4 font-medium text-gray-900'>
                                     {selectedProject.dailyLogDate}
                                   </td>
-                                  <td className='p-4 font-medium text-gray-900 dark:text-white'>
+                                  <td className='p-4 font-medium text-gray-900'>
                                     {selectedProject.projectNumber}
                                   </td>
-                                  <td className='p-4 font-medium text-gray-900 dark:text-white'>
+                                  <td className='p-4 font-medium text-gray-900'>
                                     {selectedProject.projectName}
                                   </td>
-                                  <td className='p-4 font-medium text-gray-900 dark:text-white'>
+                                  <td className='p-4 font-medium text-gray-900'>
                                     {dailyReportData.printedBy}
                                   </td>
                                 </tr>
@@ -460,33 +460,33 @@ export default function EditorPage() {
                           selectedProject.weather && (
                             <div
                               key='weather'
-                              className='overflow-hidden rounded-lg border border-gray-200 bg-white/50 dark:border-white/[0.1] dark:bg-white/[0.02]'>
-                              <div className='border-b border-gray-200 bg-gray-50/50 px-6 py-4 dark:border-white/[0.1] dark:bg-black/20'>
-                                <h2 className='text-center text-sm font-semibold uppercase text-gray-700 dark:text-gray-300'>
+                              className='overflow-hidden rounded-lg border border-gray-200 bg-white/50'>
+                              <div className='border-b border-gray-200 bg-gray-50/50 px-6 py-4'>
+                                <h2 className='text-center text-sm font-semibold uppercase text-gray-700'>
                                   Weather
                                 </h2>
                               </div>
-                              <div className='grid grid-cols-3 divide-x divide-gray-200 dark:divide-white/[0.1]'>
+                              <div className='grid grid-cols-3 divide-x divide-gray-200'>
                                 {selectedProject.weather.summary.map(
                                   (weather: WeatherSummary, idx: number) => (
                                     <div key={idx} className='p-6 text-center'>
-                                      <div className='text-sm font-medium text-gray-600 dark:text-gray-400'>
+                                      <div className='text-sm font-medium text-gray-600'>
                                         {weather.forecastTimeTzFormatted}
                                       </div>
-                                      <div className='mt-2 text-2xl font-semibold text-blue-500 dark:text-blue-400'>
+                                      <div className='mt-2 text-2xl font-semibold text-blue-500'>
                                         <i className={weather.iconForecast}></i>{' '}
                                         {weather.tempF}°
                                       </div>
-                                      <div className='mt-2 text-xs text-gray-500 dark:text-gray-400'>
-                                        <span className='font-medium text-gray-700 dark:text-gray-300'>
+                                      <div className='mt-2 text-xs text-gray-500'>
+                                        <span className='font-medium text-gray-700'>
                                           Wind:
                                         </span>{' '}
                                         {weather.wind} &nbsp;
-                                        <span className='font-medium text-gray-700 dark:text-gray-300'>
+                                        <span className='font-medium text-gray-700'>
                                           Precip:
                                         </span>{' '}
                                         {weather.precip} &nbsp;
-                                        <span className='font-medium text-gray-700 dark:text-gray-300'>
+                                        <span className='font-medium text-gray-700'>
                                           Humidity:
                                         </span>{' '}
                                         {weather.humidity}
@@ -504,47 +504,45 @@ export default function EditorPage() {
                           selectedProject.labor.details && (
                             <div
                               key='labor'
-                              className='overflow-hidden rounded-lg border border-gray-200 bg-white/50 dark:border-white/[0.1] dark:bg-white/[0.02]'>
-                              <div className='border-b border-gray-200 bg-gray-50/50 px-6 py-4 dark:border-white/[0.1] dark:bg-black/20'>
-                                <h2 className='text-center text-sm font-semibold uppercase text-gray-700 dark:text-gray-300'>
+                              className='overflow-hidden rounded-lg border border-gray-200 bg-white/50'>
+                              <div className='border-b border-gray-200 bg-gray-50/50 px-6 py-4'>
+                                <h2 className='text-center text-sm font-semibold uppercase text-gray-700'>
                                   Labor
                                 </h2>
                               </div>
                               <div className='p-6'>
                                 <table className='w-full'>
                                   <thead>
-                                    <tr className='border-b border-gray-200 dark:border-white/[0.1]'>
-                                      <th className='pb-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300'>
+                                    <tr className='border-b border-gray-200'>
+                                      <th className='pb-3 text-left text-sm font-medium text-gray-600'>
                                         Name
                                       </th>
-                                      <th className='pb-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300'>
+                                      <th className='pb-3 text-left text-sm font-medium text-gray-600'>
                                         Cost Code
                                       </th>
-                                      <th className='pb-3 text-right text-sm font-medium text-gray-600 dark:text-gray-300'>
+                                      <th className='pb-3 text-right text-sm font-medium text-gray-600'>
                                         {dailyReportData.hoursLabels}
                                       </th>
                                       {selectedProject.labor.hasNotes && (
-                                        <th className='pb-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300'>
+                                        <th className='pb-3 text-left text-sm font-medium text-gray-600'>
                                           Notes
                                         </th>
                                       )}
                                     </tr>
                                   </thead>
-                                  <tbody className='divide-y divide-gray-200 dark:divide-white/[0.1]'>
+                                  <tbody className='divide-y divide-gray-200'>
                                     {selectedProject.labor.details.map(
                                       (labor: LaborDetail, idx: number) => (
                                         <tr
                                           key={idx}
                                           className={
-                                            idx % 2 === 0
-                                              ? 'bg-gray-50/50 dark:bg-white/[0.02]'
-                                              : ''
+                                            idx % 2 === 0 ? 'bg-gray-50/50' : ''
                                           }>
                                           <td className='py-4 pl-4'>
-                                            <div className='font-medium text-gray-900 dark:text-white'>
+                                            <div className='font-medium text-gray-900'>
                                               {labor.nameRow.nameCell.crewName}
                                             </div>
-                                            <div className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
+                                            <div className='mt-1 text-sm text-gray-500'>
                                               {labor.nameRow.nameCell.crewHours}
                                             </div>
                                             {labor.nameRow.nameCell
@@ -560,7 +558,7 @@ export default function EditorPage() {
                                                   width={100}
                                                   height={100}
                                                 />
-                                                <div className='mt-1 text-[10px] text-gray-500 dark:text-gray-400'>
+                                                <div className='mt-1 text-[10px] text-gray-500'>
                                                   Signed{' '}
                                                   {
                                                     labor.nameRow.nameCell
@@ -571,37 +569,37 @@ export default function EditorPage() {
                                             )}
                                           </td>
                                           <td className='p-4'>
-                                            <div className='font-medium text-gray-900 dark:text-white'>
+                                            <div className='font-medium text-gray-900'>
                                               {
                                                 labor.nameRow.costCodeCell
                                                   .costCode
                                               }
                                             </div>
-                                            <div className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
+                                            <div className='mt-1 text-sm text-gray-500'>
                                               {
                                                 labor.nameRow.costCodeCell
                                                   .budgetCodeDescription
                                               }
                                             </div>
                                           </td>
-                                          <td className='p-4 text-right text-sm text-gray-900 dark:text-white'>
+                                          <td className='p-4 text-right text-sm text-gray-900'>
                                             {labor.nameRow.hoursCell.hours}
                                           </td>
                                           {selectedProject.labor.hasNotes && (
-                                            <td className='p-4 text-sm text-gray-500 dark:text-gray-400'>
+                                            <td className='p-4 text-sm text-gray-500'>
                                               {labor.nameRow.notesCell}
                                             </td>
                                           )}
                                         </tr>
                                       )
                                     )}
-                                    <tr className='border-t border-gray-200 bg-gray-50/80 dark:border-white/[0.1] dark:bg-black/20'>
+                                    <tr className='border-t border-gray-200 bg-gray-50/80'>
                                       <td
                                         colSpan={2}
-                                        className='p-4 text-right font-medium text-gray-900 dark:text-white'>
+                                        className='p-4 text-right font-medium text-gray-900'>
                                         TOTAL
                                       </td>
-                                      <td className='p-4 text-right font-medium text-gray-900 dark:text-white'>
+                                      <td className='p-4 text-right font-medium text-gray-900'>
                                         {selectedProject?.labor?.totalHours}
                                       </td>
                                       {selectedProject?.labor?.hasNotes && (
@@ -620,33 +618,33 @@ export default function EditorPage() {
                           selectedProject.equipment.details && (
                             <div
                               key='equipment'
-                              className='overflow-hidden rounded-lg border border-gray-200 bg-white/50 dark:border-white/[0.1] dark:bg-white/[0.02]'>
-                              <div className='border-b border-gray-200 bg-gray-50/50 px-6 py-4 dark:border-white/[0.1] dark:bg-black/20'>
-                                <h2 className='text-center text-sm font-semibold uppercase text-gray-700 dark:text-gray-300'>
+                              className='overflow-hidden rounded-lg border border-gray-200 bg-white/50'>
+                              <div className='border-b border-gray-200 bg-gray-50/50 px-6 py-4'>
+                                <h2 className='text-center text-sm font-semibold uppercase text-gray-700'>
                                   Equipment
                                 </h2>
                               </div>
                               <div className='p-6'>
                                 <table className='w-full'>
                                   <thead>
-                                    <tr className='border-b border-gray-200 dark:border-white/[0.1]'>
-                                      <th className='pb-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300'>
+                                    <tr className='border-b border-gray-200'>
+                                      <th className='pb-3 text-left text-sm font-medium text-gray-600'>
                                         Name
                                       </th>
-                                      <th className='pb-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300'>
+                                      <th className='pb-3 text-left text-sm font-medium text-gray-600'>
                                         Cost Code
                                       </th>
-                                      <th className='pb-3 text-right text-sm font-medium text-gray-600 dark:text-gray-300'>
+                                      <th className='pb-3 text-right text-sm font-medium text-gray-600'>
                                         {dailyReportData.hoursLabels}
                                       </th>
                                       {selectedProject.equipment.hasNotes && (
-                                        <th className='pb-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300'>
+                                        <th className='pb-3 text-left text-sm font-medium text-gray-600'>
                                           Notes
                                         </th>
                                       )}
                                     </tr>
                                   </thead>
-                                  <tbody className='divide-y divide-gray-200 dark:divide-white/[0.1]'>
+                                  <tbody className='divide-y divide-gray-200'>
                                     {selectedProject.equipment.details.map(
                                       (
                                         equipment: EquipmentDetail,
@@ -656,7 +654,7 @@ export default function EditorPage() {
                                           <tr
                                             className={
                                               idx % 2 === 0
-                                                ? 'bg-gray-50/50 dark:bg-white/[0.02]'
+                                                ? 'bg-gray-50/50'
                                                 : ''
                                             }>
                                             <td
@@ -669,13 +667,13 @@ export default function EditorPage() {
                                                       .length + 1
                                                   : 1
                                               }>
-                                              <div className='font-medium text-gray-900 dark:text-white'>
+                                              <div className='font-medium text-gray-900'>
                                                 {
                                                   equipment.nameRow.nameCell
                                                     .equipName
                                                 }
                                               </div>
-                                              <div className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
+                                              <div className='mt-1 text-sm text-gray-500'>
                                                 {
                                                   equipment.nameRow.nameCell
                                                     .equipHours
@@ -685,7 +683,7 @@ export default function EditorPage() {
                                                 (tag, tagIdx) => (
                                                   <span
                                                     key={tagIdx}
-                                                    className='mt-2 inline-flex items-center gap-1 rounded-full bg-gray-100 px-2 py-1 text-xs font-medium dark:bg-white/[0.1]'
+                                                    className='mt-2 inline-flex items-center gap-1 rounded-full bg-gray-100 px-2 py-1 text-xs font-medium'
                                                     style={{
                                                       color: tag.color,
                                                     }}>
@@ -696,13 +694,13 @@ export default function EditorPage() {
                                               )}
                                             </td>
                                             <td className='p-4'>
-                                              <div className='font-medium text-gray-900 dark:text-white'>
+                                              <div className='font-medium text-gray-900'>
                                                 {
                                                   equipment.nameRow.costCodeCell
                                                     .costCode
                                                 }
                                               </div>
-                                              <div className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
+                                              <div className='mt-1 text-sm text-gray-500'>
                                                 {
                                                   equipment.nameRow.costCodeCell
                                                     .budgetCodeDescription
@@ -710,7 +708,7 @@ export default function EditorPage() {
                                               </div>
                                             </td>
                                             <td className='p-4 text-right'>
-                                              <div className='text-sm text-gray-900 dark:text-white'>
+                                              <div className='text-sm text-gray-900'>
                                                 {
                                                   equipment.nameRow.hoursCell
                                                     .hours
@@ -720,7 +718,7 @@ export default function EditorPage() {
                                                 (tag, tagIdx) => (
                                                   <span
                                                     key={tagIdx}
-                                                    className='mt-2 inline-flex items-center gap-1 rounded-full bg-gray-100 px-2 py-1 text-xs font-medium dark:bg-white/[0.1]'
+                                                    className='mt-2 inline-flex items-center gap-1 rounded-full bg-gray-100 px-2 py-1 text-xs font-medium'
                                                     style={{
                                                       color: tag.color,
                                                     }}>
@@ -732,7 +730,7 @@ export default function EditorPage() {
                                             </td>
                                             {selectedProject.equipment
                                               .hasNotes && (
-                                              <td className='p-4 text-sm text-gray-500 dark:text-gray-400'>
+                                              <td className='p-4 text-sm text-gray-500'>
                                                 {equipment.nameRow.notesCell}
                                               </td>
                                             )}
@@ -743,26 +741,26 @@ export default function EditorPage() {
                                                 key={`equip-${idx}-row-${rowIdx}`}
                                                 className={
                                                   idx % 2 === 0
-                                                    ? 'bg-gray-50/50 dark:bg-white/[0.02]'
+                                                    ? 'bg-gray-50/50'
                                                     : ''
                                                 }>
                                                 <td className='p-4'>
-                                                  <div className='font-medium text-gray-900 dark:text-white'>
+                                                  <div className='font-medium text-gray-900'>
                                                     {row.costCodeCell.costCode}
                                                   </div>
-                                                  <div className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
+                                                  <div className='mt-1 text-sm text-gray-500'>
                                                     {
                                                       row.costCodeCell
                                                         .budgetCodeDescription
                                                     }
                                                   </div>
                                                 </td>
-                                                <td className='p-4 text-right text-sm text-gray-900 dark:text-white'>
+                                                <td className='p-4 text-right text-sm text-gray-900'>
                                                   {row.hoursCell.hours}
                                                 </td>
                                                 {selectedProject.equipment
                                                   .hasNotes && (
-                                                  <td className='p-4 text-sm text-gray-500 dark:text-gray-400'>
+                                                  <td className='p-4 text-sm text-gray-500'>
                                                     {row.notesCell}
                                                   </td>
                                                 )}
@@ -772,13 +770,13 @@ export default function EditorPage() {
                                         </Fragment>
                                       )
                                     )}
-                                    <tr className='border-t border-gray-200 bg-gray-50/80 dark:border-white/[0.1] dark:bg-black/20'>
+                                    <tr className='border-t border-gray-200 bg-gray-50/80'>
                                       <td
                                         colSpan={2}
-                                        className='p-4 text-right font-medium text-gray-900 dark:text-white'>
+                                        className='p-4 text-right font-medium text-gray-900'>
                                         TOTAL
                                       </td>
-                                      <td className='p-4 text-right font-medium text-gray-900 dark:text-white'>
+                                      <td className='p-4 text-right font-medium text-gray-900'>
                                         {selectedProject?.equipment?.totalHours}
                                       </td>
                                       {selectedProject?.equipment?.hasNotes && (
