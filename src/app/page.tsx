@@ -19,7 +19,7 @@ export default function Home() {
           <h1 className='bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text pb-4 text-5xl font-bold tracking-tight text-transparent sm:text-7xl dark:from-white dark:to-zinc-400'>
             Construction Reporting
             <br />
-            Reimagined
+            Redefined
           </h1>
           <p className='mx-auto mt-6 max-w-2xl text-lg text-gray-600 dark:text-zinc-400'>
             Create professional construction reports in minutes with our
