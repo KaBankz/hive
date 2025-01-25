@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 import {
@@ -8,7 +9,9 @@ import {
   Calendar,
   Check,
   Clock,
+  EllipsisVertical,
   FileText,
+  ListTodo,
   Mail,
   MessageSquare,
   Plus,
@@ -27,9 +30,24 @@ interface CustomizationOption {
   category: 'fields' | 'formatting' | 'delivery';
 }
 
+type ProjectId = 'downtown-office' | 'residential-tower' | 'shopping-mall';
+
 export default function DashboardPage() {
   // Add state for modal
   const [showCustomizeModal, setShowCustomizeModal] = useState(false);
+  // Add state for project toggles
+  const [projectToggles, setProjectToggles] = useState({
+    'downtown-office': true,
+    'residential-tower': true,
+    'shopping-mall': false,
+  });
+
+  const handleToggleChange = (projectId: ProjectId) => {
+    setProjectToggles((prev) => ({
+      ...prev,
+      [projectId]: !prev[projectId],
+    }));
+  };
 
   // Add customization options
   const reportOptions: CustomizationOption[] = [
@@ -306,7 +324,310 @@ export default function DashboardPage() {
               </Link>
             ))}
           </div>
-
+          {/* Projects Grid */}
+          <div
+            id='projects-grid'
+            className='mb-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'>
+            <div className='rounded-xl border border-gray-200 bg-white shadow-sm dark:border-white/10 dark:bg-white/[0.02]'>
+              <div className='p-6'>
+                <div className='mb-4 flex items-start justify-between'>
+                  <div>
+                    <h3 className='text-lg font-bold text-gray-900 dark:text-white'>
+                      Downtown Office Complex
+                    </h3>
+                    <span className='mt-2 inline-block rounded bg-gray-100 px-2 py-1 text-xs text-gray-600 dark:bg-white/10 dark:text-zinc-400'>
+                      High Priority
+                    </span>
+                  </div>
+                  <div className='flex items-center space-x-2'>
+                    <button className='rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-white/5'>
+                      <EllipsisVertical className='size-4 text-gray-600 dark:text-zinc-400' />
+                    </button>
+                    <label className='relative inline-flex cursor-pointer items-center'>
+                      <input
+                        type='checkbox'
+                        className='peer sr-only'
+                        checked={projectToggles['downtown-office']}
+                        onChange={() => handleToggleChange('downtown-office')}
+                      />
+                      <div className='peer h-6 w-11 rounded-full bg-gray-200 peer-checked:bg-blue-500 dark:bg-white/10'></div>
+                    </label>
+                  </div>
+                </div>
+                <div className='space-y-4'>
+                  <div className='flex justify-between text-sm'>
+                    <span className='text-gray-500 dark:text-zinc-400'>
+                      Progress
+                    </span>
+                    <span className='font-medium text-gray-900 dark:text-white'>
+                      75%
+                    </span>
+                  </div>
+                  <div className='h-2 w-full rounded-full bg-gray-200 dark:bg-white/10'>
+                    <div className='h-2 w-3/4 rounded-full bg-blue-500'></div>
+                  </div>
+                  <div className='grid grid-cols-2 gap-4 text-sm'>
+                    <div>
+                      <p className='text-gray-500 dark:text-zinc-400'>Budget</p>
+                      <p className='font-medium text-gray-900 dark:text-white'>
+                        $2.4M
+                      </p>
+                    </div>
+                    <div>
+                      <p className='text-gray-500 dark:text-zinc-400'>Tasks</p>
+                      <p className='font-medium text-gray-900 dark:text-white'>
+                        45/60
+                      </p>
+                    </div>
+                  </div>
+                  <div className='flex items-center justify-between border-t border-gray-100 pt-4 dark:border-white/10'>
+                    <div className='flex -space-x-2'>
+                      <Image
+                        src='https://api.dicebear.com/7.x/notionists/svg?scale=200&seed=101'
+                        className='size-8 rounded-full border-2 border-white'
+                        alt='User 1'
+                        width={32}
+                        height={32}
+                      />
+                      <Image
+                        src='https://api.dicebear.com/7.x/notionists/svg?scale=200&seed=102'
+                        className='size-8 rounded-full border-2 border-white'
+                        alt='User 2'
+                        width={32}
+                        height={32}
+                      />
+                      <Image
+                        src='https://api.dicebear.com/7.x/notionists/svg?scale=200&seed=103'
+                        className='size-8 rounded-full border-2 border-white'
+                        alt='User 3'
+                        width={32}
+                        height={32}
+                      />
+                      <div className='flex size-8 items-center justify-center rounded-full border-2 border-white bg-neutral-100'>
+                        <span className='text-xs text-neutral-600'>+2</span>
+                      </div>
+                    </div>
+                    <div className='flex items-center'>
+                      <Calendar className='mr-2 size-3 text-gray-500 dark:text-zinc-400' />
+                      <span className='text-sm text-gray-500 dark:text-zinc-400'>
+                        Due: Mar 2025
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div className='mt-6 flex space-x-2'>
+                  <button className='flex-1 rounded-lg bg-gray-100 px-4 py-2 text-gray-700 hover:bg-gray-200 dark:bg-white/5 dark:text-zinc-300 dark:hover:bg-white/10'>
+                    <ListTodo className='mr-2 size-3' />
+                    Tasks
+                  </button>
+                  <button className='flex-1 rounded-lg bg-gray-100 px-4 py-2 text-gray-700 hover:bg-gray-200 dark:bg-white/5 dark:text-zinc-300 dark:hover:bg-white/10'>
+                    <FileText className='mr-2 size-3' />
+                    Files
+                  </button>
+                  <button className='flex-1 rounded-lg bg-gray-100 px-4 py-2 text-gray-700 hover:bg-gray-200 dark:bg-white/5 dark:text-zinc-300 dark:hover:bg-white/10'>
+                    <MessageSquare className='mr-2 size-3' />
+                    Chat
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className='rounded-xl border border-gray-200 bg-white shadow-sm dark:border-white/10 dark:bg-white/[0.02]'>
+              <div className='p-6'>
+                <div className='mb-4 flex items-start justify-between'>
+                  <div>
+                    <h3 className='text-lg font-bold text-gray-900 dark:text-white'>
+                      Residential Tower
+                    </h3>
+                    <span className='mt-2 inline-block rounded bg-gray-100 px-2 py-1 text-xs text-gray-600 dark:bg-white/10 dark:text-zinc-400'>
+                      Medium Priority
+                    </span>
+                  </div>
+                  <div className='flex items-center space-x-2'>
+                    <button className='rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-white/5'>
+                      <EllipsisVertical className='size-4 text-gray-600 dark:text-zinc-400' />
+                    </button>
+                    <label className='relative inline-flex cursor-pointer items-center'>
+                      <input
+                        type='checkbox'
+                        className='peer sr-only'
+                        checked={projectToggles['residential-tower']}
+                        onChange={() => handleToggleChange('residential-tower')}
+                      />
+                      <div className='peer h-6 w-11 rounded-full bg-gray-200 peer-checked:bg-blue-500 dark:bg-white/10'></div>
+                    </label>
+                  </div>
+                </div>
+                <div className='space-y-4'>
+                  <div className='flex justify-between text-sm'>
+                    <span className='text-gray-500 dark:text-zinc-400'>
+                      Progress
+                    </span>
+                    <span className='font-medium text-gray-900 dark:text-white'>
+                      45%
+                    </span>
+                  </div>
+                  <div className='h-2 w-full rounded-full bg-gray-200 dark:bg-white/10'>
+                    <div className='h-2 w-[45%] rounded-full bg-blue-500'></div>
+                  </div>
+                  <div className='grid grid-cols-2 gap-4 text-sm'>
+                    <div>
+                      <p className='text-gray-500 dark:text-zinc-400'>Budget</p>
+                      <p className='font-medium text-gray-900 dark:text-white'>
+                        $1.8M
+                      </p>
+                    </div>
+                    <div>
+                      <p className='text-gray-500 dark:text-zinc-400'>Tasks</p>
+                      <p className='font-medium text-gray-900 dark:text-white'>
+                        30/65
+                      </p>
+                    </div>
+                  </div>
+                  <div className='flex items-center justify-between border-t border-gray-100 pt-4 dark:border-white/10'>
+                    <div className='flex -space-x-2'>
+                      <Image
+                        src='https://api.dicebear.com/7.x/notionists/svg?scale=200&seed=104'
+                        className='size-8 rounded-full border-2 border-white'
+                        alt='User 4'
+                        width={32}
+                        height={32}
+                      />
+                      <Image
+                        src='https://api.dicebear.com/7.x/notionists/svg?scale=200&seed=105'
+                        className='size-8 rounded-full border-2 border-white'
+                        alt='User 5'
+                        width={32}
+                        height={32}
+                      />
+                      <div className='flex size-8 items-center justify-center rounded-full border-2 border-white bg-neutral-100'>
+                        <span className='text-xs text-neutral-600'>+3</span>
+                      </div>
+                    </div>
+                    <div className='flex items-center'>
+                      <Calendar className='mr-2 size-3 text-gray-500 dark:text-zinc-400' />
+                      <span className='text-sm text-gray-500 dark:text-zinc-400'>
+                        Due: Jun 2025
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div className='mt-6 flex space-x-2'>
+                  <button className='flex-1 rounded-lg bg-gray-100 px-4 py-2 text-gray-700 hover:bg-gray-200 dark:bg-white/5 dark:text-zinc-300 dark:hover:bg-white/10'>
+                    <ListTodo className='mr-2 size-3' />
+                    Tasks
+                  </button>
+                  <button className='flex-1 rounded-lg bg-gray-100 px-4 py-2 text-gray-700 hover:bg-gray-200 dark:bg-white/5 dark:text-zinc-300 dark:hover:bg-white/10'>
+                    <FileText className='mr-2 size-3' />
+                    Files
+                  </button>
+                  <button className='flex-1 rounded-lg bg-gray-100 px-4 py-2 text-gray-700 hover:bg-gray-200 dark:bg-white/5 dark:text-zinc-300 dark:hover:bg-white/10'>
+                    <MessageSquare className='mr-2 size-3' />
+                    Chat
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className='rounded-xl border border-gray-200 bg-white shadow-sm dark:border-white/10 dark:bg-white/[0.02]'>
+              <div className='p-6'>
+                <div className='mb-4 flex items-start justify-between'>
+                  <div>
+                    <h3 className='text-lg font-bold text-gray-900 dark:text-white'>
+                      Shopping Mall Extension
+                    </h3>
+                    <span className='mt-2 inline-block rounded bg-gray-100 px-2 py-1 text-xs text-gray-600 dark:bg-white/10 dark:text-zinc-400'>
+                      Low Priority
+                    </span>
+                  </div>
+                  <div className='flex items-center space-x-2'>
+                    <button className='rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-white/5'>
+                      <EllipsisVertical className='size-4 text-gray-600 dark:text-zinc-400' />
+                    </button>
+                    <label className='relative inline-flex cursor-pointer items-center'>
+                      <input
+                        type='checkbox'
+                        className='peer sr-only'
+                        checked={projectToggles['shopping-mall']}
+                        onChange={() => handleToggleChange('shopping-mall')}
+                      />
+                      <div className='peer h-6 w-11 rounded-full bg-gray-200 peer-checked:bg-blue-500 dark:bg-white/10'></div>
+                    </label>
+                  </div>
+                </div>
+                <div className='space-y-4'>
+                  <div className='flex justify-between text-sm'>
+                    <span className='text-gray-500 dark:text-zinc-400'>
+                      Progress
+                    </span>
+                    <span className='font-medium text-gray-900 dark:text-white'>
+                      90%
+                    </span>
+                  </div>
+                  <div className='h-2 w-full rounded-full bg-gray-200 dark:bg-white/10'>
+                    <div className='h-2 w-[90%] rounded-full bg-blue-500'></div>
+                  </div>
+                  <div className='grid grid-cols-2 gap-4 text-sm'>
+                    <div>
+                      <p className='text-gray-500 dark:text-zinc-400'>Budget</p>
+                      <p className='font-medium text-gray-900 dark:text-white'>
+                        $3.2M
+                      </p>
+                    </div>
+                    <div>
+                      <p className='text-gray-500 dark:text-zinc-400'>Tasks</p>
+                      <p className='font-medium text-gray-900 dark:text-white'>
+                        58/60
+                      </p>
+                    </div>
+                  </div>
+                  <div className='flex items-center justify-between border-t border-gray-100 pt-4 dark:border-white/10'>
+                    <div className='flex -space-x-2'>
+                      <Image
+                        src='https://api.dicebear.com/7.x/notionists/svg?scale=200&seed=106'
+                        className='size-8 rounded-full border-2 border-white'
+                        alt='User 4'
+                        width={32}
+                        height={32}
+                      />
+                      <Image
+                        src='https://api.dicebear.com/7.x/notionists/svg?scale=200&seed=107'
+                        className='size-8 rounded-full border-2 border-white'
+                        alt='User 5'
+                        width={32}
+                        height={32}
+                      />
+                      <Image
+                        src='https://api.dicebear.com/7.x/notionists/svg?scale=200&seed=108'
+                        className='size-8 rounded-full border-2 border-white'
+                        alt='User 6'
+                        width={32}
+                        height={32}
+                      />
+                    </div>
+                    <div className='flex items-center'>
+                      <Calendar className='mr-2 size-3 text-gray-500 dark:text-zinc-400' />
+                      <span className='text-sm text-gray-500 dark:text-zinc-400'>
+                        Due: Apr 2025
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div className='mt-6 flex space-x-2'>
+                  <button className='flex-1 rounded-lg bg-gray-100 px-4 py-2 text-gray-700 hover:bg-gray-200 dark:bg-white/5 dark:text-zinc-300 dark:hover:bg-white/10'>
+                    <ListTodo className='mr-2 size-3' />
+                    Tasks
+                  </button>
+                  <button className='flex-1 rounded-lg bg-gray-100 px-4 py-2 text-gray-700 hover:bg-gray-200 dark:bg-white/5 dark:text-zinc-300 dark:hover:bg-white/10'>
+                    <FileText className='mr-2 size-3' />
+                    Files
+                  </button>
+                  <button className='flex-1 rounded-lg bg-gray-100 px-4 py-2 text-gray-700 hover:bg-gray-200 dark:bg-white/5 dark:text-zinc-300 dark:hover:bg-white/10'>
+                    <MessageSquare className='mr-2 size-3' />
+                    Chat
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
           {/* Recent Reports */}
           <div>
             <div className='flex items-center justify-between'>
