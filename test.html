@@ -579,247 +579,188 @@
     </script>
   </head>
   <body class="text-base-content h-full">
-    <div id="root" class="min-h-screen bg-neutral-100">
-      <header
-        id="header"
-        class="fixed z-50 w-full border-b border-neutral-200 bg-white">
-        <div class="container mx-auto px-4">
-          <div class="flex h-16 items-center justify-between">
-            <div class="flex items-center">
-              <i class="fa-solid fa-building text-2xl text-neutral-800"></i>
-              <span class="ml-2 text-xl font-bold text-neutral-800">
-                ConView Pro
-              </span>
+    <div id="app" class="flex flex-col bg-gray-100">
+      <header id="header" class="bg-white px-6 py-3 shadow-sm">
+        <div class="mx-auto flex max-w-[1920px] items-center justify-between">
+          <div class="flex items-center space-x-6">
+            <div
+              class="bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-2xl font-bold text-transparent">
+              BuildReport
             </div>
-            <div class="flex items-center space-x-6">
-              <div class="flex items-center space-x-4">
-                <button
-                  class="rounded-lg px-3 py-1.5 text-neutral-600 hover:bg-neutral-100">
-                  <i class="fa-solid fa-search text-lg"></i>
-                </button>
-                <button class="relative">
-                  <i class="fa-regular fa-bell text-xl text-neutral-600"></i>
-                  <span
-                    class="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full bg-neutral-800 text-xs text-white">
-                    3
-                  </span>
-                </button>
-                <button
-                  class="rounded-lg px-3 py-1.5 text-neutral-600 hover:bg-neutral-100">
-                  <i class="fa-solid fa-gear text-lg"></i>
-                </button>
-              </div>
-              <div class="flex items-center space-x-2">
-                <img
-                  src="https://api.dicebear.com/7.x/notionists/svg?scale=200&seed=789"
-                  alt="Avatar"
-                  class="h-8 w-8 rounded-full border-2 border-neutral-200" />
-                <span class="text-sm font-medium">John Doe</span>
-                <i class="fa-solid fa-chevron-down text-neutral-400"></i>
-              </div>
+            <button
+              class="flex items-center rounded-lg bg-blue-600 px-5 py-2.5 text-white shadow-sm transition-all hover:bg-blue-700">
+              <i class="fa-regular fa-file-lines mr-2"></i>
+              New Report
+            </button>
+            <button
+              class="flex items-center rounded-lg border border-gray-200 bg-white px-5 py-2.5 transition-all hover:border-blue-200 hover:bg-blue-50">
+              <i class="fa-regular fa-floppy-disk mr-2 text-blue-600"></i>
+              Save
+            </button>
+            <div class="relative">
+              <button
+                class="flex items-center rounded-lg border border-gray-200 bg-white px-5 py-2.5 transition-all hover:border-blue-200 hover:bg-blue-50">
+                <i class="fa-regular fa-folder mr-2 text-blue-600"></i>
+                Templates
+                <i class="fa-solid fa-chevron-down ml-2 text-gray-400"></i>
+              </button>
+            </div>
+          </div>
+          <div class="flex items-center space-x-6">
+            <button class="relative p-2 text-gray-500 hover:text-blue-600">
+              <i class="fa-regular fa-bell text-xl"></i>
+              <span
+                class="absolute right-0 top-0 h-2 w-2 rounded-full bg-red-500"></span>
+            </button>
+            <div class="flex items-center space-x-3">
+              <img
+                src="https://storage.googleapis.com/uxpilot-auth.appspot.com/avatars/avatar-1.jpg"
+                class="h-9 w-9 rounded-full ring-2 ring-blue-100" />
+              <i class="fa-solid fa-chevron-down text-gray-400"></i>
             </div>
           </div>
         </div>
       </header>
-      <main id="main-content" class="pt-20">
-        <div class="container mx-auto px-4">
-          <!-- Dashboard Header -->
+      <main id="main-content" class="flex flex-1 gap-6 overflow-hidden p-6">
+        <div id="editor-panel" class="flex-1 rounded-xl bg-white shadow-sm">
+          <div class="border-b border-gray-100 p-6">
+            <input
+              type="text"
+              placeholder="Construction Site Daily Report"
+              class="w-full border-none text-3xl font-semibold placeholder-gray-300 focus:outline-none focus:ring-0" />
+          </div>
           <div
-            id="dashboard-header"
-            class="mb-8 flex items-center justify-between">
-            <div>
-              <h1 class="text-3xl font-bold text-neutral-800">
-                Projects Overview
-              </h1>
-              <p class="mt-1 text-neutral-500">
-                Manage and monitor your active projects
+            class="flex space-x-1 border-b border-gray-100 bg-gray-50 px-6 py-3">
+            <button
+              class="rounded-lg p-2.5 text-gray-600 transition-all hover:bg-white hover:text-blue-600">
+              <i class="fa-solid fa-bold"></i>
+            </button>
+            <button
+              class="rounded-lg p-2.5 text-gray-600 transition-all hover:bg-white hover:text-blue-600">
+              <i class="fa-solid fa-italic"></i>
+            </button>
+            <button
+              class="rounded-lg p-2.5 text-gray-600 transition-all hover:bg-white hover:text-blue-600">
+              <i class="fa-solid fa-list"></i>
+            </button>
+            <div class="mx-2 my-auto h-6 w-px bg-gray-200"></div>
+            <button
+              class="rounded-lg p-2.5 text-gray-600 transition-all hover:bg-white hover:text-blue-600">
+              <i class="fa-solid fa-image"></i>
+            </button>
+            <button
+              class="rounded-lg p-2.5 text-gray-600 transition-all hover:bg-white hover:text-blue-600">
+              <i class="fa-solid fa-table"></i>
+            </button>
+            <button
+              class="rounded-lg p-2.5 text-gray-600 transition-all hover:bg-white hover:text-blue-600">
+              <i class="fa-solid fa-link"></i>
+            </button>
+          </div>
+          <div class="p-6">
+            <div
+              class="min-h-[600px] rounded-lg border border-dashed border-gray-200 bg-gray-50 p-6">
+              <p class="text-gray-400">
+                Start typing your report or drag fields from the sidebar...
               </p>
             </div>
-            <div class="flex items-center space-x-4">
+          </div>
+        </div>
+        <div id="right-sidebar" class="w-96 rounded-xl bg-white p-6 shadow-sm">
+          <div class="mb-6">
+            <h3 class="mb-4 flex items-center font-semibold text-gray-800">
+              <i class="fa-solid fa-puzzle-piece mr-2 text-blue-600"></i>
+              Available Fields
+            </h3>
+            <div class="space-y-3">
               <div
-                class="flex items-center space-x-2 rounded-lg border border-neutral-200 bg-white px-3 py-2">
-                <i class="fa-solid fa-filter text-neutral-600"></i>
-                <select
-                  class="border-none bg-transparent text-sm text-neutral-600 focus:ring-0">
-                  <option>All Projects</option>
-                  <option>Active</option>
-                  <option>Completed</option>
-                </select>
-              </div>
-              <button
-                class="flex items-center rounded-lg bg-neutral-800 px-4 py-2 text-white hover:bg-neutral-900">
-                <i class="fa-solid fa-plus mr-2"></i>
-                Add Project
-              </button>
-            </div>
-          </div>
-          <!-- Quick Stats -->
-          <div
-            id="quick-stats"
-            class="mb-8 grid grid-cols-1 gap-6 md:grid-cols-4">
-            <div class="rounded-xl bg-white p-6 shadow-sm">
-              <div class="mb-4 flex items-center justify-between">
-                <span class="text-neutral-500">Total Projects</span>
-                <i class="fa-solid fa-chart-line text-neutral-600"></i>
-              </div>
-              <h3 class="text-2xl font-bold">24</h3>
-              <p class="mt-2 text-sm text-neutral-500">+3 this month</p>
-            </div>
-            <div class="rounded-xl bg-white p-6 shadow-sm">
-              <div class="mb-4 flex items-center justify-between">
-                <span class="text-neutral-500">In Progress</span>
-                <i class="fa-solid fa-clock text-neutral-600"></i>
-              </div>
-              <h3 class="text-2xl font-bold">16</h3>
-              <p class="mt-2 text-sm text-neutral-500">75% completion rate</p>
-            </div>
-            <div class="rounded-xl bg-white p-6 shadow-sm">
-              <div class="mb-4 flex items-center justify-between">
-                <span class="text-neutral-500">Completed</span>
-                <i class="fa-solid fa-check-circle text-neutral-600"></i>
-              </div>
-              <h3 class="text-2xl font-bold">8</h3>
-              <p class="mt-2 text-sm text-neutral-500">Last week: 6</p>
-            </div>
-            <div class="rounded-xl bg-white p-6 shadow-sm">
-              <div class="mb-4 flex items-center justify-between">
-                <span class="text-neutral-500">Team Members</span>
-                <i class="fa-solid fa-users text-neutral-600"></i>
-              </div>
-              <h3 class="text-2xl font-bold">42</h3>
-              <p class="mt-2 text-sm text-neutral-500">Active members</p>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            <div
-              id="activity-section"
-              class="rounded-xl bg-white p-6 shadow-sm">
-              <div class="mb-6 flex items-center justify-between">
-                <h2 class="text-xl font-bold">Recent Activity</h2>
-                <button class="text-sm text-neutral-600 hover:text-neutral-800">
-                  View All
-                </button>
-              </div>
-              <div class="space-y-6">
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center space-x-4">
-                    <div
-                      class="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100">
-                      <i class="fa-solid fa-hammer text-neutral-600"></i>
+                class="group cursor-move rounded-xl border border-blue-100 bg-gradient-to-r from-blue-50 to-white p-4 transition-all hover:border-blue-300">
+                <div class="flex items-center">
+                  <div
+                    class="mr-3 flex h-10 w-10 items-center justify-center rounded-lg bg-blue-600 text-white">
+                    <i class="fa-solid fa-cloud text-lg"></i>
+                  </div>
+                  <div>
+                    <div class="font-medium text-gray-800">
+                      Weather Conditions
                     </div>
-                    <div>
-                      <p class="font-medium">Phase completion update</p>
-                      <p class="text-sm text-neutral-500">
-                        Downtown Office Complex - Floor 12 completed
-                      </p>
-                      <p class="mt-1 text-xs text-neutral-400">2 hours ago</p>
+                    <div class="text-sm text-gray-500">
+                      Temperature, precipitation, wind speed
                     </div>
                   </div>
-                  <button
-                    class="rounded-lg bg-neutral-100 px-4 py-2 text-neutral-700 hover:bg-neutral-200">
-                    View Details
-                  </button>
-                </div>
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center space-x-4">
-                    <div
-                      class="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-100">
-                      <i
-                        class="fa-solid fa-calendar-check text-neutral-600"></i>
-                    </div>
-                    <div>
-                      <p class="font-medium">Milestone achieved</p>
-                      <p class="text-sm text-neutral-500">
-                        Residential Tower - Foundation work completed
-                      </p>
-                      <p class="mt-1 text-xs text-neutral-400">5 hours ago</p>
-                    </div>
-                  </div>
-                  <button
-                    class="rounded-lg bg-neutral-100 px-4 py-2 text-neutral-700 hover:bg-neutral-200">
-                    View Details
-                  </button>
+                  <i
+                    class="fa-solid fa-grip-dots-vertical ml-auto text-gray-300 group-hover:text-blue-400"></i>
                 </div>
               </div>
-            </div>
-            <div
-              id="team-performance"
-              class="rounded-xl bg-white p-6 shadow-sm">
-              <div class="mb-6 flex items-center justify-between">
-                <h2 class="text-xl font-bold">Team Performance</h2>
-                <div class="flex space-x-2">
-                  <button
-                    class="rounded-lg bg-neutral-100 px-3 py-1.5 text-sm text-neutral-600 hover:bg-neutral-200">
-                    Week
-                  </button>
-                  <button
-                    class="rounded-lg bg-neutral-800 px-3 py-1.5 text-sm text-white">
-                    Month
-                  </button>
+              <div
+                class="group cursor-move rounded-xl border border-green-100 bg-gradient-to-r from-green-50 to-white p-4 transition-all hover:border-green-300">
+                <div class="flex items-center">
+                  <div
+                    class="mr-3 flex h-10 w-10 items-center justify-center rounded-lg bg-green-600 text-white">
+                    <i class="fa-solid fa-users text-lg"></i>
+                  </div>
+                  <div>
+                    <div class="font-medium text-gray-800">
+                      Workforce Summary
+                    </div>
+                    <div class="text-sm text-gray-500">
+                      Staff count, roles, hours worked
+                    </div>
+                  </div>
+                  <i
+                    class="fa-solid fa-grip-dots-vertical ml-auto text-gray-300 group-hover:text-green-400"></i>
                 </div>
               </div>
-              <div class="space-y-4">
-                <div
-                  class="flex items-center justify-between rounded-lg bg-neutral-50 p-4">
-                  <div class="flex items-center space-x-3">
-                    <img
-                      src="https://api.dicebear.com/7.x/notionists/svg?scale=200&seed=201"
-                      class="h-10 w-10 rounded-full" />
-                    <div>
-                      <p class="font-medium">Design Team</p>
-                      <p class="text-sm text-neutral-500">12 members</p>
+              <div
+                class="group cursor-move rounded-xl border border-purple-100 bg-gradient-to-r from-purple-50 to-white p-4 transition-all hover:border-purple-300">
+                <div class="flex items-center">
+                  <div
+                    class="mr-3 flex h-10 w-10 items-center justify-center rounded-lg bg-purple-600 text-white">
+                    <i class="fa-solid fa-list-check text-lg"></i>
+                  </div>
+                  <div>
+                    <div class="font-medium text-gray-800">
+                      Daily Activities
+                    </div>
+                    <div class="text-sm text-gray-500">
+                      Tasks, progress, milestones
                     </div>
                   </div>
-                  <div class="text-right">
-                    <p class="font-medium">94%</p>
-                    <p class="text-sm text-neutral-500">Efficiency</p>
-                  </div>
+                  <i
+                    class="fa-solid fa-grip-dots-vertical ml-auto text-gray-300 group-hover:text-purple-400"></i>
                 </div>
-                <div
-                  class="flex items-center justify-between rounded-lg bg-neutral-50 p-4">
-                  <div class="flex items-center space-x-3">
-                    <img
-                      src="https://api.dicebear.com/7.x/notionists/svg?scale=200&seed=202"
-                      class="h-10 w-10 rounded-full" />
-                    <div>
-                      <p class="font-medium">Development Team</p>
-                      <p class="text-sm text-neutral-500">8 members</p>
+              </div>
+              <div
+                class="group cursor-move rounded-xl border border-orange-100 bg-gradient-to-r from-orange-50 to-white p-4 transition-all hover:border-orange-300">
+                <div class="flex items-center">
+                  <div
+                    class="mr-3 flex h-10 w-10 items-center justify-center rounded-lg bg-orange-600 text-white">
+                    <i class="fa-solid fa-truck text-lg"></i>
+                  </div>
+                  <div>
+                    <div class="font-medium text-gray-800">Equipment Usage</div>
+                    <div class="text-sm text-gray-500">
+                      Machinery, tools, maintenance
                     </div>
                   </div>
-                  <div class="text-right">
-                    <p class="font-medium">87%</p>
-                    <p class="text-sm text-neutral-500">Efficiency</p>
-                  </div>
+                  <i
+                    class="fa-solid fa-grip-dots-vertical ml-auto text-gray-300 group-hover:text-orange-400"></i>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </main>
-      <footer id="footer" class="mt-12 border-t border-neutral-200 bg-white">
-        <div class="container mx-auto px-4 py-6">
-          <div class="flex flex-col items-center justify-between md:flex-row">
-            <p class="text-sm text-neutral-600">
-              © 2025 ConView Pro. All rights reserved.
-            </p>
-            <div class="mt-4 flex space-x-6 md:mt-0">
-              <span
-                class="cursor-pointer text-neutral-600 hover:text-neutral-800">
-                <i class="fa-solid fa-book mr-2"></i>
-                Documentation
-              </span>
-              <span
-                class="cursor-pointer text-neutral-600 hover:text-neutral-800">
-                <i class="fa-solid fa-question-circle mr-2"></i>
-                Support
-              </span>
-              <span
-                class="cursor-pointer text-neutral-600 hover:text-neutral-800">
-                <i class="fa-solid fa-code mr-2"></i>
-                API
-              </span>
-            </div>
+      <footer id="footer" class="border-t border-gray-100 bg-white px-6 py-4">
+        <div
+          class="mx-auto flex max-w-[1920px] items-center justify-between text-sm text-gray-500">
+          <div class="flex items-center space-x-2">
+            <i class="fa-regular fa-file-lines text-gray-400"></i>
+            <span>Page 1 of 1</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <i class="fa-regular fa-clock text-gray-400"></i>
+            <span>Last saved: March 15, 2025 10:30 AM</span>
           </div>
         </div>
       </footer>

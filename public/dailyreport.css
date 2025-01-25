@@ -1,0 +1,273 @@
+.page-break	{ display: block; page-break-before: always; }
+
+body {
+	background-color: white;
+	margin: 0px;
+	padding: 0px;
+}
+
+table, th {
+  border-collapse: collapse;
+	border: none;
+	padding: 0;
+  margin: 0;
+	font-family: 'Spacegrotesk',sans-serif; 
+	font-weight: 300; font-size: 8px; color: #231F20;
+}
+th {
+	padding: 4px;
+	font-weight: 600; color: #231F20;
+	font-size: 9px;
+	text-align: center;
+}
+td {
+	font-size: 8px;
+  text-align:center;
+	padding: 6px;
+	border: thin solid #e0e0e0;
+}
+
+@font-face {
+  font-family: 'Spacegrotesk';
+  src: url('https://uploads-ssl.webflow.com/5d121ed2ba030fe1550d13e9/5d121f6eba030f056f0d162a_SpaceGrotesk-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Spacegrotesk';
+  src: url('https://uploads-ssl.webflow.com/5d121ed2ba030fe1550d13e9/5d121f6e5cf1542b5cd922b3_SpaceGrotesk-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+
+/* COMPANY HEADER AREA */
+.company-header {
+	width: 100%;
+	margin: 0;
+}
+.company-name {
+	display: inline-block;
+	width: 49%;
+	box-sizing: border-box;
+}
+.company-name h1 {
+	margin: 0;
+	padding: 0;
+	font-family: 'Spacegrotesk',sans-serif;; font-weight: 600; font-size: 18px; color: #26A146;
+}
+.company-name h2 {
+	margin: 0;
+	padding: 0;
+	font-family: 'Spacegrotesk',sans-serif;; font-weight: 300; font-size: 10px; color: #6D6E71;
+}
+.company-logo {
+	display: inline-block;
+	width: 49%;
+	box-sizing: border-box;
+	text-align: right;
+}
+.company-logo img {
+	max-height: 28px;
+}
+
+
+/* UNIVERSAL CONTENT PIECES STYLES */
+.gray-padded-background {
+	background-color: #E6E7E8;
+	width: 100%;
+	box-sizing: border-box;
+	padding: 7px 4px;
+}
+.content-section {
+	width: 100%;
+	display: block;
+	box-sizing: border-box;
+	background-color: white;
+	margin: 0 0 5px 0;
+	padding: 7px 7px 10px 7px;
+	border-style: solid; border-color: #939598; border-width:0 0 1px 0;
+}
+.section-header {
+	width: 100%;
+	margin-bottom: 12px;
+	text-align: center;
+	font-family: 'Spacegrotesk',sans-serif; font-weight: 600; font-size: 13px; color: #33424C;
+	text-transform: uppercase;
+}
+.section-header-2 {
+	width: 100%;
+	margin-bottom: 12px;
+	text-align: left;
+	font-family: 'Spacegrotesk',sans-serif; font-weight: 600; font-size: 11px; color: #33424C;
+	text-transform: uppercase;
+}
+.content-section table {
+	width: 100%;	
+}
+
+
+.section-stripe tr:nth-child(even) {
+	background: #EEF7EF; 
+}
+.section-stripe tr:last-child td{
+	border-style: solid; border-color: #C6C5C8; border-width:0px 1px 1px 0px;
+}
+.section-stripe tr td:last-child{
+	border-right: none;
+}
+.section-stripe tr:last-child th{
+	background: white;
+	border-style: solid; border-color: #C6C5C8; border-width:1px 0px 0px 0px;
+}
+
+.section-labor td {
+	vertical-align: top;
+  text-align: left;
+}
+
+.section-equipment td {
+	vertical-align: top;
+  text-align: left;
+}
+
+
+.photo-grid {
+	width: 48%;
+	margin: 10px auto 0 auto;
+	display: inline-block;
+	background-color: #e9e9e9;
+	height: 200px;
+	background-position: center top;
+	background-repeat: no-repeat; 
+	background-size:contain; 
+	position: relative
+
+}
+.photo-label {
+	float: right;
+	padding: 4px;
+	background-color: white;
+	font-family: 'Spacegrotesk',sans-serif;; font-weight: 500; font-size: 8px; color: #33424C;
+	text-align: right;
+	border-radius: 0 0 0 10px;
+}
+.photo-note {
+	float: left;
+	padding: 4px;
+	background-color:rgba(255, 255, 255, 0.5);
+	font-family: 'Spacegrotesk',sans-serif;; font-weight: 500; font-size: 8px; color: #33424C;
+	text-align: left;
+	width: 100%;
+	position: absolute; 
+	bottom: 0;
+}
+
+
+
+/* DAILY REPORT INFORMATION STYLES */
+.section-report-information {
+	width: 100%;
+	display: block;
+	box-sizing: border-box;
+	background-color: white;
+	margin: 0 0 4px 0;
+	padding: 7px 4px;
+	border-style: solid; border-color: #939598; border-width:0 0 1px 0;
+}
+.section-report-information table {
+	width: 100%;
+}
+.section-report-information th {
+	max-width: 24%;
+	padding: 4px 4px 0px 4px;
+	border: none;
+	font-weight: 300; color: #6D6E71; font-size: 9px;
+	text-align: left;
+}
+.section-report-information td {
+	padding: 0px 4px 4px 4px;
+	border: none;
+	font-weight: 600; color: #33424C; font-size: 11px;
+	text-align: left;
+}
+
+/* QUESTIONS SECTION STYLES */
+.section-questions {
+	margin: 0 0 5px 0;
+	padding: 7px 7px 10px 7px;
+}
+
+.section-questions-name {
+	font-family: 'Spacegrotesk',sans-serif;
+	font-weight: 600; color: #231F20;
+	font-size: 15px;
+	padding: 0 0 5px 0
+}
+
+
+
+/* WEATHER SECTION STYLES */
+.section-weather .section-header {
+	margin-bottom: 6px;
+}
+.section-weather .weather-time {
+	font-size: 9px; font-weight: 300; color: #6D6E71; text-align: center;
+}
+.section-weather tr:last-child td{
+	border-style: solid; border-color: #C6C5C8; border-width:0px 1px 0px 0px;
+}
+.section-weather tr td:last-child{
+	border-style: solid; border-color: #C6C5C8; border-width:0px 0px 0px 0px;
+}
+.section-weather td {
+	background-color: white;
+	font-size: 15px; font-weight: 300; color: #26A146; text-align: center;
+	border-bottom: none;
+}
+.section-weather i {
+	margin: 4px 0 6px 0;
+	background-color: white;
+	font-size: 16px; color: #26A146;
+	text-align: center;
+}
+.weather-stats {
+	color: #6D6E71; font-size: 7px; font-weight: 300;
+}
+
+
+.td-pad-l {
+		padding-left: 5px
+}
+
+.td-pad-r {
+		padding-right: 5px
+}
+
+.td-sz {
+		font-size: 9px
+}
+
+.td-sz-sm {
+		font-size: 6px
+}
+
+
+.td-q1 {
+	width: 5%;
+	text-align: center;
+	padding: 5px 5px
+}
+
+.td-q2 {
+	width: 50%;
+	text-align: left;
+	padding: 5px 5px
+}
+
+.td-q3 {
+	width: 45%;
+	text-align: left;
+	padding: 5px 5px
+}

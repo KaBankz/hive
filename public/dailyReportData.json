@@ -1,0 +1,820 @@
+{
+  "companyName": "Acme Corporation",
+  "companyLogo": "https://riskcast-useast01-dev.s3.amazonaws.com/img/Acme/Riskcast_244x134.png",
+  "printedDateTime": "09-15-2019 6:55 PM EST",
+  "hoursLabels": "REG / OVT / PRM",
+  "preparedBy": "Michael Smith",
+  "printedBy": "Michael Smith",
+  "dailyLogs": [
+    {
+      "dailyLogDate": "05/01/2019",
+      "projectNumber": "12345-678",
+      "projectName": "LL-MS WEST-ENDOSCOPY REL",
+      "address": "123 Robins Lane, Townville, NC 123456",
+      "lastPage": false,
+      "weather": {
+        "summary": [
+          {
+            "forecastTimeTzFormatted": "6 AM EST",
+            "tempF": "62",
+            "wind": "15 MPH",
+            "precip": "0",
+            "humidity": "16%",
+            "iconForecast": "fas fa-cloud-sun"
+          },
+          {
+            "forecastTimeTzFormatted": "12 PM EST",
+            "tempF": "68",
+            "wind": "8 MPH",
+            "precip": "0",
+            "humidity": "36%",
+            "iconForecast": "fas fa-sun"
+          },
+          {
+            "forecastTimeTzFormatted": "6 PM EST",
+            "tempF": "66",
+            "wind": "15 MPH",
+            "precip": "0",
+            "humidity": "16%",
+            "iconForecast": "fas fa-cloud-showers-heavy"
+          }
+        ]
+      },
+      "labor": {
+        "totalHours": "28.00 / 4.00 / 0.00",
+        "hasNotes": true,
+        "details": [
+          {
+            "nameRow": {
+              "nameCell": {
+                "crewName": "Anders, Jeremy",
+                "crewHours": "7.00 / 2.00 / 0.00",
+                "signatureFileUrl": "https://s3.amazonaws.com/riskcast-useast01-dev/img/Acme/tmsign-crid-2028-b799f282-434e-1625-9577-eeb8e7c99183.png",
+                "signatureTimeStamp": "05/23/2020 2:47 pm EDT",
+                "nameCellRowSpan": 3,
+                "crewTags": []
+              },
+              "costCodeCell": {
+                "costCode": "025401 - TandMCode_01",
+                "budgetCodeDescription": "Test T&M Code - 01"
+              },
+              "hoursCell": {
+                "hours": "0.00 / 2.00 / 0.00",
+                "hoursTags": [
+                  {
+                    "color": "#000000",
+                    "label": "T&M"
+                  },
+                  {
+                    "color": "#000000",
+                    "label": "T&M2"
+                  }
+                ]
+              },
+              "notesCell": "A note"
+            },
+            "additionalCostCodeRows": [
+              {
+                "costCodeCell": {
+                  "costCode": "025401-001 - ABC",
+                  "budgetCodeDescription": "Code ABC"
+                },
+                "hoursCell": {
+                  "hours": "7.00 / 0.00 / 0.00",
+                  "hoursTags": []
+                },
+                "notesCell": "A note for jeremy"
+              },
+              {
+                "costCodeCell": {
+                  "costCode": "025401-001 - XYZ",
+                  "budgetCodeDescription": "Code XYZ"
+                },
+                "hoursCell": {
+                  "hours": "0.00 / 0.00 / 1.00",
+                  "hoursTags": []
+                },
+                "notesCell": "Another note for jeremy"
+              }
+            ]
+          },
+          {
+            "nameRow": {
+              "nameCell": {
+                "crewName": "Arichabala, Reggie",
+                "crewHours": "7.00 / 2.00 / 0.00",
+                "signatureFileUrl": "https://s3.amazonaws.com/riskcast-useast01-dev/img/Acme/tmsign-crid-2030-32231f1e-40be-a1e0-bd1e-2c0f98859b51.png",
+                "signatureTimeStamp": "05/23/2020 3:18 pm EDT",
+                "nameCellRowSpan": 2,
+                "crewTags": []
+              },
+              "costCodeCell": {
+                "costCode": "01MAIN PROJECT - BCD",
+                "budgetCodeDescription": "Branch Circuit Conduit"
+              },
+              "hoursCell": {
+                "hours": "7.00 / 0.00 / 0.00",
+                "hoursTags": [
+                  {
+                    "color": "#000000",
+                    "label": "STB"
+                  },
+                  {
+                    "color": "#000000",
+                    "label": "T&M"
+                  }
+                ]
+              },
+              "notesCell": "Reggie note1"
+            },
+            "additionalCostCodeRows": [
+              {
+                "costCodeCell": {
+                  "costCode": "025401 - TandMCode_01",
+                  "budgetCodeDescription": "Test T&M Code - 01"
+                },
+                "hoursCell": {
+                  "hours": "0.00 / 2.00 / 0.00",
+                  "hoursTags": [
+                    {
+                      "color": "#000000",
+                      "label": "T&M"
+                    }
+                  ]
+                },
+                "notesCell": ""
+              }
+            ]
+          },
+          {
+            "nameRow": {
+              "nameCell": {
+                "crewName": "Beamon, Willie",
+                "crewHours": "7.00 / 0.00 / 0.00",
+                "signatureFileUrl": "https://s3.amazonaws.com/riskcast-useast01-dev/img/Acme/tmsign-crid-2029-a126b736-274d-5cb4-ab55-809289cac1bd.png",
+                "signatureTimeStamp": "05/23/2020 2:48 pm EDT",
+                "nameCellRowSpan": 1,
+                "crewTags": [
+                  {
+                    "color": "#000000",
+                    "label": "INJ"
+                  },
+                  {
+                    "color": "#000000",
+                    "label": "HOL"
+                  }
+                ]
+              },
+              "costCodeCell": {
+                "costCode": "01MAIN PROJECT - BCD",
+                "budgetCodeDescription": "Branch Circuit Conduit"
+              },
+              "hoursCell": {
+                "hours": "7.00 / 0.00 / 0.00",
+                "hoursTags": []
+              },
+              "notesCell": "Wille beamon stuff"
+            },
+            "additionalCostCodeRows": []
+          },
+          {
+            "nameRow": {
+              "nameCell": {
+                "crewName": "Bee, Billy",
+                "crewHours": "7.00 / 0.00 / 0.00",
+                "signatureFileUrl": "https://s3.amazonaws.com/riskcast-useast01-dev/img/Acme/tmsign-crid-2031-582f56e6-2718-3fed-b6b4-251170b5960c.png",
+                "signatureTimeStamp": "05/23/2020 3:18 pm EDT",
+                "nameCellRowSpan": 2,
+                "crewTags": []
+              },
+              "costCodeCell": {
+                "costCode": "025401-001 - ABC",
+                "budgetCodeDescription": "Code ABC"
+              },
+              "hoursCell": {
+                "hours": "3.00 / 0.00 / 0.00",
+                "hoursTags": [
+                  {
+                    "color": "#000000",
+                    "label": "Back Charge"
+                  }
+                ]
+              },
+              "notesCell": "another billy bee note"
+            },
+            "additionalCostCodeRows": [
+              {
+                "costCodeCell": {
+                  "costCode": "025401-001 - ABC",
+                  "budgetCodeDescription": "Code ABC"
+                },
+                "hoursCell": {
+                  "hours": "4.00 / 0.00 / 0.00",
+                  "hoursTags": []
+                },
+                "notesCell": "My billy bee note"
+              }
+            ]
+          }
+        ]
+      },
+      "questions": {
+        "details": [
+          {
+            "fullName": "Reggie Archibala",
+            "responses": [
+              {
+                "questionSortOrder": 1,
+                "questionText": "My first question",
+                "responseValue": "Val 2",
+                "localTzResponseTimeStamp": "10/16/2020 5:46 pm CEST"
+              },
+              {
+                "questionSortOrder": 2,
+                "questionText": "My second question",
+                "responseValue": "A timecard response",
+                "localTzResponseTimeStamp": "10/16/2020 5:46 pm CEST"
+              }
+            ]
+          },
+          {
+            "fullName": "Arsen Cenko",
+            "responses": [
+              {
+                "questionSortOrder": 1,
+                "questionText": "My first question",
+                "responseValue": "Val 2",
+                "localTzResponseTimeStamp": "10/16/2020 3:28 pm EDT"
+              },
+              {
+                "questionSortOrder": 2,
+                "questionText": "My second question",
+                "responseValue": "A timecard response",
+                "localTzResponseTimeStamp": "10/16/2020 3:28 pm EDT"
+              }
+            ]
+          }
+        ]
+      },
+      "images": {
+        "details": [
+          {
+            "note": "La belle ville de Paris. Oh comme tu me manques ...",
+            "url": "https://riskcast-useast01-dev.s3.amazonaws.com/img/EJc4ca4238/qty_db27c4f6-77fa-4b3f-918e-49c950f11ef3_13981352255_fc59cfdba2_b.jpg"
+          },
+          {
+            "note": "Working safely",
+            "url": "https://riskcast-useast01-dev.s3.amazonaws.com/img/EJc4ca4238/qty_dc7147ec-5f5b-4330-9918-2ed87f80d195_66d515d7-8ac0-4799-8e25-90dbcda0eaec.jpeg"
+          },
+          {
+            "note": "",
+            "url": "https://riskcast-useast01-dev.s3.amazonaws.com/img/EJc4ca4238/qty_cf8ebf20-4db4-4cf7-9db8-3fdabc91a61c_1_mi686k5sdqrisbm6l8pf5a.jpeg"
+          },
+          {
+            "note": "These two chairs in the east room, first floor, need to be replaced",
+            "url": "https://riskcast-useast01-dev.s3.amazonaws.com/img/EJc4ca4238/qtyimage.jpg_664df7a8-6be4-4295-a760-5f9e85db1656.png"
+          }
+        ]
+      }
+    },
+    {
+      "projectNumber": "12345-678",
+      "projectName": "LL-MS WEST-ENDOSCOPY REL",
+      "address": "123 Robins Lane, Townville, NC 123456",
+      "dailyLogDate": "11/03/2019",
+      "lastPage": true,
+      "weather": {
+        "summary": [
+          {
+            "forecastTimeTzFormatted": "6 AM EST",
+            "tempF": "62",
+            "_wind": "15 MPH",
+            "_precip": "0",
+            "_humidity": "16%",
+            "iconForecast": "fas fa-cloud-sun"
+          },
+          {
+            "forecastTimeTzFormatted": "12 PM EST",
+            "tempF": "68",
+            "_wind": "8 MPH",
+            "_precip": "0",
+            "_humidity": "36%",
+            "iconForecast": "fas fa-sun"
+          },
+          {
+            "forecastTimeTzFormatted": "6 PM EST",
+            "tempF": "66",
+            "_wind": "15 MPH",
+            "_precip": "0",
+            "_humidity": "16%",
+            "iconForecast": "fas fa-cloud-showers-heavy"
+          }
+        ]
+      },
+      "labor": {
+        "totalHours": "28.00 / 4.00 / 0.00",
+        "hasNotes": true,
+        "details": [
+          {
+            "nameRow": {
+              "nameCell": {
+                "crewName": "Anders, Jeremy",
+                "crewHours": "7.00 / 2.00 / 0.00",
+                "signatureFileUrl": "https://s3.amazonaws.com/riskcast-useast01-dev/img/Acme/tmsign-crid-2028-b799f282-434e-1625-9577-eeb8e7c99183.png",
+                "signatureTimeStamp": "05/23/2020 2:47 pm EDT",
+                "nameCellRowSpan": 3,
+                "crewTags": []
+              },
+              "costCodeCell": {
+                "costCode": "025401 - TandMCode_01",
+                "budgetCodeDescription": "Test T&M Code - 01"
+              },
+              "hoursCell": {
+                "hours": "0.00 / 2.00 / 0.00",
+                "hoursTags": [
+                  {
+                    "color": "#000000",
+                    "label": "T&M"
+                  },
+                  {
+                    "color": "#000000",
+                    "label": "T&M2"
+                  }
+                ]
+              },
+              "notesCell": "A note"
+            },
+            "additionalCostCodeRows": [
+              {
+                "costCodeCell": {
+                  "costCode": "025401-001 - ABC",
+                  "budgetCodeDescription": "Code ABC"
+                },
+                "hoursCell": {
+                  "hours": "7.00 / 0.00 / 0.00",
+                  "hoursTags": []
+                },
+                "notesCell": "A note for jeremy"
+              },
+              {
+                "costCodeCell": {
+                  "costCode": "025401-001 - XYZ",
+                  "budgetCodeDescription": "Code XYZ"
+                },
+                "hoursCell": {
+                  "hours": "0.00 / 0.00 / 1.00",
+                  "hoursTags": []
+                },
+                "notesCell": "Another note for jeremy"
+              }
+            ]
+          },
+          {
+            "nameRow": {
+              "nameCell": {
+                "crewName": "Arichabala, Reggie",
+                "crewHours": "7.00 / 2.00 / 0.00",
+                "signatureFileUrl": "https://s3.amazonaws.com/riskcast-useast01-dev/img/Acme/tmsign-crid-2030-32231f1e-40be-a1e0-bd1e-2c0f98859b51.png",
+                "signatureTimeStamp": "05/23/2020 3:18 pm EDT",
+                "nameCellRowSpan": 2,
+                "crewTags": []
+              },
+              "costCodeCell": {
+                "costCode": "01MAIN PROJECT - BCD",
+                "budgetCodeDescription": "Branch Circuit Conduit"
+              },
+              "hoursCell": {
+                "hours": "7.00 / 0.00 / 0.00",
+                "hoursTags": [
+                  {
+                    "color": "#000000",
+                    "label": "STB"
+                  },
+                  {
+                    "color": "#000000",
+                    "label": "T&M"
+                  }
+                ]
+              },
+              "notesCell": "Reggie note1"
+            },
+            "additionalCostCodeRows": [
+              {
+                "costCodeCell": {
+                  "costCode": "025401 - TandMCode_01",
+                  "budgetCodeDescription": "Test T&M Code - 01"
+                },
+                "hoursCell": {
+                  "hours": "0.00 / 2.00 / 0.00",
+                  "hoursTags": [
+                    {
+                      "color": "#000000",
+                      "label": "T&M"
+                    }
+                  ]
+                },
+                "notesCell": ""
+              }
+            ]
+          }
+        ]
+      },
+      "equipment": {
+        "totalHours": "28.00 / 4.00 / 0.00",
+        "hasNotes": false,
+        "details": [
+          {
+            "nameRow": {
+              "nameCell": {
+                "equipName": "BULDOZER ABC",
+                "equipHours": "7.00 / 2.00 / 0.00",
+                "nameCellRowSpan": 3,
+                "equipTags": []
+              },
+              "costCodeCell": {
+                "costCode": "025401 - TandMCode_01",
+                "budgetCodeDescription": "Test T&M Code - 01"
+              },
+              "hoursCell": {
+                "hours": "0.00 / 2.00 / 0.00",
+                "hoursTags": [
+                  {
+                    "color": "#000000",
+                    "label": "T&M"
+                  },
+                  {
+                    "color": "#000000",
+                    "label": "T&M2"
+                  }
+                ]
+              },
+              "notesCell": "A note"
+            },
+            "additionalCostCodeRows": [
+              {
+                "costCodeCell": {
+                  "costCode": "025401-001 - ABC",
+                  "budgetCodeDescription": "Code ABC"
+                },
+                "hoursCell": {
+                  "hours": "7.00 / 0.00 / 0.00",
+                  "hoursTags": []
+                },
+                "notesCell": "A note for jeremy"
+              },
+              {
+                "costCodeCell": {
+                  "costCode": "025401-001 - XYZ",
+                  "budgetCodeDescription": "Code XYZ"
+                },
+                "hoursCell": {
+                  "hours": "0.00 / 0.00 / 1.00",
+                  "hoursTags": []
+                },
+                "notesCell": "Another note for jeremy"
+              }
+            ]
+          },
+          {
+            "nameRow": {
+              "nameCell": {
+                "equipName": "TRACTOR 124 ABC",
+                "equipHours": "7.00 / 2.00 / 0.00",
+                "nameCellRowSpan": 2,
+                "equipTags": []
+              },
+              "costCodeCell": {
+                "costCode": "01MAIN PROJECT - BCD",
+                "budgetCodeDescription": "Branch Circuit Conduit"
+              },
+              "hoursCell": {
+                "hours": "7.00 / 0.00 / 0.00",
+                "hoursTags": [
+                  {
+                    "color": "#000000",
+                    "label": "STB"
+                  },
+                  {
+                    "color": "#000000",
+                    "label": "T&M"
+                  }
+                ]
+              },
+              "notesCell": "Reggie note1"
+            },
+            "additionalCostCodeRows": [
+              {
+                "costCodeCell": {
+                  "costCode": "025401 - TandMCode_01",
+                  "budgetCodeDescription": "Test T&M Code - 01"
+                },
+                "hoursCell": {
+                  "hours": "0.00 / 2.00 / 0.00",
+                  "hoursTags": [
+                    {
+                      "color": "#000000",
+                      "label": "T&M"
+                    }
+                  ]
+                },
+                "notesCell": ""
+              }
+            ]
+          },
+          {
+            "nameRow": {
+              "nameCell": {
+                "equipName": "BACKHOE DDAVD",
+                "equipHours": "7.00 / 0.00 / 0.00",
+                "nameCellRowSpan": 1,
+                "equipTags": [
+                  {
+                    "color": "#000000",
+                    "label": "INJ"
+                  },
+                  {
+                    "color": "#000000",
+                    "label": "HOL"
+                  }
+                ]
+              },
+              "costCodeCell": {
+                "costCode": "01MAIN PROJECT - BCD",
+                "budgetCodeDescription": "Branch Circuit Conduit"
+              },
+              "hoursCell": {
+                "hours": "7.00 / 0.00 / 0.00",
+                "hoursTags": []
+              },
+              "notesCell": "Wille beamon stuff"
+            },
+            "additionalCostCodeRows": []
+          },
+          {
+            "nameRow": {
+              "nameCell": {
+                "equipName": "JACKHAMMER",
+                "equipHours": "7.00 / 0.00 / 0.00",
+                "nameCellRowSpan": 2,
+                "equipTags": []
+              },
+              "costCodeCell": {
+                "costCode": "025401-001 - ABC",
+                "budgetCodeDescription": "Code ABC"
+              },
+              "hoursCell": {
+                "hours": "3.00 / 0.00 / 0.00",
+                "hoursTags": [
+                  {
+                    "color": "#000000",
+                    "label": "Back Charge"
+                  }
+                ]
+              },
+              "notesCell": "another billy bee note"
+            },
+            "additionalCostCodeRows": [
+              {
+                "costCodeCell": {
+                  "costCode": "025401-001 - ABC",
+                  "budgetCodeDescription": "Code ABC"
+                },
+                "hoursCell": {
+                  "hours": "4.00 / 0.00 / 0.00",
+                  "hoursTags": []
+                },
+                "notesCell": "My billy bee note"
+              }
+            ]
+          }
+        ]
+      },
+      "quantities": {
+        "details": [
+          {
+            "itemNumber": "1",
+            "_projectNumber": "123456",
+            "_costCodeAndDescription": "FIX",
+            "_UOM": "LS",
+            "_projectLocationCode": "abc",
+            "_periodQty": "10.00",
+            "_toDateQty": "25.00",
+            "_note": "Sturdi-wall braces are finished"
+          },
+          {
+            "itemNumber": "2",
+            "_projectNumber": "123456",
+            "_costCodeAndDescription": "BCD",
+            "_UOM": "LS",
+            "_projectLocationCode": "abc",
+            "_periodQty": "5.00",
+            "_toDateQty": "40.00",
+            "_note": "Quad-lock insulated concreate forms in place"
+          },
+          {
+            "itemNumber": "3",
+            "_projectNumber": "123456",
+            "_costCodeAndDescription": "BCD",
+            "_UOM": "LS",
+            "_projectLocationCode": "abc",
+            "_periodQty": "8.00",
+            "_toDateQty": "22.00",
+            "_note": "Set concrete forms"
+          }
+        ],
+        "images": [
+          {
+            "label": "123456-FIX",
+            "url": "images/photo-1.jpg"
+          },
+          {
+            "label": "123456-FIX",
+            "url": "images/photo-1.jpg"
+          },
+          {
+            "label": "123456-FIX",
+            "url": "images/photo-1.jpg"
+          },
+          {
+            "label": "123456-FIX",
+            "url": "images/photo-1.jpg"
+          }
+        ]
+      },
+      "deliveries": {
+        "details": [
+          {
+            "itemNumber": "1",
+            "deliveryTimeLocalString": "10:15 AM",
+            "deliveryFrom": "AAMCO Trucking",
+            "deliveryTrackingNumber": "ZX12DD-FE123",
+            "deliveryLocation": "East Side",
+            "deliveryContents": "Plywood",
+            "deliveryNotes": "Sample Notes"
+          },
+          {
+            "itemNumber": "2",
+            "deliveryTimeLocalString": "1:35 PM",
+            "deliveryFrom": "Max Brown",
+            "deliveryTrackingNumber": "F822DAX-FS",
+            "deliveryLocation": "West Side",
+            "deliveryContents": "Nails",
+            "deliveryNotes": "Sample Notes"
+          },
+          {
+            "itemNumber": "3",
+            "deliveryTimeLocalString": "1:35 PM",
+            "deliveryFrom": "Max Brown",
+            "deliveryTrackingNumber": "F822DAX-FX",
+            "deliveryLocation": "Est Side",
+            "deliveryContents": "Cement Bags",
+            "deliveryNotes": "Sample Notes"
+          }
+        ],
+        "images": [
+          {
+            "label": "ZX12DD-FE123",
+            "url": "images/photo-1.jpg"
+          },
+          {
+            "label": "F822DAX-FS",
+            "url": "images/photo-1.jpg"
+          },
+          {
+            "label": "F822DAX-FX",
+            "url": "images/photo-1.jpg"
+          }
+        ]
+      },
+      "inspections": {
+        "details": [
+          {
+            "itemNumber": "1",
+            "startTimeLocalString": "10:15 AM",
+            "endTimeLocalString": "2:30 PM",
+            "inspectionType": "New Inspection",
+            "inspectionEntity": "ACME Inspectors",
+            "inspectorName": "Bill Smith",
+            "inspectionLocation": "East Side",
+            "inspectionArea": "SArea B",
+            "inspectionNotes": "Sample Notes"
+          },
+          {
+            "itemNumber": "2",
+            "startTimeLocalString": "3:15 PM",
+            "endTimeLocalString": "3:30 PM",
+            "inspectionType": "Steel Connection",
+            "inspectionEntity": "Structural",
+            "inspectorName": "John Doe",
+            "inspectionLocation": "West Garage",
+            "inspectionArea": "Area B",
+            "inspectionNotes": "Sample Notes"
+          }
+        ],
+        "images": [
+          {
+            "label": "Item 1",
+            "url": "images/photo-1.jpg"
+          },
+          {
+            "label": "Item 2",
+            "url": "images/photo-1.jpg"
+          }
+        ]
+      },
+      "visitors": {
+        "details": [
+          {
+            "itemNumber": "1",
+            "visitorName": "Jake Doe",
+            "startTimeLocalString": "7:15 AM",
+            "endTimeLocalString": "",
+            "visitorNotes": "",
+            "_userFullName": ""
+          },
+          {
+            "itemNumber": "2",
+            "visitorName": "Jill Smith",
+            "startTimeLocalString": "8:30 AM",
+            "endTimeLocalString": "9:00 AM",
+            "visitorNotes": "Same Notes",
+            "_userFullName": ""
+          },
+          {
+            "itemNumber": "3",
+            "visitorName": "Bob Keane",
+            "startTimeLocalString": "10:30 AM",
+            "endTimeLocalString": "",
+            "visitorNotes": "",
+            "_userFullName": ""
+          },
+          {
+            "itemNumber": "4",
+            "visitorName": "Rich Doe",
+            "startTimeLocalString": "1:30 PM",
+            "endTimeLocalString": "1:45 PM",
+            "visitorNotes": "Some Notes",
+            "_userFullName": ""
+          }
+        ]
+      },
+      "notes": {
+        "details": [
+          {
+            "itemNumber": "1",
+            "noteLocation": "East Side",
+            "notes": "Required everyone to enter from gate A.",
+            "_userFullName": "Mike Jones"
+          },
+          {
+            "itemNumber": "2",
+            "noteLocation": "West Side",
+            "notes": "Safety drill started at 1",
+            "_userFullName": "Steve Coogan"
+          }
+        ]
+      },
+      "questions": {
+        "details": [
+          {
+            "fullName": "",
+            "responses": [
+              {
+                "questionSortOrder": 1,
+                "questionText": "My first question",
+                "responseValue": "Val 2",
+                "localTzResponseTimeStamp": "10/16/2020 6:08 pm CEST"
+              },
+              {
+                "questionSortOrder": 2,
+                "questionText": "My second question",
+                "responseValue": "A timecard response",
+                "localTzResponseTimeStamp": "10/16/2020 6:07 pm CEST"
+              }
+            ]
+          }
+        ]
+      },
+      "images": {
+        "details": [
+          {
+            "note": "123456-FIX",
+            "url": "images/photo-1.jpg"
+          },
+          {
+            "note": "123456-FIX",
+            "url": "images/photo-1.jpg"
+          },
+          {
+            "note": "123456-FIX",
+            "url": "images/photo-1.jpg"
+          },
+          {
+            "note": "123456-FIX",
+            "url": "images/photo-1.jpg"
+          }
+        ]
+      }
+    }
+  ]
+}

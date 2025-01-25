@@ -1,0 +1,53 @@
+.editorWrapper :global(.codex-editor) {
+  height: 100%;
+}
+
+.editorWrapper :global(.ce-block__content) {
+  max-width: 100%;
+  margin: 0;
+  padding: 0 32px;
+}
+
+.editorWrapper :global(.ce-toolbar__content) {
+  max-width: 100%;
+  margin: 0;
+  padding: 0 32px;
+}
+
+.editorWrapper :global(.ce-block__content),
+.editorWrapper :global(.ce-toolbar__content) {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.editorWrapper :global(.codex-editor__redactor) {
+  padding-bottom: 100px !important;
+}
+
+.editorWrapper :global(.ce-block) {
+  margin: 0;
+  padding: 0.5em 0;
+}
+
+.editorWrapper :global(.ce-header) {
+  padding: 0.5em 0;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.editorWrapper :global(.field-input) {
+  display: inline-block;
+  min-width: 120px;
+  outline: none;
+}
+
+.editorWrapper :global(.field-input:empty::before) {
+  content: attr(data-placeholder);
+  color: #9ca3af;
+}
+
+.editorWrapper :global(.field-input:focus) {
+  background-color: white;
+  border-color: #2563eb;
+}

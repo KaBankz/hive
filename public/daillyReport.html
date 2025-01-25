@@ -1,0 +1,423 @@
+<html>
+	<head>
+		<title></title>
+        <style>
+            {#asset dl_DailyLogReportV2.css @encoding=utf8}
+        </style>
+		<link rel="stylesheet" href="https://kit.fontawesome.com/c3fcc8466e.css" crossorigin="anonymous">
+	</head>
+	<body>
+		<!-- Add images to body, but do not show.  This caches image.  This way, footer/header (which are async) will have access to image -->
+		<img style="display:none" src="https://riskcast-useast01.s3.amazonaws.com/img/common/Riskcast_244x28.png" alt="RiskcastLogo">
+	    <div class="company-logo" style="display: none;"><img src="{{companyLogo}}" alt="Company Logo"></div>
+		<div class="gray-padded-background">
+			
+			<!-- Content Section: Daily Report Information -->
+			{{#if dailyLogs}}
+				{{#each dailyLogs}}
+					<div class="section-report-information">
+						<table cellspacing="0">
+							<tr>
+								<th>Date</th>
+								<th>Project #</th>
+								<th>Project Name</th>
+								<th>Printed By</th>
+							</tr>
+							<tr>
+								<td>{{dailyLogDate}}</td>
+								<td>{{projectNumber}}</td>
+								<td>{{projectName}}</td>
+								<td>{{../printedBy}}</td>
+							</tr>
+						</table>
+					</div>
+
+					<!-- Content Section: Weather -->
+					{{#if weather.summary }}
+					<div class="content-section section-weather">
+						<div class="section-header">Weather</div>
+						<table cellspacing="0">
+							<tr>
+								{{#each weather.summary}}
+									<td>
+										<div class="weather-time">{{forecastTimeTzFormatted}}</div>
+										<i class="{{iconForecast}}"></i>&nbsp; {{tempF}}&#176;
+										<div class="weather-stats">
+											<strong>Wind:</strong> {{wind}} &nbsp;
+											<strong>Precip:</strong> {{precip}} &nbsp;
+											<strong>Humidity:</strong> {{humidity}}
+										</div>
+									</td>
+								{{/each}}
+							</tr>
+						</table>
+					</div>
+					{{/if}}
+
+					<!-- Content Section: Labor ;display:{{showHide hasNotes}} -->
+					{{#if labor.details}}
+						<div class="content-section section-labor">
+							<div class="section-header">Labor</div>
+							<table cellspacing="max-width:100%">
+								<tr>
+									<th style="width:120px;"><b>NAME</b></th>
+									<th style="width:120px;"><b>COST CODE</b></th>
+									<th style="width:100px;"><b>{{../hoursLabels}}</b></th>
+									<th style="width:150px;display:{{showHide labor.hasNotes}}"><b>NOTES</b></th>
+								</tr>
+
+								{{#each labor.details}}
+
+									<!-- =================== NAME ROW ================== -->
+									<tr style="{{isEven @index}}">
+										<!-- NAME CELL -->
+										<td rowspan="{{nameRow.nameCell.nameCellRowSpan}}">
+											<div><b><span style="font-size:11px">{{nameRow.nameCell.crewName}}</span></b>
+												<br/><span style="font-size:9px;">{{nameRow.nameCell.crewHours}}</span>
+												{{#if nameRow.nameCell.crewTags}}
+													<br/>
+													{{#each nameRow.nameCell.crewTags}}
+														<i class="fas fa-tag" style="color:{{color}}"></i>
+														<span style="padding:0px 3px 0px 3px">{{label}}</span>
+													{{/each}}
+												{{/if}}
+												{{#if nameRow.nameCell.signatureFileUrl}}
+													<br/><img style="width:100px;height:50px;padding:0px;margin:0px" src="{{nameRow.nameCell.signatureFileUrl}}"></img>
+													<br/><span style="font-size:7px;padding:0px;margin:0px;">Signed {{nameRow.nameCell.signatureTimeStamp}}</span>
+												{{/if}}
+											</div>
+										</td>
+
+										<!-- COST CODE CELL -->
+										<td>
+											<span><b>{{nameRow.costCodeCell.costCode}}</b></span><br/>
+											<span style="font-size:9px;">{{nameRow.costCodeCell.budgetCodeDescription}}</span>
+										</td>
+
+										<!-- HOURS CELL -->
+										<td style="font-size:9px;text-align: right">{{nameRow.hoursCell.hours}}<br/>
+											{{#each nameRow.hoursCell.hoursTags}}
+												<i class="fas fa-tag" style="color:{{color}}"></i>
+												<span style="padding:0px 3px 0px 3px">{{label}}</span>
+											{{/each}}
+										</td>
+
+										<!-- NOTES CELL style="font-size:9px" -->
+										<td style="font-size:9px;display:{{showHide ../labor.hasNotes}}">{{nameRow.notesCell}}</td>
+									</tr>
+
+
+									<!-- ============ ADDITIONAL CODES ROWS ============ -->
+									{{#each additionalCostCodeRows}}
+										<tr style="{{isEven @../index}}">
+											<td>
+												<span><b>{{costCodeCell.costCode}}</b></span><br/>
+												<span style="font-size:9px;">{{costCodeCell.budgetCodeDescription}}</span>
+											</td>
+											<td style="font-size:9px;text-align: right;">{{hoursCell.hours}}<br/>
+												{{#each hoursCell.hoursTags}}
+													<i class="fas fa-tag" style="color:{{color}}"></i>
+													<span style="padding:0px 3px 0px 3px">{{label}}</span>
+												{{/each}}
+											</td>
+											<td style="font-size:9px;display:{{showHide ../../labor.hasNotes}}">{{notesCell}}</td>
+										</tr>
+									{{/each}}
+									
+								{{/each}}
+								
+								<!-- ============ TOTALS ROW ============  -->
+								<tr>
+									<td style="font-size:10px;text-align:right" colspan="2"><strong>TOTAL</strong></td>
+									<td style="font-size:10px;text-align:right;">{{labor.totalHours}}</td>
+									<td style="display:{{showHide labor.hasNotes}}"></td>
+								</tr>
+							</table>
+						</div> 
+					{{/if}}<!-- /section-labor -->
+
+					<!-- Content Section: Equipment -->
+					{{#if equipment.details}}
+						<div class="content-section section-equipment">
+							<div class="section-header">Equipment</div>
+							<table cellspacing="max-width:100%">
+								<tr>
+									<th style="width:120px;"><b>NAME</b></th>
+									<th style="width:120px;"><b>COST CODE</b></th>
+									<th style="width:100px;"><b>{{../hoursLabels}}</b></th>
+									<th style="width:150px;display:{{showHide equipment.hasNotes}};"><b>NOTES</b></th>
+								</tr>
+
+								{{#each equipment.details}}
+
+									<!-- =================== EQUIPMENT ROW ================== -->
+									<tr style="{{isEven @index}}">
+										<!-- NAME CELL -->
+										<td rowspan="{{nameRow.nameCell.nameCellRowSpan}}">
+											<div><b><span style="font-size:11px">{{nameRow.nameCell.equipName}}</span></b>
+												<br/><span style="font-size:9px;">{{nameRow.nameCell.equipHours}}</span>
+												{{#if nameRow.nameCell.equipTags}}
+													<br/>
+													{{#each nameRow.nameCell.equipTags}}
+														<i class="fas fa-tag" style="color:{{color}}"></i>
+														<span style="padding:0px 3px 0px 3px">{{label}}</span>
+													{{/each}}
+												{{/if}}
+											</div>
+										</td>
+
+										<!-- COST CODE CELL -->
+										<td>
+											<span><b>{{nameRow.costCodeCell.costCode}}</b></span><br/>
+											<span style="font-size:9px;">{{nameRow.costCodeCell.budgetCodeDescription}}</span>
+										</td>
+
+										<!-- HOURS CELL -->
+										<td style="font-size:9px;text-align: right">{{nameRow.hoursCell.hours}}<br/>
+											{{#each nameRow.hoursCell.hoursTags}}
+												<i class="fas fa-tag" style="color:{{color}}"></i>
+												<span style="padding:0px 3px 0px 3px">{{label}}</span>
+											{{/each}}
+										</td>
+
+										<!-- NOTES CELL -->
+										<td style="font-size:9px;display:{{showHide ../equipment.hasNotes}}">{{nameRow.notesCell}}</td>
+									</tr>
+
+
+									<!-- ============ ADDITIONAL CODES ROWS ============ -->
+									{{#each additionalCostCodeRows}}
+										<tr style="{{isEven @../index}}">
+											<td>
+												<span><b>{{costCodeCell.costCode}}</b></span><br/>
+												<span style="font-size:9px;">{{costCodeCell.budgetCodeDescription}}</span>
+											</td>
+											<td style="font-size:9px;text-align: right;">{{hoursCell.hours}}<br/>
+												{{#each hoursCell.hoursTags}}
+													<i class="fas fa-tag" style="color:{{color}}"></i>
+													<span style="padding:0px 3px 0px 3px">{{label}}</span>
+												{{/each}}
+											</td>
+											<td style="font-size:9px;display:{{showHide ../../equipment.hasNotes}}">{{notesCell}}</td>
+										</tr>
+									{{/each}}
+								
+								{{/each}}
+
+								<!-- ============ TOTALS ROW ============ -->
+								<tr>
+									<td style="font-size:10px;text-align:right" colspan="2"><strong>TOTAL</strong></td>
+									<td style="font-size:10px;text-align:right;">{{equipment.totalHours}}</td>
+									<td style="display:{{showHide equipment.hasNotes}}"></td>
+								</tr>
+							</table>
+						</div> 
+					{{/if}}<!-- /section-equipment -->
+
+
+					<!-- Content Section: Quantities -->
+					{{#if quantities.details}}
+					<div class="content-section section-quantities section-stripe">
+						<div class="section-header">Quantities</div>
+						<table cellspacing="0">
+							<tr>
+								<th style="width:15px">Item #</th>
+								<th style="width:30px">Project</th>
+								<th style="width:120px">Cost Code</th>
+								<th style="width:30px">UOM</th>
+								<th style="width:75px">Location</th>
+								<th style="width:50px">Period Qty</th>
+								<th style="width:50px">To Date Qty</th>
+								<th style="width:300px">Notes</th>
+							</tr>
+							{{#each quantities.details}}
+								<tr>
+									<td>{{itemNumber}}</td>
+									<td>{{projectNumber}}</td>
+									<td style="text-align:left">{{costCodeAndDescription}}</td>
+									<td>{{UOM}}</td>
+									<td>{{projectLocationCode}}</td>
+									<td style="text-align:right;color:{{getStatusColor _periodQty}}">{{formatVal periodQty 2}}</td>
+									<td style="text-align:right;color:{{getStatusColor _toDateQty}}">{{formatVal toDateQty 2}}</td>
+									<td style="text-align:left">{{note}}</td>
+								</tr>
+							{{/each}}
+						</table>
+						{{#each quantities.images}}
+							<div class="photo-grid" style="background-image: url('{{url}}')"><div class="photo-label">{{label}}</div></div>
+						{{/each}}
+						
+					</div> 
+					{{/if}}<!-- /section-quantities -->
+					
+					
+					<!-- Content Section: Deliveries -->
+					{{#if deliveries.details}}
+					<div class="content-section section-deliveries section-stripe">
+						<div class="section-header">Deliveries</div>
+						<table cellspacing="0">
+							<tr>
+								<th>Item #</th>
+								<th>Time</th>
+								<th>Delivery From</th>
+								<th>Tracking #</th>
+								<th>Location</th>
+								<th>Contents</th>
+								<th>Notes</th>
+							</tr>
+							{{#each deliveries.details}}
+								<tr>
+									<td>{{itemNumber}}</td>
+									<td>{{deliveryTimeLocalString}}</td>
+									<td style="text-align:left">{{deliveryFrom}}</td>
+									<td>{{deliveryTrackingNumber}}</td>
+									<td style="text-align:left">{{deliveryLocation}}</td>
+									<td style="text-align:left">{{deliveryContents}}</td>
+									<td style="text-align:left">{{deliveryNotes}}</td>
+								</tr>
+							{{/each}}
+						</table>
+						
+						{{#each deliveries.images}}
+							<div class="photo-grid" style="background-image: url('"+ {{url}}+ "')"><div class="photo-label">{{label}}</div></div>
+						{{/each}}
+					</div> 
+					{{/if}}<!-- /section-deliveries -->
+					
+					
+					<!-- Content Section: Inspections -->
+					{{#if inspections.details}}
+					<div class="content-section section-inspections section-stripe">
+						<div class="section-header">Inspections</div>
+						<table cellspacing="0">
+							<tr>
+								<th>Item #</th>
+								<th>Start Time</th>
+								<th>End Time</th>
+								<th>Inspection Type</th>
+								<th>Inspection Entity</th>
+								<th>Inspector</th>
+								<th>Location</th>
+								<th>Area</th>
+								<th>Notes</th>
+							</tr>
+							{{#each inspections.details}}
+								<tr>
+									<td>{{itemNumber}}</td>
+									<td>{{startTimeLocalString}}</td>
+									<td>{{endTimeLocalString}}</td>
+									<td>{{inspectionType}}n</td>
+									<td>{{inspectionEntity}}</td>
+									<td style="text-align:left">{{inspectorName}}</td>
+									<td style="text-align:left">{{inspectionLocation}}</td>
+									<td style="text-align:left">{{inspectionArea}}</td>
+									<td style="text-align:left">{{inspectionNotes}}</td>
+								</tr>
+							{{/each}}
+						</table>
+						
+						{{#each inspections.images}}
+							<div class="photo-grid" style="background-image: url('"+ {{url}}+ "')"><div class="photo-label">{{label}}</div></div>
+						{{/each}}
+						
+					</div> 
+					{{/if}}<!-- /section-inspections -->
+					
+					
+					<!-- Content Section: Visitors -->
+					{{#if visitors.details}}
+					<div class="content-section section-visitors section-stripe">
+						<div class="section-header">Visitors</div>
+						<table cellspacing="0">
+							<tr>
+								<th>Item #</th>
+								<th>Visitors</th>
+								<th>Subcontractor Name</th>
+								<th>Start Time</th>
+								<th>End Time</th>
+								<th>Notes</th>
+								<th>Entered By</th>
+							</tr>
+							{{#each visitors.details}}
+								<tr>
+									<td>{{itemNumber}}</td>
+									<td>{{visitorName}}</td>
+									<td>{{subcontractorName}}</td>
+									<td>{{startTimeLocalString}}</td>
+									<td>{{endTimeLocalString}}</td>
+									<td>{{visitorNotes}}</td>
+									<td>{{userFullName}}</td>
+								</tr>
+							{{/each}}
+						</table>
+					</div>
+					{{/if}}
+					
+					<!-- Content Section: Notes -->
+					{{#if notes.details}}
+					<div class="content-section section-notes section-stripe">
+						<div class="section-header">Notes</div>
+						<table cellspacing="0">
+							<tr>
+								<th>Item #</th>
+								<th>Location</th>
+								<th>Notes</th>
+								<th>Entered By</th>
+							</tr>
+							{{#each notes.details}}
+								<tr>
+									<td style="width:25px;border:thin solid #e0e0e0;">{{itemNumber}}</td>
+									<td style="text-align:left;width:70px;border:thin solid #e0e0e0;">{{noteLocation}}</td>
+									<td style="text-align:left;border:thin solid #e0e0e0;">{{notes}}</td>
+									<td style="text-align:left;width:70px;border:thin solid #e0e0e0;">{{userFullName}}</td>
+								</tr>
+							{{/each}}
+							
+						</table>
+					</div>
+					{{/if}}
+
+					
+					<!-- Content Section: Questions -->
+					{{#if questions.details}}
+						<div style="min-height:7px"></div>
+						<div class="content-section section-questions">
+						<div class="section-header">QUESTIONS</div>
+						{{#each questions.details}}
+						<div class="section-questions section-stripe">
+							<div class="section-questions-name">{{fullName}}</div>
+							<table cellspacing="0">
+								{{#each responses}}
+									<tr>
+										<td class="td-q1" style="border:thin solid #e0e0e0;"><span class="td-pad-r td-sz"><b>{{questionSortOrder}}</b></span></td>
+										<td class="td-q2" style="border:thin solid #e0e0e0;"><span class="td-pad-l td-sz">{{questionText}}</span></td>
+										<td class="td-q3" style="border:thin solid #e0e0e0;"><span class="td-pad-l td-sz">{{responseValue}}</span><br/><span class="td-pad-l td-sz-sm">{{localTzResponseTimeStamp}}</span></td>
+									</tr>
+								{{/each}}
+							</table>
+						</div> 
+						{{/each}}	
+						</div>
+					{{/if}}
+
+					
+					<!-- Content Section: Images -->
+					{{#if images.details}}
+						<div style="min-height:7px"></div>
+						<div class="content-section">
+						<div class="section-header">PHOTOS</div>
+						{{#each images.details}}
+							<div class="photo-grid" style="background-image: url('{{url}}')"><div class="photo-note" style="display:{{showIfNonEmptyString note}}">{{note}}</div></div>
+						{{/each}}
+						</div>
+					{{/if}}
+
+					{{#unless lastPage}}
+						<div class="page-break"></div>
+					{{/unless}}
+				{{/each}}
+			{{/if}}
+			
+		</div> <!-- /gray-padded-background -->
+	</body>
+</html>
