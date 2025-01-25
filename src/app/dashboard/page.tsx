@@ -1,8 +1,12 @@
+'use client';
+
+import { useState } from 'react';
 import Link from 'next/link';
 
 import {
   BarChart3,
   Calendar,
+  Check,
   Clock,
   FileText,
   Mail,
@@ -11,9 +15,75 @@ import {
   Settings,
   User,
   Users,
+  X,
 } from 'lucide-react';
 
+// Add new interfaces
+interface CustomizationOption {
+  id: string;
+  label: string;
+  description: string;
+  enabled: boolean;
+  category: 'fields' | 'formatting' | 'delivery';
+}
+
 export default function DashboardPage() {
+  // Add state for modal
+  const [showCustomizeModal, setShowCustomizeModal] = useState(false);
+
+  // Add customization options
+  const reportOptions: CustomizationOption[] = [
+    {
+      id: 'weather',
+      label: 'Weather Conditions',
+      description: 'Temperature, precipitation, and general conditions',
+      enabled: true,
+      category: 'fields',
+    },
+    {
+      id: 'personnel',
+      label: 'Personnel on Site',
+      description: 'List of workers, hours worked, and roles',
+      enabled: true,
+      category: 'fields',
+    },
+    {
+      id: 'equipment',
+      label: 'Equipment Usage',
+      description: 'Equipment types and hours of operation',
+      enabled: true,
+      category: 'fields',
+    },
+    {
+      id: 'materials',
+      label: 'Materials Delivered',
+      description: 'Inventory of materials received and used',
+      enabled: false,
+      category: 'fields',
+    },
+    {
+      id: 'logo',
+      label: 'Company Logo',
+      description: 'Display company logo on reports',
+      enabled: true,
+      category: 'formatting',
+    },
+    {
+      id: 'email',
+      label: 'Email Delivery',
+      description: 'Send reports via email',
+      enabled: true,
+      category: 'delivery',
+    },
+    {
+      id: 'sms',
+      label: 'SMS Notifications',
+      description: 'Send report links via SMS',
+      enabled: false,
+      category: 'delivery',
+    },
+  ];
+
   // Dummy data for recent reports
   const recentReports = [
     {
@@ -84,7 +154,9 @@ export default function DashboardPage() {
             </p>
           </div>
           <div className='flex gap-3'>
-            <button className='group inline-flex items-center justify-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 transition-all duration-200 hover:border-gray-300 hover:bg-gray-50 hover:shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10 dark:hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]'>
+            <button
+              onClick={() => setShowCustomizeModal(true)}
+              className='group inline-flex items-center justify-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 transition-all duration-200 hover:border-gray-300 hover:bg-gray-50 hover:shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10 dark:hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]'>
               <Settings className='size-4' />
               Customize Reports
             </button>
@@ -94,6 +166,73 @@ export default function DashboardPage() {
             </button>
           </div>
         </div>
+
+        {/* Add Customize Reports Modal */}
+        {showCustomizeModal && (
+          <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/50'>
+            <div className='w-full max-w-2xl rounded-2xl bg-white p-6 dark:bg-zinc-900'>
+              <div className='mb-6 flex items-center justify-between'>
+                <h2 className='text-xl font-semibold text-gray-900 dark:text-white'>
+                  Customize Reports
+                </h2>
+                <button
+                  onClick={() => setShowCustomizeModal(false)}
+                  className='rounded-full p-2 hover:bg-gray-100 dark:hover:bg-zinc-800'>
+                  <X className='size-5' />
+                </button>
+              </div>
+
+              <div className='space-y-6'>
+                {['fields', 'formatting', 'delivery'].map((category) => (
+                  <div key={category}>
+                    <h3 className='mb-3 text-lg font-medium capitalize text-gray-900 dark:text-white'>
+                      {category}
+                    </h3>
+                    <div className='space-y-3'>
+                      {reportOptions
+                        .filter((option) => option.category === category)
+                        .map((option) => (
+                          <div
+                            key={option.id}
+                            className='flex items-center justify-between rounded-xl border border-gray-200 p-3 dark:border-white/10'>
+                            <div>
+                              <h4 className='font-medium text-gray-900 dark:text-white'>
+                                {option.label}
+                              </h4>
+                              <p className='text-sm text-gray-600 dark:text-zinc-400'>
+                                {option.description}
+                              </p>
+                            </div>
+                            <button
+                              className={`flex size-6 items-center justify-center rounded-full ${
+                                option.enabled
+                                  ? 'bg-blue-500 text-white'
+                                  : 'bg-gray-200 dark:bg-zinc-700'
+                              }`}>
+                              <Check className='size-4' />
+                            </button>
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className='mt-6 flex justify-end gap-3'>
+                <button
+                  onClick={() => setShowCustomizeModal(false)}
+                  className='rounded-full border border-gray-200 px-4 py-2 text-gray-600 hover:bg-gray-50 dark:border-white/10 dark:text-zinc-400 dark:hover:bg-white/5'>
+                  Cancel
+                </button>
+                <button
+                  onClick={() => setShowCustomizeModal(false)}
+                  className='rounded-full bg-blue-500 px-4 py-2 text-white hover:bg-blue-600'>
+                  Save Changes
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Main Content */}
         <div className='mt-8 space-y-8'>
