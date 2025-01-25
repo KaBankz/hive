@@ -1,6 +1,6 @@
 'use client';
 
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useState } from 'react';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 
@@ -39,7 +39,7 @@ import {
   Users,
 } from 'lucide-react';
 
-import dailyReportData from '../../../public/dailyReportData.json';
+import dailyReportData from '../../../../public/dailyReportData.json';
 
 interface WeatherSummary {
   forecastTimeTzFormatted: string;

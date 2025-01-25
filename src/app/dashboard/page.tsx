@@ -121,7 +121,7 @@ export default function DashboardPage() {
               {starredProjects.map((project) => (
                 <Link
                   key={project.id}
-                  href={`/editor?project=${project.id}`}
+                  href={`/dashboard/editor?project=${project.id}`}
                   className='group relative rounded-lg border border-gray-200 bg-white p-4 transition-shadow hover:shadow-lg dark:border-zinc-800 dark:bg-zinc-900'>
                   <div className='mb-2 flex items-start justify-between'>
                     <div className='flex items-center gap-3'>
@@ -188,7 +188,7 @@ export default function DashboardPage() {
             {unstarredProjects.map((project) => (
               <Link
                 key={project.id}
-                href={`/editor?project=${project.id}`}
+                href={`/dashboard/editor?project=${project.id}`}
                 className='group relative rounded-lg border border-gray-200 bg-white p-4 transition-shadow hover:shadow-lg dark:border-zinc-800 dark:bg-zinc-900'>
                 <div className='mb-2 flex items-start justify-between'>
                   <div className='flex items-center gap-3'>
