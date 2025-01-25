@@ -71,20 +71,20 @@ export default function DashboardPage() {
   ];
 
   return (
-    <div className='min-h-screen bg-gradient-to-b from-zinc-950 via-zinc-950 to-black'>
+    <div className='min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-black'>
       <div className='mx-auto max-w-7xl px-4 pb-8 pt-24 sm:px-6'>
         {/* Header Section */}
         <div className='flex items-center justify-between'>
           <div>
-            <h1 className='bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-3xl font-bold tracking-tight text-transparent'>
+            <h1 className='bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-3xl font-bold tracking-tight text-transparent dark:from-white dark:to-zinc-400'>
               Dashboard
             </h1>
-            <p className='mt-2 text-sm text-zinc-400'>
+            <p className='mt-2 text-sm text-gray-600 dark:text-zinc-400'>
               Welcome back! Here&apos;s what&apos;s happening today.
             </p>
           </div>
           <div className='flex gap-3'>
-            <button className='group inline-flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-white backdrop-blur-xl transition-all duration-200 hover:bg-white/10 hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]'>
+            <button className='group inline-flex items-center justify-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 transition-all duration-200 hover:border-gray-300 hover:bg-gray-50 hover:shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10 dark:hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]'>
               <Settings className='h-4 w-4' />
               Customize Reports
             </button>
@@ -102,21 +102,23 @@ export default function DashboardPage() {
             {projectStats.map((stat) => (
               <div
                 key={stat.label}
-                className='group rounded-2xl border border-white/[0.1] bg-white/[0.02] p-6 transition duration-200 hover:border-white/[0.2] hover:bg-white/[0.04]'>
+                className='group rounded-2xl border border-gray-200 bg-white p-6 transition duration-200 hover:border-gray-300 hover:bg-gray-50 dark:border-white/[0.1] dark:bg-white/[0.02] dark:hover:border-white/[0.2] dark:hover:bg-white/[0.04]'>
                 <div className='flex items-center justify-between'>
-                  <p className='text-sm text-zinc-400'>{stat.label}</p>
+                  <p className='text-sm text-gray-600 dark:text-zinc-400'>
+                    {stat.label}
+                  </p>
                   <span
                     className={`text-sm ${
                       stat.trend === 'up'
-                        ? 'text-green-400'
+                        ? 'text-green-600 dark:text-green-400'
                         : stat.trend === 'down'
-                          ? 'text-red-400'
-                          : 'text-zinc-400'
+                          ? 'text-red-600 dark:text-red-400'
+                          : 'text-gray-600 dark:text-zinc-400'
                     }`}>
                     {stat.change}
                   </span>
                 </div>
-                <p className='mt-2 text-3xl font-semibold text-white'>
+                <p className='mt-2 text-3xl font-semibold text-gray-900 dark:text-white'>
                   {stat.value}
                 </p>
               </div>
@@ -150,13 +152,17 @@ export default function DashboardPage() {
               <Link
                 key={action.label}
                 href='#'
-                className='group flex items-center gap-4 rounded-2xl border border-white/[0.1] bg-white/[0.02] p-4 transition duration-200 hover:border-white/[0.2] hover:bg-white/[0.04]'>
-                <div className='flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-b from-blue-500/10 to-blue-600/10'>
+                className='group flex items-center gap-4 rounded-2xl border border-gray-200 bg-white p-4 transition duration-200 hover:border-gray-300 hover:bg-gray-50 dark:border-white/[0.1] dark:bg-white/[0.02] dark:hover:border-white/[0.2] dark:hover:bg-white/[0.04]'>
+                <div className='flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 dark:bg-gradient-to-b dark:from-blue-500/10 dark:to-blue-600/10'>
                   <action.icon className='h-6 w-6 text-blue-500' />
                 </div>
                 <div>
-                  <h3 className='font-medium text-white'>{action.label}</h3>
-                  <p className='text-sm text-zinc-400'>{action.description}</p>
+                  <h3 className='font-medium text-gray-900 dark:text-white'>
+                    {action.label}
+                  </h3>
+                  <p className='text-sm text-gray-600 dark:text-zinc-400'>
+                    {action.description}
+                  </p>
                 </div>
               </Link>
             ))}
@@ -165,30 +171,30 @@ export default function DashboardPage() {
           {/* Recent Reports */}
           <div>
             <div className='flex items-center justify-between'>
-              <h2 className='text-xl font-semibold text-white'>
+              <h2 className='text-xl font-semibold text-gray-900 dark:text-white'>
                 Recent Reports
               </h2>
               <Link
                 href='#'
-                className='text-sm text-zinc-400 transition-colors hover:text-white'>
+                className='text-sm text-gray-600 transition-colors hover:text-gray-900 dark:text-zinc-400 dark:hover:text-white'>
                 View all
               </Link>
             </div>
-            <div className='mt-4 rounded-2xl border border-white/[0.1] bg-white/[0.02]'>
-              <div className='divide-y divide-white/[0.1]'>
+            <div className='mt-4 rounded-2xl border border-gray-200 bg-white dark:border-white/[0.1] dark:bg-white/[0.02]'>
+              <div className='divide-y divide-gray-200 dark:divide-white/[0.1]'>
                 {recentReports.map((report) => (
                   <div
                     key={report.id}
                     className='flex items-center justify-between p-4'>
                     <div className='flex items-center gap-4'>
-                      <div className='flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-b from-blue-500/10 to-blue-600/10'>
+                      <div className='flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 dark:bg-gradient-to-b dark:from-blue-500/10 dark:to-blue-600/10'>
                         <FileText className='h-5 w-5 text-blue-500' />
                       </div>
                       <div>
-                        <h3 className='font-medium text-white'>
+                        <h3 className='font-medium text-gray-900 dark:text-white'>
                           {report.project}
                         </h3>
-                        <div className='flex items-center gap-3 text-sm text-zinc-400'>
+                        <div className='flex items-center gap-3 text-sm text-gray-600 dark:text-zinc-400'>
                           <span className='flex items-center gap-1'>
                             <Calendar className='h-3 w-3' />
                             {report.date}
@@ -208,14 +214,14 @@ export default function DashboardPage() {
                       <span
                         className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
                           report.status === 'Completed'
-                            ? 'bg-green-500/10 text-green-400'
+                            ? 'bg-green-50 text-green-600 dark:bg-green-500/10 dark:text-green-400'
                             : report.status === 'Pending Review'
-                              ? 'bg-yellow-500/10 text-yellow-400'
-                              : 'bg-zinc-500/10 text-zinc-400'
+                              ? 'bg-yellow-50 text-yellow-600 dark:bg-yellow-500/10 dark:text-yellow-400'
+                              : 'bg-gray-50 text-gray-600 dark:bg-zinc-500/10 dark:text-zinc-400'
                         }`}>
                         {report.status}
                       </span>
-                      <button className='flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/5 text-zinc-400 transition-colors hover:text-white'>
+                      <button className='flex h-8 w-8 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-600 transition-colors hover:text-gray-900 dark:border-white/10 dark:bg-white/5 dark:text-zinc-400 dark:hover:text-white'>
                         <Mail className='h-4 w-4' />
                       </button>
                     </div>

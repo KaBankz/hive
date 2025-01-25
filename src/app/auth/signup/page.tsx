@@ -8,13 +8,13 @@ import { signup } from './actions';
 
 export default function SignUpPage() {
   return (
-    <div className='flex min-h-screen items-center justify-center bg-gradient-to-b from-zinc-950 via-zinc-950 to-black px-4'>
+    <div className='flex min-h-screen items-center justify-center bg-gradient-to-b from-gray-50 via-white to-gray-50 px-4 dark:from-zinc-950 dark:via-zinc-950 dark:to-black'>
       <div className='w-full max-w-sm'>
         <div className='text-center'>
-          <h1 className='bg-gradient-to-r from-white to-zinc-400 bg-clip-text pb-4 text-3xl font-bold tracking-tight text-transparent'>
+          <h1 className='bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text pb-4 text-3xl font-bold tracking-tight text-transparent dark:from-white dark:to-zinc-400'>
             Create an Account
           </h1>
-          <p className='text-sm text-zinc-400'>
+          <p className='text-sm text-gray-600 dark:text-zinc-400'>
             Join thousands of construction managers using Construct It
           </p>
         </div>
@@ -23,7 +23,7 @@ export default function SignUpPage() {
           <div>
             <label
               htmlFor='email'
-              className='block text-sm font-medium text-zinc-400'>
+              className='block text-sm font-medium text-gray-700 dark:text-zinc-400'>
               Email
             </label>
             <input
@@ -31,7 +31,7 @@ export default function SignUpPage() {
               id='email'
               name='email'
               required
-              className='mt-1 block w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-white backdrop-blur-xl transition-colors placeholder:text-zinc-500 hover:border-white/20 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500'
+              className='mt-1 block w-full rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-gray-900 transition-colors placeholder:text-gray-400 hover:border-gray-300 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-white/10 dark:bg-white/5 dark:text-white dark:placeholder:text-zinc-500 dark:hover:border-white/20'
               placeholder='you@company.com'
             />
           </div>
@@ -39,7 +39,7 @@ export default function SignUpPage() {
           <div>
             <label
               htmlFor='password'
-              className='block text-sm font-medium text-zinc-400'>
+              className='block text-sm font-medium text-gray-700 dark:text-zinc-400'>
               Password
             </label>
             <input
@@ -47,7 +47,7 @@ export default function SignUpPage() {
               id='password'
               name='password'
               required
-              className='mt-1 block w-full rounded-lg border border-white/10 bg-white/5 px-4 py-2.5 text-white backdrop-blur-xl transition-colors placeholder:text-zinc-500 hover:border-white/20 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500'
+              className='mt-1 block w-full rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-gray-900 transition-colors placeholder:text-gray-400 hover:border-gray-300 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-white/10 dark:bg-white/5 dark:text-white dark:placeholder:text-zinc-500 dark:hover:border-white/20'
               placeholder='Create a strong password'
             />
           </div>
@@ -58,15 +58,21 @@ export default function SignUpPage() {
               name='terms'
               type='checkbox'
               required
-              className='h-4 w-4 rounded border-white/10 bg-white/5 text-blue-500 focus:ring-blue-500 focus:ring-offset-0'
+              className='h-4 w-4 rounded border-gray-300 bg-white text-blue-500 focus:ring-blue-500 focus:ring-offset-0 dark:border-white/10 dark:bg-white/5'
             />
-            <label htmlFor='terms' className='ml-2 block text-sm text-zinc-400'>
+            <label
+              htmlFor='terms'
+              className='ml-2 block text-sm text-gray-600 dark:text-zinc-400'>
               I agree to the{' '}
-              <Link href='#' className='text-blue-400 hover:text-blue-300'>
+              <Link
+                href='#'
+                className='text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300'>
                 Terms of Service
               </Link>{' '}
               and{' '}
-              <Link href='#' className='text-blue-400 hover:text-blue-300'>
+              <Link
+                href='#'
+                className='text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300'>
                 Privacy Policy
               </Link>
             </label>
@@ -80,11 +86,11 @@ export default function SignUpPage() {
           </button>
         </form>
 
-        <p className='mt-6 text-center text-sm text-zinc-400'>
+        <p className='mt-6 text-center text-sm text-gray-600 dark:text-zinc-400'>
           Already have an account?{' '}
           <Link
             href='/auth/login'
-            className='text-blue-400 hover:text-blue-300'>
+            className='text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300'>
             Sign in
           </Link>
         </p>

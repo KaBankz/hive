@@ -11,16 +11,16 @@ import {
 
 export default function Home() {
   return (
-    <div className='relative'>
-      <div className='absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-blue-500/20 via-transparent to-transparent'></div>
+    <div className='relative min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-black'>
+      <div className='absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-blue-100 via-transparent to-transparent dark:from-blue-500/20 dark:via-transparent dark:to-transparent'></div>
       <div className='relative mx-auto max-w-7xl px-4 pt-32 sm:px-6 lg:pt-40'>
         <div className='text-center'>
-          <h1 className='bg-gradient-to-r from-white to-zinc-400 bg-clip-text pb-4 text-5xl font-bold tracking-tight text-transparent sm:text-7xl'>
+          <h1 className='bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text pb-4 text-5xl font-bold tracking-tight text-transparent sm:text-7xl dark:from-white dark:to-zinc-400'>
             Construction Management,
             <br />
             Reimagined
           </h1>
-          <p className='mx-auto mt-6 max-w-2xl text-lg text-zinc-400'>
+          <p className='mx-auto mt-6 max-w-2xl text-lg text-gray-600 dark:text-zinc-400'>
             The most powerful dashboard for construction managers. Track
             projects, manage resources, and make data-driven decisions in
             real-time.
@@ -34,7 +34,7 @@ export default function Home() {
             </Link>
             <Link
               href='#'
-              className='group inline-flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-medium text-white backdrop-blur-3xl transition-all duration-200 hover:bg-white/10 hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]'>
+              className='group inline-flex items-center justify-center gap-2 rounded-full border border-gray-200 bg-white px-6 py-3 text-sm font-medium text-gray-900 transition-all duration-200 hover:border-gray-300 hover:bg-gray-50 hover:shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10 dark:hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]'>
               Request demo
               <ChevronRight className='h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5' />
             </Link>
@@ -42,7 +42,7 @@ export default function Home() {
         </div>
 
         {/* Features Grid */}
-        <div className='my-32 grid gap-8 sm:grid-cols-2 lg:grid-cols-3'>
+        <div className='grid gap-8 py-32 sm:grid-cols-2 lg:grid-cols-3'>
           {[
             {
               icon: LayoutDashboard,
@@ -85,12 +85,14 @@ export default function Home() {
             return (
               <div
                 key={i}
-                className='group rounded-2xl border border-white/[0.1] bg-white/[0.02] p-8 transition duration-200 hover:border-white/[0.2] hover:bg-white/[0.04]'>
+                className='group rounded-2xl border border-gray-200 bg-white p-8 transition duration-200 hover:border-gray-300 hover:bg-gray-50 dark:border-white/[0.1] dark:bg-white/[0.02] dark:hover:border-white/[0.2] dark:hover:bg-white/[0.04]'>
                 <Icon className='mb-4 h-8 w-8 text-blue-500' />
-                <h3 className='mb-2 text-xl font-semibold text-white'>
+                <h3 className='mb-2 text-xl font-semibold text-gray-900 dark:text-white'>
                   {feature.title}
                 </h3>
-                <p className='text-sm text-zinc-400'>{feature.description}</p>
+                <p className='text-sm text-gray-600 dark:text-zinc-400'>
+                  {feature.description}
+                </p>
               </div>
             );
           })}
