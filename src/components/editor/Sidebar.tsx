@@ -45,7 +45,7 @@ export function Sidebar() {
     <div className='w-96 rounded-xl bg-white p-6 shadow-sm'>
       <div className='mb-6'>
         <h3 className='mb-4 flex items-center font-semibold text-gray-800'>
-          <Puzzle className='mr-2 h-5 w-5 text-blue-600' />
+          <Puzzle className='mr-2 size-5 text-blue-600' />
           Available Fields
         </h3>
         <div className='space-y-3'>
@@ -55,8 +55,8 @@ export function Sidebar() {
               className={`group cursor-move rounded-xl border border-${field.color}-100 bg-gradient-to-r from-${field.color}-50 to-white p-4 transition-all hover:border-${field.color}-300`}>
               <div className='flex items-center'>
                 <div
-                  className={`mr-3 flex h-10 w-10 items-center justify-center rounded-lg bg-${field.color}-600 text-white`}>
-                  <field.icon className='h-5 w-5' />
+                  className={`mr-3 flex size-10 items-center justify-center rounded-lg bg-${field.color}-600 text-white`}>
+                  <field.icon className='size-5' />
                 </div>
                 <div>
                   <div className='font-medium text-gray-800'>{field.title}</div>
@@ -65,7 +65,7 @@ export function Sidebar() {
                   </div>
                 </div>
                 <GripVertical
-                  className={`ml-auto h-5 w-5 text-gray-300 group-hover:text-${field.color}-400`}
+                  className={`ml-auto size-5 text-gray-300 group-hover:text-${field.color}-400`}
                 />
               </div>
             </div>
