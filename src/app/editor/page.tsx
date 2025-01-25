@@ -33,7 +33,6 @@ import {
   GripVertical,
   ImageIcon,
   Layers,
-  Settings2,
   Tag,
   Truck,
   Users,
@@ -116,7 +115,7 @@ interface SectionConfig {
   icon: React.ReactNode;
 }
 
-function SortableSection({
+const SortableSection = ({
   section,
   isVisible,
   onToggle,
@@ -124,7 +123,7 @@ function SortableSection({
   section: SectionConfig;
   isVisible: boolean;
   onToggle: () => void;
-}) {
+}) => {
   const {
     attributes,
     listeners,
@@ -146,8 +145,8 @@ function SortableSection({
         onClick={onToggle}
         className={`group flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm transition ${
           isVisible
-            ? 'bg-blue-50 text-blue-700'
-            : 'text-gray-700 hover:bg-gray-50'
+            ? 'bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300'
+            : 'text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-900'
         }`}>
         <div className='flex items-center gap-3'>
           <div
@@ -156,14 +155,14 @@ function SortableSection({
             className='cursor-grab active:cursor-grabbing'>
             <GripVertical
               size={16}
-              className='text-gray-400 transition group-hover:text-gray-500'
+              className='text-gray-400 transition group-hover:text-gray-500 dark:text-gray-600 dark:group-hover:text-gray-500'
             />
           </div>
           <div
             className={`flex h-5 w-5 items-center justify-center rounded-md border transition ${
               isVisible
-                ? 'border-blue-500 bg-blue-500 text-white'
-                : 'border-gray-300 group-hover:border-gray-400'
+                ? 'border-blue-500 bg-blue-500 text-white dark:border-blue-400 dark:bg-blue-400'
+                : 'border-gray-300 group-hover:border-gray-400 dark:border-gray-700 dark:group-hover:border-gray-600'
             }`}>
             {isVisible ? <Check size={12} /> : section.icon}
           </div>
@@ -172,16 +171,145 @@ function SortableSection({
         <ChevronRight
           size={16}
           className={`transition ${
-            isVisible ? 'text-blue-500' : 'text-gray-400'
+            isVisible
+              ? 'text-blue-500 dark:text-blue-400'
+              : 'text-gray-400 dark:text-gray-600'
           }`}
         />
       </button>
     </div>
   );
-}
+};
+
+const Sidebar = ({
+  selectedProjectIndex,
+  setSelectedProjectIndex,
+  isGenerating,
+  onExport,
+  sectionVisibility,
+  setSectionVisibility,
+  sectionOrder,
+  orderedSections,
+  onDragEnd,
+}: {
+  selectedProjectIndex: number;
+  setSelectedProjectIndex: (index: number) => void;
+  isGenerating: boolean;
+  onExport: () => void;
+  sectionVisibility: SectionVisibility;
+  setSectionVisibility: (
+    visibility:
+      | SectionVisibility
+      | ((prev: SectionVisibility) => SectionVisibility)
+  ) => void;
+  sectionOrder: Array<keyof SectionVisibility>;
+  orderedSections: SectionConfig[];
+  onDragEnd: (event: DragEndEvent) => void;
+}) => {
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  const toggleSection = (section: keyof SectionVisibility) => {
+    setSectionVisibility((prev) => ({
+      ...prev,
+      [section]: !prev[section],
+    }));
+  };
+
+  return (
+    <div className='w-80 flex-none border-l border-gray-200 bg-white/70 backdrop-blur-xl backdrop-saturate-150 dark:border-white/[0.1] dark:bg-black/30'>
+      <div className='flex h-full flex-col'>
+        <div className='flex-none space-y-6 border-b border-gray-200 p-6 dark:border-white/[0.1]'>
+          <div className='space-y-4'>
+            <div className='flex items-center justify-between'>
+              <h2 className='flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-white'>
+                <Layers className='size-4 text-blue-500' />
+                Project Selection
+              </h2>
+            </div>
+            <select
+              className='w-full rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm text-gray-900 shadow-sm transition hover:border-gray-300 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-white/[0.1] dark:bg-black/30 dark:text-white dark:hover:border-white/[0.2]'
+              value={selectedProjectIndex}
+              onChange={(e) => setSelectedProjectIndex(Number(e.target.value))}>
+              {dailyReportData.dailyLogs.map((log, index) => (
+                <option key={index} value={index}>
+                  Project {log.projectNumber} - {log.dailyLogDate}
+                </option>
+              ))}
+            </select>
+            <button
+              onClick={onExport}
+              disabled={isGenerating}
+              className='group inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-b from-blue-500 to-blue-600 px-4 py-2 text-sm font-medium text-white transition-all duration-200 hover:from-blue-400 hover:to-blue-500 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] disabled:opacity-50'>
+              <Download className='size-4' />
+              <span>{isGenerating ? 'Generating PDF...' : 'Export PDF'}</span>
+            </button>
+          </div>
+          <div className='h-px bg-gray-200 dark:bg-white/[0.1]' />
+          <div className='flex items-center justify-between'>
+            <h2 className='flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-white'>
+              <Layers className='size-4 text-blue-500' />
+              Document Sections
+            </h2>
+            <button
+              onClick={() =>
+                setSectionVisibility((prev) => {
+                  const allVisible = Object.values(prev).every(Boolean);
+                  return {
+                    reportInfo: !allVisible,
+                    weather: !allVisible,
+                    labor: !allVisible,
+                    equipment: !allVisible,
+                    photos: !allVisible,
+                  };
+                })
+              }
+              className='inline-flex items-center gap-1.5 rounded-lg border border-gray-200 px-2.5 py-1.5 text-xs font-medium text-gray-700 transition-colors duration-200 hover:border-gray-300 hover:bg-gray-50 dark:border-white/[0.1] dark:text-zinc-400 dark:hover:border-white/[0.2] dark:hover:bg-white/[0.02]'>
+              {Object.values(sectionVisibility).every(Boolean) ? (
+                <>
+                  <EyeOff className='size-3.5' />
+                  Hide All
+                </>
+              ) : (
+                <>
+                  <Eye className='size-3.5' />
+                  Show All
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+        <div className='flex-1 overflow-y-auto p-6'>
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={onDragEnd}>
+            <SortableContext
+              items={sectionOrder}
+              strategy={verticalListSortingStrategy}>
+              <div className='space-y-4'>
+                {orderedSections.map((section) => (
+                  <SortableSection
+                    key={section.id}
+                    section={section}
+                    isVisible={sectionVisibility[section.id]}
+                    onToggle={() => toggleSection(section.id)}
+                  />
+                ))}
+              </div>
+            </SortableContext>
+          </DndContext>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default function EditorPage() {
-  const data = dailyReportData;
   const [selectedProjectIndex, setSelectedProjectIndex] = useState(0);
   const [isGenerating, setIsGenerating] = useState(false);
   const [sectionVisibility, setSectionVisibility] = useState<SectionVisibility>(
@@ -197,7 +325,7 @@ export default function EditorPage() {
     Array<keyof SectionVisibility>
   >(['reportInfo', 'weather', 'labor', 'equipment', 'photos']);
 
-  const selectedProject = data.dailyLogs[selectedProjectIndex];
+  const selectedProject = dailyReportData.dailyLogs[selectedProjectIndex];
 
   const sections: SectionConfig[] = [
     {
@@ -231,23 +359,8 @@ export default function EditorPage() {
     sections.find((s) => s.id === id)
   ) as SectionConfig[];
 
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
-
-  const toggleSection = (section: keyof SectionVisibility) => {
-    setSectionVisibility((prev) => ({
-      ...prev,
-      [section]: !prev[section],
-    }));
-  };
-
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
-
     if (active.id !== over?.id) {
       setSectionOrder((items) => {
         const oldIndex = items.indexOf(active.id as keyof SectionVisibility);
@@ -264,14 +377,14 @@ export default function EditorPage() {
       if (!element) return;
 
       const opt = {
-        margin: [40, 40, 60, 40], // Slightly larger bottom margin
+        margin: [40, 40, 60, 40],
         filename: `daily-report-${selectedProject.projectNumber}-${selectedProject.dailyLogDate}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: {
           scale: 2,
           useCORS: true,
           letterRendering: true,
-          width: 794, // 8.27 inches (A4 width) * 96 DPI
+          width: 794,
         },
         jsPDF: {
           unit: 'pt',
@@ -287,587 +400,436 @@ export default function EditorPage() {
   };
 
   return (
-    <div className='h-screen overflow-hidden bg-gray-50'>
-      {/* Header Bar */}
-      <div className='sticky top-0 z-10 border-b border-gray-200 bg-white shadow-sm'>
-        <div className='mx-auto flex max-w-[1400px] items-center justify-between px-8 py-4'>
-          <div className='flex items-center gap-3'>
-            <Layers className='h-5 w-5 text-blue-600' />
-            <h1 className='text-lg font-semibold text-gray-900'>
-              Daily Report Editor
-            </h1>
-          </div>
-          <div className='flex items-center gap-4'>
-            <select
-              className='rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-black shadow-sm transition hover:border-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500'
-              value={selectedProjectIndex}
-              onChange={(e) => setSelectedProjectIndex(Number(e.target.value))}>
-              {data.dailyLogs.map((log, index) => (
-                <option key={index} value={index}>
-                  Project {log.projectNumber} - {log.dailyLogDate}
-                </option>
-              ))}
-            </select>
-
-            <button
-              onClick={handleExportPDF}
-              disabled={isGenerating}
-              className='flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50'>
-              <Download size={16} />
-              <span>{isGenerating ? 'Generating PDF...' : 'Export PDF'}</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Content with Sidebar */}
-      <div className='flex h-[calc(100vh-73px)]'>
+    <div className='inset-0 min-h-screen pt-16'>
+      <div className='flex h-full'>
         {/* Document Preview */}
-        <div className='flex-1 overflow-auto'>
-          <div className='mx-auto max-w-[1400px] p-8'>
-            <div className='overflow-hidden rounded-xl bg-white shadow-lg ring-1 ring-gray-900/5'>
-              <div className='border-b border-gray-200 bg-gray-50/80 px-8 py-4'>
-                <div className='flex items-center justify-between'>
-                  <h2 className='flex items-center gap-2 font-medium text-gray-700'>
-                    <Eye className='h-4 w-4 text-gray-500' />
-                    Document Preview
-                  </h2>
-                  <div className='flex items-center gap-2 text-sm text-gray-500'>
-                    <Settings2 className='h-4 w-4' />
-                    Configure sections in sidebar
+        <div className='flex-1'>
+          <div className='h-full overflow-auto'>
+            <div className='mx-auto h-screen max-w-7xl p-8'>
+              <div
+                id='document-container'
+                className='mx-auto w-[8.27in] rounded-lg bg-white p-8 shadow-lg ring-1 ring-black/[0.1] dark:bg-black dark:ring-white/[0.1]'>
+                {/* Company Header */}
+                <div className='mb-12 border-b border-gray-200 pb-6 dark:border-white/[0.1]'>
+                  <div className='flex items-center justify-between'>
+                    <h1 className='text-xl font-semibold text-blue-500 dark:text-blue-400'>
+                      {dailyReportData.companyName}
+                    </h1>
+                    <Image
+                      src={dailyReportData.companyLogo}
+                      alt='Company Logo'
+                      className='h-8'
+                      width={100}
+                      height={100}
+                    />
                   </div>
                 </div>
-              </div>
-              <div className='p-8'>
-                <div
-                  id='document-container'
-                  className='mx-auto w-[8.27in] overflow-hidden rounded-lg bg-white p-6 shadow-md ring-1 ring-black/5'>
-                  {/* Company Header */}
-                  <div className='mb-12 border-b border-gray-100 pb-6'>
-                    <div className='flex items-center justify-between'>
-                      <h1 className='text-xl font-semibold text-green-600'>
-                        {data.companyName}
-                      </h1>
-                      <Image
-                        src={data.companyLogo}
-                        alt='Company Logo'
-                        className='h-8'
-                        width={100}
-                        height={100}
-                      />
-                    </div>
-                  </div>
 
-                  {/* Document Content */}
-                  <div className='space-y-12'>
-                    {/* Render sections in order */}
-                    {orderedSections.map((section) => {
-                      if (!sectionVisibility[section.id]) return null;
+                {/* Document Content */}
+                <div className='space-y-12'>
+                  {/* Render sections in order */}
+                  {orderedSections.map((section) => {
+                    if (!sectionVisibility[section.id]) return null;
 
-                      switch (section.id) {
-                        case 'reportInfo':
-                          return (
+                    switch (section.id) {
+                      case 'reportInfo':
+                        return (
+                          <div
+                            key='reportInfo'
+                            className='overflow-hidden rounded-lg border border-gray-200 bg-white/50 dark:border-white/[0.1] dark:bg-white/[0.02]'>
+                            <table className='w-full'>
+                              <thead>
+                                <tr className='border-b border-gray-200 bg-gray-50/50 dark:border-white/[0.1] dark:bg-black/20'>
+                                  <th className='p-4 text-left text-sm font-medium text-gray-600 dark:text-gray-300'>
+                                    Date
+                                  </th>
+                                  <th className='p-4 text-left text-sm font-medium text-gray-600 dark:text-gray-300'>
+                                    Project #
+                                  </th>
+                                  <th className='p-4 text-left text-sm font-medium text-gray-600 dark:text-gray-300'>
+                                    Project Name
+                                  </th>
+                                  <th className='p-4 text-left text-sm font-medium text-gray-600 dark:text-gray-300'>
+                                    Printed By
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr>
+                                  <td className='p-4 font-medium text-gray-900 dark:text-white'>
+                                    {selectedProject.dailyLogDate}
+                                  </td>
+                                  <td className='p-4 font-medium text-gray-900 dark:text-white'>
+                                    {selectedProject.projectNumber}
+                                  </td>
+                                  <td className='p-4 font-medium text-gray-900 dark:text-white'>
+                                    {selectedProject.projectName}
+                                  </td>
+                                  <td className='p-4 font-medium text-gray-900 dark:text-white'>
+                                    {dailyReportData.printedBy}
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        );
+                      case 'weather':
+                        return (
+                          selectedProject.weather && (
                             <div
-                              key='reportInfo'
-                              className='rounded-lg border border-gray-200 bg-white'>
-                              <table className='w-full'>
-                                <thead>
-                                  <tr className='border-b border-gray-200 bg-gray-50/50'>
-                                    <th className='p-4 text-left text-sm font-medium text-gray-600'>
-                                      Date
-                                    </th>
-                                    <th className='p-4 text-left text-sm font-medium text-gray-600'>
-                                      Project #
-                                    </th>
-                                    <th className='p-4 text-left text-sm font-medium text-gray-600'>
-                                      Project Name
-                                    </th>
-                                    <th className='p-4 text-left text-sm font-medium text-gray-600'>
-                                      Printed By
-                                    </th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr>
-                                    <td className='p-4 font-medium text-gray-900'>
-                                      {selectedProject.dailyLogDate}
-                                    </td>
-                                    <td className='p-4 font-medium text-gray-900'>
-                                      {selectedProject.projectNumber}
-                                    </td>
-                                    <td className='p-4 font-medium text-gray-900'>
-                                      {selectedProject.projectName}
-                                    </td>
-                                    <td className='p-4 font-medium text-gray-900'>
-                                      {data.printedBy}
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                          );
-                        case 'weather':
-                          return (
-                            selectedProject.weather && (
-                              <div
-                                key='weather'
-                                className='overflow-hidden rounded-lg border border-gray-200 bg-white'>
-                                <div className='border-b border-gray-200 bg-gray-50/50 px-6 py-4'>
-                                  <h2 className='text-center text-sm font-semibold uppercase text-gray-700'>
-                                    Weather
-                                  </h2>
-                                </div>
-                                <div className='grid grid-cols-3 divide-x divide-gray-200'>
-                                  {selectedProject.weather.summary.map(
-                                    (weather: WeatherSummary, idx: number) => (
-                                      <div
-                                        key={idx}
-                                        className='p-6 text-center'>
-                                        <div className='text-sm font-medium text-gray-600'>
-                                          {weather.forecastTimeTzFormatted}
-                                        </div>
-                                        <div className='mt-2 text-2xl font-semibold text-green-600'>
-                                          <i
-                                            className={
-                                              weather.iconForecast
-                                            }></i>{' '}
-                                          {weather.tempF}°
-                                        </div>
-                                        <div className='mt-2 text-xs text-gray-500'>
-                                          <span className='font-medium text-gray-700'>
-                                            Wind:
-                                          </span>{' '}
-                                          {weather.wind} &nbsp;
-                                          <span className='font-medium text-gray-700'>
-                                            Precip:
-                                          </span>{' '}
-                                          {weather.precip} &nbsp;
-                                          <span className='font-medium text-gray-700'>
-                                            Humidity:
-                                          </span>{' '}
-                                          {weather.humidity}
-                                        </div>
-                                      </div>
-                                    )
-                                  )}
-                                </div>
+                              key='weather'
+                              className='overflow-hidden rounded-lg border border-gray-200 bg-white/50 dark:border-white/[0.1] dark:bg-white/[0.02]'>
+                              <div className='border-b border-gray-200 bg-gray-50/50 px-6 py-4 dark:border-white/[0.1] dark:bg-black/20'>
+                                <h2 className='text-center text-sm font-semibold uppercase text-gray-700 dark:text-gray-300'>
+                                  Weather
+                                </h2>
                               </div>
-                            )
-                          );
-                        case 'labor':
-                          return (
-                            selectedProject.labor &&
-                            selectedProject.labor.details && (
-                              <div
-                                key='labor'
-                                className='overflow-hidden rounded-lg border border-gray-200 bg-white'>
-                                <div className='border-b border-gray-200 bg-gray-50/50 px-6 py-4'>
-                                  <h2 className='text-center text-sm font-semibold uppercase text-gray-700'>
-                                    Labor
-                                  </h2>
-                                </div>
-                                <div className='p-6'>
-                                  <table className='w-full'>
-                                    <thead>
-                                      <tr className='border-b border-gray-200'>
-                                        <th className='pb-3 text-left text-sm font-medium text-gray-600'>
-                                          Name
+                              <div className='grid grid-cols-3 divide-x divide-gray-200 dark:divide-white/[0.1]'>
+                                {selectedProject.weather.summary.map(
+                                  (weather: WeatherSummary, idx: number) => (
+                                    <div key={idx} className='p-6 text-center'>
+                                      <div className='text-sm font-medium text-gray-600 dark:text-gray-400'>
+                                        {weather.forecastTimeTzFormatted}
+                                      </div>
+                                      <div className='mt-2 text-2xl font-semibold text-blue-500 dark:text-blue-400'>
+                                        <i className={weather.iconForecast}></i>{' '}
+                                        {weather.tempF}°
+                                      </div>
+                                      <div className='mt-2 text-xs text-gray-500 dark:text-gray-400'>
+                                        <span className='font-medium text-gray-700 dark:text-gray-300'>
+                                          Wind:
+                                        </span>{' '}
+                                        {weather.wind} &nbsp;
+                                        <span className='font-medium text-gray-700 dark:text-gray-300'>
+                                          Precip:
+                                        </span>{' '}
+                                        {weather.precip} &nbsp;
+                                        <span className='font-medium text-gray-700 dark:text-gray-300'>
+                                          Humidity:
+                                        </span>{' '}
+                                        {weather.humidity}
+                                      </div>
+                                    </div>
+                                  )
+                                )}
+                              </div>
+                            </div>
+                          )
+                        );
+                      case 'labor':
+                        return (
+                          selectedProject.labor &&
+                          selectedProject.labor.details && (
+                            <div
+                              key='labor'
+                              className='overflow-hidden rounded-lg border border-gray-200 bg-white/50 dark:border-white/[0.1] dark:bg-white/[0.02]'>
+                              <div className='border-b border-gray-200 bg-gray-50/50 px-6 py-4 dark:border-white/[0.1] dark:bg-black/20'>
+                                <h2 className='text-center text-sm font-semibold uppercase text-gray-700 dark:text-gray-300'>
+                                  Labor
+                                </h2>
+                              </div>
+                              <div className='p-6'>
+                                <table className='w-full'>
+                                  <thead>
+                                    <tr className='border-b border-gray-200 dark:border-white/[0.1]'>
+                                      <th className='pb-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300'>
+                                        Name
+                                      </th>
+                                      <th className='pb-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300'>
+                                        Cost Code
+                                      </th>
+                                      <th className='pb-3 text-right text-sm font-medium text-gray-600 dark:text-gray-300'>
+                                        {dailyReportData.hoursLabels}
+                                      </th>
+                                      {selectedProject.labor.hasNotes && (
+                                        <th className='pb-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300'>
+                                          Notes
                                         </th>
-                                        <th className='pb-3 text-left text-sm font-medium text-gray-600'>
-                                          Cost Code
+                                      )}
+                                    </tr>
+                                  </thead>
+                                  <tbody className='divide-y divide-gray-200 dark:divide-white/[0.1]'>
+                                    {selectedProject.labor.details.map(
+                                      (labor: LaborDetail, idx: number) => (
+                                        <tr
+                                          key={idx}
+                                          className={
+                                            idx % 2 === 0
+                                              ? 'bg-gray-50/50 dark:bg-white/[0.02]'
+                                              : ''
+                                          }>
+                                          <td className='py-4 pl-4'>
+                                            <div className='font-medium text-gray-900 dark:text-white'>
+                                              {labor.nameRow.nameCell.crewName}
+                                            </div>
+                                            <div className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
+                                              {labor.nameRow.nameCell.crewHours}
+                                            </div>
+                                            {labor.nameRow.nameCell
+                                              .signatureFileUrl && (
+                                              <div className='mt-2'>
+                                                <Image
+                                                  src={
+                                                    labor.nameRow.nameCell
+                                                      .signatureFileUrl
+                                                  }
+                                                  alt='Signature'
+                                                  className='h-12 w-24 object-contain'
+                                                  width={100}
+                                                  height={100}
+                                                />
+                                                <div className='mt-1 text-[10px] text-gray-500 dark:text-gray-400'>
+                                                  Signed{' '}
+                                                  {
+                                                    labor.nameRow.nameCell
+                                                      .signatureTimeStamp
+                                                  }
+                                                </div>
+                                              </div>
+                                            )}
+                                          </td>
+                                          <td className='p-4'>
+                                            <div className='font-medium text-gray-900 dark:text-white'>
+                                              {
+                                                labor.nameRow.costCodeCell
+                                                  .costCode
+                                              }
+                                            </div>
+                                            <div className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
+                                              {
+                                                labor.nameRow.costCodeCell
+                                                  .budgetCodeDescription
+                                              }
+                                            </div>
+                                          </td>
+                                          <td className='p-4 text-right text-sm text-gray-900 dark:text-white'>
+                                            {labor.nameRow.hoursCell.hours}
+                                          </td>
+                                          {selectedProject.labor.hasNotes && (
+                                            <td className='p-4 text-sm text-gray-500 dark:text-gray-400'>
+                                              {labor.nameRow.notesCell}
+                                            </td>
+                                          )}
+                                        </tr>
+                                      )
+                                    )}
+                                    <tr className='border-t border-gray-200 bg-gray-50/80 dark:border-white/[0.1] dark:bg-black/20'>
+                                      <td
+                                        colSpan={2}
+                                        className='p-4 text-right font-medium text-gray-900 dark:text-white'>
+                                        TOTAL
+                                      </td>
+                                      <td className='p-4 text-right font-medium text-gray-900 dark:text-white'>
+                                        {selectedProject?.labor?.totalHours}
+                                      </td>
+                                      {selectedProject?.labor?.hasNotes && (
+                                        <td></td>
+                                      )}
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          )
+                        );
+                      case 'equipment':
+                        return (
+                          selectedProject.equipment &&
+                          selectedProject.equipment.details && (
+                            <div
+                              key='equipment'
+                              className='overflow-hidden rounded-lg border border-gray-200 bg-white/50 dark:border-white/[0.1] dark:bg-white/[0.02]'>
+                              <div className='border-b border-gray-200 bg-gray-50/50 px-6 py-4 dark:border-white/[0.1] dark:bg-black/20'>
+                                <h2 className='text-center text-sm font-semibold uppercase text-gray-700 dark:text-gray-300'>
+                                  Equipment
+                                </h2>
+                              </div>
+                              <div className='p-6'>
+                                <table className='w-full'>
+                                  <thead>
+                                    <tr className='border-b border-gray-200 dark:border-white/[0.1]'>
+                                      <th className='pb-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300'>
+                                        Name
+                                      </th>
+                                      <th className='pb-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300'>
+                                        Cost Code
+                                      </th>
+                                      <th className='pb-3 text-right text-sm font-medium text-gray-600 dark:text-gray-300'>
+                                        {dailyReportData.hoursLabels}
+                                      </th>
+                                      {selectedProject.equipment.hasNotes && (
+                                        <th className='pb-3 text-left text-sm font-medium text-gray-600 dark:text-gray-300'>
+                                          Notes
                                         </th>
-                                        <th className='pb-3 text-right text-sm font-medium text-gray-600'>
-                                          {data.hoursLabels}
-                                        </th>
-                                        {selectedProject.labor.hasNotes && (
-                                          <th className='pb-3 text-left text-sm font-medium text-gray-600'>
-                                            Notes
-                                          </th>
-                                        )}
-                                      </tr>
-                                    </thead>
-                                    <tbody className='divide-y divide-gray-200'>
-                                      {selectedProject.labor.details.map(
-                                        (labor: LaborDetail, idx: number) => (
+                                      )}
+                                    </tr>
+                                  </thead>
+                                  <tbody className='divide-y divide-gray-200 dark:divide-white/[0.1]'>
+                                    {selectedProject.equipment.details.map(
+                                      (
+                                        equipment: EquipmentDetail,
+                                        idx: number
+                                      ) => (
+                                        <Fragment key={`equip-${idx}`}>
                                           <tr
-                                            key={idx}
                                             className={
                                               idx % 2 === 0
-                                                ? 'bg-gray-50/50'
+                                                ? 'bg-gray-50/50 dark:bg-white/[0.02]'
                                                 : ''
                                             }>
-                                            <td className='py-4 pl-4'>
-                                              <div className='font-medium text-gray-900'>
+                                            <td
+                                              className='p-4'
+                                              rowSpan={
+                                                equipment.additionalCostCodeRows
+                                                  ?.length
+                                                  ? equipment
+                                                      .additionalCostCodeRows
+                                                      .length + 1
+                                                  : 1
+                                              }>
+                                              <div className='font-medium text-gray-900 dark:text-white'>
                                                 {
-                                                  labor.nameRow.nameCell
-                                                    .crewName
+                                                  equipment.nameRow.nameCell
+                                                    .equipName
                                                 }
                                               </div>
-                                              <div className='mt-1 text-sm text-gray-500'>
+                                              <div className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
                                                 {
-                                                  labor.nameRow.nameCell
-                                                    .crewHours
+                                                  equipment.nameRow.nameCell
+                                                    .equipHours
                                                 }
                                               </div>
-                                              {labor.nameRow.nameCell
-                                                .signatureFileUrl && (
-                                                <div className='mt-2'>
-                                                  <Image
-                                                    src={
-                                                      labor.nameRow.nameCell
-                                                        .signatureFileUrl
-                                                    }
-                                                    alt='Signature'
-                                                    className='h-12 w-24 object-contain'
-                                                    width={100}
-                                                    height={100}
-                                                  />
-                                                  <div className='mt-1 text-[10px] text-gray-500'>
-                                                    Signed{' '}
-                                                    {
-                                                      labor.nameRow.nameCell
-                                                        .signatureTimeStamp
-                                                    }
-                                                  </div>
-                                                </div>
+                                              {equipment.nameRow.nameCell.equipTags?.map(
+                                                (tag, tagIdx) => (
+                                                  <span
+                                                    key={tagIdx}
+                                                    className='mt-2 inline-flex items-center gap-1 rounded-full bg-gray-100 px-2 py-1 text-xs font-medium dark:bg-white/[0.1]'
+                                                    style={{
+                                                      color: tag.color,
+                                                    }}>
+                                                    <Tag size={12} />
+                                                    {tag.label}
+                                                  </span>
+                                                )
                                               )}
                                             </td>
                                             <td className='p-4'>
-                                              <div className='font-medium text-gray-900'>
+                                              <div className='font-medium text-gray-900 dark:text-white'>
                                                 {
-                                                  labor.nameRow.costCodeCell
+                                                  equipment.nameRow.costCodeCell
                                                     .costCode
                                                 }
                                               </div>
-                                              <div className='mt-1 text-sm text-gray-500'>
+                                              <div className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
                                                 {
-                                                  labor.nameRow.costCodeCell
+                                                  equipment.nameRow.costCodeCell
                                                     .budgetCodeDescription
                                                 }
                                               </div>
                                             </td>
-                                            <td className='p-4 text-right text-sm text-gray-900'>
-                                              {labor.nameRow.hoursCell.hours}
+                                            <td className='p-4 text-right'>
+                                              <div className='text-sm text-gray-900 dark:text-white'>
+                                                {
+                                                  equipment.nameRow.hoursCell
+                                                    .hours
+                                                }
+                                              </div>
+                                              {equipment.nameRow.hoursCell.hoursTags?.map(
+                                                (tag, tagIdx) => (
+                                                  <span
+                                                    key={tagIdx}
+                                                    className='mt-2 inline-flex items-center gap-1 rounded-full bg-gray-100 px-2 py-1 text-xs font-medium dark:bg-white/[0.1]'
+                                                    style={{
+                                                      color: tag.color,
+                                                    }}>
+                                                    <Tag size={12} />
+                                                    {tag.label}
+                                                  </span>
+                                                )
+                                              )}
                                             </td>
-                                            {selectedProject.labor.hasNotes && (
-                                              <td className='p-4 text-sm text-gray-500'>
-                                                {labor.nameRow.notesCell}
+                                            {selectedProject.equipment
+                                              .hasNotes && (
+                                              <td className='p-4 text-sm text-gray-500 dark:text-gray-400'>
+                                                {equipment.nameRow.notesCell}
                                               </td>
                                             )}
                                           </tr>
-                                        )
-                                      )}
-                                      <tr className='border-t border-gray-200 bg-gray-50/80'>
-                                        <td
-                                          colSpan={2}
-                                          className='p-4 text-right font-medium text-gray-900'>
-                                          TOTAL
-                                        </td>
-                                        <td className='p-4 text-right font-medium text-gray-900'>
-                                          {selectedProject?.labor?.totalHours}
-                                        </td>
-                                        {selectedProject?.labor?.hasNotes && (
-                                          <td></td>
-                                        )}
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                </div>
-                              </div>
-                            )
-                          );
-                        case 'equipment':
-                          return (
-                            selectedProject.equipment &&
-                            selectedProject.equipment.details && (
-                              <div
-                                key='equipment'
-                                className='overflow-hidden rounded-lg border border-gray-200 bg-white'>
-                                <div className='border-b border-gray-200 bg-gray-50/50 px-6 py-4'>
-                                  <h2 className='text-center text-sm font-semibold uppercase text-gray-700'>
-                                    Equipment
-                                  </h2>
-                                </div>
-                                <div className='p-6'>
-                                  <table className='w-full'>
-                                    <thead>
-                                      <tr className='border-b border-gray-200'>
-                                        <th className='pb-3 text-left text-sm font-medium text-gray-600'>
-                                          Name
-                                        </th>
-                                        <th className='pb-3 text-left text-sm font-medium text-gray-600'>
-                                          Cost Code
-                                        </th>
-                                        <th className='pb-3 text-right text-sm font-medium text-gray-600'>
-                                          {data.hoursLabels}
-                                        </th>
-                                        {selectedProject.equipment.hasNotes && (
-                                          <th className='pb-3 text-left text-sm font-medium text-gray-600'>
-                                            Notes
-                                          </th>
-                                        )}
-                                      </tr>
-                                    </thead>
-                                    <tbody className='divide-y divide-gray-200'>
-                                      {selectedProject.equipment.details.map(
-                                        (
-                                          equipment: EquipmentDetail,
-                                          idx: number
-                                        ) => (
-                                          <Fragment key={`equip-${idx}`}>
-                                            <tr
-                                              className={
-                                                idx % 2 === 0
-                                                  ? 'bg-gray-50/50'
-                                                  : ''
-                                              }>
-                                              <td
-                                                className='p-4'
-                                                rowSpan={
-                                                  equipment
-                                                    .additionalCostCodeRows
-                                                    ?.length
-                                                    ? equipment
-                                                        .additionalCostCodeRows
-                                                        .length + 1
-                                                    : 1
+                                          {equipment.additionalCostCodeRows?.map(
+                                            (row, rowIdx) => (
+                                              <tr
+                                                key={`equip-${idx}-row-${rowIdx}`}
+                                                className={
+                                                  idx % 2 === 0
+                                                    ? 'bg-gray-50/50 dark:bg-white/[0.02]'
+                                                    : ''
                                                 }>
-                                                <div className='font-medium text-gray-900'>
-                                                  {
-                                                    equipment.nameRow.nameCell
-                                                      .equipName
-                                                  }
-                                                </div>
-                                                <div className='mt-1 text-sm text-gray-500'>
-                                                  {
-                                                    equipment.nameRow.nameCell
-                                                      .equipHours
-                                                  }
-                                                </div>
-                                                {equipment.nameRow.nameCell.equipTags?.map(
-                                                  (tag, tagIdx) => (
-                                                    <span
-                                                      key={tagIdx}
-                                                      className='mt-2 inline-flex items-center gap-1 rounded-full bg-gray-100 px-2 py-1 text-xs font-medium'
-                                                      style={{
-                                                        color: tag.color,
-                                                      }}>
-                                                      <Tag size={12} />
-                                                      {tag.label}
-                                                    </span>
-                                                  )
-                                                )}
-                                              </td>
-                                              <td className='p-4'>
-                                                <div className='font-medium text-gray-900'>
-                                                  {
-                                                    equipment.nameRow
-                                                      .costCodeCell.costCode
-                                                  }
-                                                </div>
-                                                <div className='mt-1 text-sm text-gray-500'>
-                                                  {
-                                                    equipment.nameRow
-                                                      .costCodeCell
-                                                      .budgetCodeDescription
-                                                  }
-                                                </div>
-                                              </td>
-                                              <td className='p-4 text-right'>
-                                                <div className='text-sm text-gray-900'>
-                                                  {
-                                                    equipment.nameRow.hoursCell
-                                                      .hours
-                                                  }
-                                                </div>
-                                                {equipment.nameRow.hoursCell.hoursTags?.map(
-                                                  (tag, tagIdx) => (
-                                                    <span
-                                                      key={tagIdx}
-                                                      className='mt-2 inline-flex items-center gap-1 rounded-full bg-gray-100 px-2 py-1 text-xs font-medium'
-                                                      style={{
-                                                        color: tag.color,
-                                                      }}>
-                                                      <Tag size={12} />
-                                                      {tag.label}
-                                                    </span>
-                                                  )
-                                                )}
-                                              </td>
-                                              {selectedProject.equipment
-                                                .hasNotes && (
-                                                <td className='p-4 text-sm text-gray-500'>
-                                                  {equipment.nameRow.notesCell}
+                                                <td className='p-4'>
+                                                  <div className='font-medium text-gray-900 dark:text-white'>
+                                                    {row.costCodeCell.costCode}
+                                                  </div>
+                                                  <div className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
+                                                    {
+                                                      row.costCodeCell
+                                                        .budgetCodeDescription
+                                                    }
+                                                  </div>
                                                 </td>
-                                              )}
-                                            </tr>
-                                            {equipment.additionalCostCodeRows?.map(
-                                              (row, rowIdx) => (
-                                                <tr
-                                                  key={`equip-${idx}-row-${rowIdx}`}
-                                                  className={
-                                                    idx % 2 === 0
-                                                      ? 'bg-gray-50/50'
-                                                      : ''
-                                                  }>
-                                                  <td className='p-4'>
-                                                    <div className='font-medium text-gray-900'>
-                                                      {
-                                                        row.costCodeCell
-                                                          .costCode
-                                                      }
-                                                    </div>
-                                                    <div className='mt-1 text-sm text-gray-500'>
-                                                      {
-                                                        row.costCodeCell
-                                                          .budgetCodeDescription
-                                                      }
-                                                    </div>
+                                                <td className='p-4 text-right text-sm text-gray-900 dark:text-white'>
+                                                  {row.hoursCell.hours}
+                                                </td>
+                                                {selectedProject.equipment
+                                                  .hasNotes && (
+                                                  <td className='p-4 text-sm text-gray-500 dark:text-gray-400'>
+                                                    {row.notesCell}
                                                   </td>
-                                                  <td className='p-4 text-right text-sm text-gray-900'>
-                                                    {row.hoursCell.hours}
-                                                  </td>
-                                                  {selectedProject.equipment
-                                                    .hasNotes && (
-                                                    <td className='p-4 text-sm text-gray-500'>
-                                                      {row.notesCell}
-                                                    </td>
-                                                  )}
-                                                </tr>
-                                              )
-                                            )}
-                                          </Fragment>
-                                        )
+                                                )}
+                                              </tr>
+                                            )
+                                          )}
+                                        </Fragment>
+                                      )
+                                    )}
+                                    <tr className='border-t border-gray-200 bg-gray-50/80 dark:border-white/[0.1] dark:bg-black/20'>
+                                      <td
+                                        colSpan={2}
+                                        className='p-4 text-right font-medium text-gray-900 dark:text-white'>
+                                        TOTAL
+                                      </td>
+                                      <td className='p-4 text-right font-medium text-gray-900 dark:text-white'>
+                                        {selectedProject?.equipment?.totalHours}
+                                      </td>
+                                      {selectedProject?.equipment?.hasNotes && (
+                                        <td></td>
                                       )}
-                                      <tr className='border-t border-gray-200 bg-gray-50/80'>
-                                        <td
-                                          colSpan={2}
-                                          className='p-4 text-right font-medium text-gray-900'>
-                                          TOTAL
-                                        </td>
-                                        <td className='p-4 text-right font-medium text-gray-900'>
-                                          {
-                                            selectedProject?.equipment
-                                              ?.totalHours
-                                          }
-                                        </td>
-                                        {selectedProject?.equipment
-                                          ?.hasNotes && <td></td>}
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                </div>
-                              </div>
-                            )
-                          );
-                        case 'photos':
-                          return (
-                            <div
-                              key='photos'
-                              className='overflow-hidden rounded-lg border border-gray-200 bg-white'>
-                              <div className='border-b border-gray-200 bg-gray-50/50 px-6 py-4'>
-                                <h2 className='text-center text-sm font-semibold uppercase text-gray-700'>
-                                  Photos
-                                </h2>
-                              </div>
-                              <div className='p-6'>
-                                <div className='grid grid-cols-2 gap-6'>
-                                  {[1, 2, 3, 4].map((num) => (
-                                    <div
-                                      key={num}
-                                      className='photo-card group relative aspect-video overflow-hidden rounded-lg bg-gray-100'>
-                                      <Image
-                                        src={`/site${num}.jpeg`}
-                                        alt={`Site photo ${num}`}
-                                        fill
-                                        className='object-cover transition duration-300 group-hover:scale-105'
-                                      />
-                                      <div className='absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-4'>
-                                        <div className='flex items-center gap-2 text-white'>
-                                          <ImageIcon
-                                            size={16}
-                                            className='opacity-75'
-                                          />
-                                          <span className='text-sm font-medium'>
-                                            Site photo {num}
-                                          </span>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  ))}
-                                </div>
+                                    </tr>
+                                  </tbody>
+                                </table>
                               </div>
                             </div>
-                          );
-                      }
-                    })}
-                  </div>
+                          )
+                        );
+                      case 'photos':
+                        return null; // Remove photos section
+                    }
+                  })}
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Right Sidebar */}
-        <div className='w-80 flex-none border-l border-gray-200 bg-white'>
-          <div className='flex h-full flex-col'>
-            <div className='border-b border-gray-200 p-6'>
-              <div className='flex items-center justify-between'>
-                <h2 className='flex items-center gap-2 text-sm font-medium text-gray-900'>
-                  <Layers className='h-4 w-4 text-blue-600' />
-                  Document Sections
-                </h2>
-                <button
-                  onClick={() =>
-                    setSectionVisibility((prev) => {
-                      const allVisible = Object.values(prev).every(Boolean);
-                      return {
-                        reportInfo: !allVisible,
-                        weather: !allVisible,
-                        labor: !allVisible,
-                        equipment: !allVisible,
-                        photos: !allVisible,
-                      };
-                    })
-                  }
-                  className='flex items-center gap-1.5 rounded-lg border border-gray-200 px-2.5 py-1.5 text-xs font-medium text-gray-700 transition hover:bg-gray-50'>
-                  {Object.values(sectionVisibility).every(Boolean) ? (
-                    <>
-                      <EyeOff className='h-3.5 w-3.5' />
-                      Hide All
-                    </>
-                  ) : (
-                    <>
-                      <Eye className='h-3.5 w-3.5' />
-                      Show All
-                    </>
-                  )}
-                </button>
-              </div>
-            </div>
-            <div className='flex-1 overflow-y-auto p-6'>
-              <DndContext
-                sensors={sensors}
-                collisionDetection={closestCenter}
-                onDragEnd={handleDragEnd}>
-                <SortableContext
-                  items={sectionOrder}
-                  strategy={verticalListSortingStrategy}>
-                  <div className='space-y-4'>
-                    {orderedSections.map((section) => (
-                      <SortableSection
-                        key={section.id}
-                        section={section}
-                        isVisible={sectionVisibility[section.id]}
-                        onToggle={() => toggleSection(section.id)}
-                      />
-                    ))}
-                  </div>
-                </SortableContext>
-              </DndContext>
-            </div>
-          </div>
-        </div>
+        <Sidebar
+          selectedProjectIndex={selectedProjectIndex}
+          setSelectedProjectIndex={setSelectedProjectIndex}
+          isGenerating={isGenerating}
+          onExport={handleExportPDF}
+          sectionVisibility={sectionVisibility}
+          setSectionVisibility={setSectionVisibility}
+          sectionOrder={sectionOrder}
+          orderedSections={orderedSections}
+          onDragEnd={handleDragEnd}
+        />
       </div>
     </div>
   );

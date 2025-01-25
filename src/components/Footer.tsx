@@ -1,18 +1,123 @@
-'use client';
+import Link from 'next/link';
 
-import { Clock, FileText } from 'lucide-react';
+import { Building2, Github, Linkedin, Mail, Twitter } from 'lucide-react';
 
 export function Footer() {
   return (
-    <footer className='border-t border-gray-100 bg-white px-6 py-4'>
-      <div className='mx-auto flex max-w-[1920px] items-center justify-between text-sm text-gray-500'>
-        <div className='flex items-center space-x-2'>
-          <FileText className='size-4 text-gray-400' />
-          <span>Page 1 of 1</span>
+    <footer className='relative border-t border-gray-200 bg-white/70 backdrop-blur-xl backdrop-saturate-150 dark:border-white/[0.1] dark:bg-black/30'>
+      <div className='mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8'>
+        <div className='grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4'>
+          {/* Brand Column */}
+          <div className='flex flex-col gap-6'>
+            <div className='flex items-center gap-2'>
+              <Building2 className='size-6 text-blue-500' />
+              <span className='text-lg font-bold text-gray-900 dark:text-white'>
+                Construct It
+              </span>
+            </div>
+            <p className='text-sm text-gray-600 dark:text-zinc-400'>
+              Empowering construction managers with next-generation project
+              management tools.
+            </p>
+            <div className='flex gap-4'>
+              <a
+                href='https://twitter.com'
+                className='text-gray-400 transition-colors hover:text-gray-900 dark:text-zinc-400 dark:hover:text-white'>
+                <Twitter className='size-5' />
+              </a>
+              <a
+                href='https://github.com'
+                className='text-gray-400 transition-colors hover:text-gray-900 dark:text-zinc-400 dark:hover:text-white'>
+                <Github className='size-5' />
+              </a>
+              <a
+                href='https://linkedin.com'
+                className='text-gray-400 transition-colors hover:text-gray-900 dark:text-zinc-400 dark:hover:text-white'>
+                <Linkedin className='size-5' />
+              </a>
+              <a
+                href='mailto:hello@constructit.com'
+                className='text-gray-400 transition-colors hover:text-gray-900 dark:text-zinc-400 dark:hover:text-white'>
+                <Mail className='size-5' />
+              </a>
+            </div>
+          </div>
+
+          {/* Product Column */}
+          <div>
+            <h3 className='mb-4 text-sm font-semibold uppercase tracking-wider text-gray-900 dark:text-zinc-400'>
+              Product
+            </h3>
+            <ul className='space-y-3'>
+              {[
+                'Features',
+                'Pricing',
+                'Dashboard',
+                'API',
+                'Integration',
+                'Documentation',
+              ].map((item) => (
+                <li key={item}>
+                  <Link
+                    href='#'
+                    className='text-sm text-gray-600 transition-colors hover:text-gray-900 dark:text-zinc-400 dark:hover:text-white'>
+                    {item}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Company Column */}
+          <div>
+            <h3 className='mb-4 text-sm font-semibold uppercase tracking-wider text-gray-900 dark:text-zinc-400'>
+              Company
+            </h3>
+            <ul className='space-y-3'>
+              {['About', 'Blog', 'Careers', 'Press', 'Partners', 'Contact'].map(
+                (item) => (
+                  <li key={item}>
+                    <Link
+                      href='#'
+                      className='text-sm text-gray-600 transition-colors hover:text-gray-900 dark:text-zinc-400 dark:hover:text-white'>
+                      {item}
+                    </Link>
+                  </li>
+                )
+              )}
+            </ul>
+          </div>
+
+          {/* Resources Column */}
+          <div>
+            <h3 className='mb-4 text-sm font-semibold uppercase tracking-wider text-gray-900 dark:text-zinc-400'>
+              Resources
+            </h3>
+            <ul className='space-y-3'>
+              {[
+                'Community',
+                'Help Center',
+                'Support',
+                'Terms',
+                'Privacy',
+                'Status',
+              ].map((item) => (
+                <li key={item}>
+                  <Link
+                    href='#'
+                    className='text-sm text-gray-600 transition-colors hover:text-gray-900 dark:text-zinc-400 dark:hover:text-white'>
+                    {item}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
-        <div className='flex items-center space-x-2'>
-          <Clock className='size-4 text-gray-400' />
-          <span>Last saved: March 15, 2025 10:30 AM</span>
+
+        <div className='mt-16 border-t border-white/[0.1] pt-8'>
+          <p className='text-center text-sm text-zinc-400'>
+            © {new Date().getFullYear()} Construct It. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>
