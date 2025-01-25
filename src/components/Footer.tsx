@@ -10,7 +10,7 @@ export function Footer() {
           {/* Brand Column */}
           <div className='flex flex-col gap-6'>
             <div className='flex items-center gap-2'>
-              <Building2 className='h-6 w-6 text-blue-500' />
+              <Building2 className='size-6 text-blue-500' />
               <span className='text-lg font-bold text-gray-900 dark:text-white'>
                 Construct It
               </span>
@@ -23,22 +23,22 @@ export function Footer() {
               <a
                 href='https://twitter.com'
                 className='text-gray-400 transition-colors hover:text-gray-900 dark:text-zinc-400 dark:hover:text-white'>
-                <Twitter className='h-5 w-5' />
+                <Twitter className='size-5' />
               </a>
               <a
                 href='https://github.com'
                 className='text-gray-400 transition-colors hover:text-gray-900 dark:text-zinc-400 dark:hover:text-white'>
-                <Github className='h-5 w-5' />
+                <Github className='size-5' />
               </a>
               <a
                 href='https://linkedin.com'
                 className='text-gray-400 transition-colors hover:text-gray-900 dark:text-zinc-400 dark:hover:text-white'>
-                <Linkedin className='h-5 w-5' />
+                <Linkedin className='size-5' />
               </a>
               <a
                 href='mailto:hello@constructit.com'
                 className='text-gray-400 transition-colors hover:text-gray-900 dark:text-zinc-400 dark:hover:text-white'>
-                <Mail className='h-5 w-5' />
+                <Mail className='size-5' />
               </a>
             </div>
           </div>

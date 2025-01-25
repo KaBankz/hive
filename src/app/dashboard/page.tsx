@@ -85,11 +85,11 @@ export default function DashboardPage() {
           </div>
           <div className='flex gap-3'>
             <button className='group inline-flex items-center justify-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-900 transition-all duration-200 hover:border-gray-300 hover:bg-gray-50 hover:shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10 dark:hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]'>
-              <Settings className='h-4 w-4' />
+              <Settings className='size-4' />
               Customize Reports
             </button>
             <button className='group inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-b from-blue-500 to-blue-600 px-4 py-2 text-sm font-medium text-white transition-all duration-200 hover:from-blue-400 hover:to-blue-500 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]'>
-              <Plus className='h-4 w-4' />
+              <Plus className='size-4' />
               New Report
             </button>
           </div>
@@ -153,8 +153,8 @@ export default function DashboardPage() {
                 key={action.label}
                 href='#'
                 className='group flex items-center gap-4 rounded-2xl border border-gray-200 bg-white p-4 transition duration-200 hover:border-gray-300 hover:bg-gray-50 dark:border-white/[0.1] dark:bg-white/[0.02] dark:hover:border-white/[0.2] dark:hover:bg-white/[0.04]'>
-                <div className='flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 dark:bg-gradient-to-b dark:from-blue-500/10 dark:to-blue-600/10'>
-                  <action.icon className='h-6 w-6 text-blue-500' />
+                <div className='flex size-12 items-center justify-center rounded-xl bg-blue-50 dark:bg-gradient-to-b dark:from-blue-500/10 dark:to-blue-600/10'>
+                  <action.icon className='size-6 text-blue-500' />
                 </div>
                 <div>
                   <h3 className='font-medium text-gray-900 dark:text-white'>
@@ -187,8 +187,8 @@ export default function DashboardPage() {
                     key={report.id}
                     className='flex items-center justify-between p-4'>
                     <div className='flex items-center gap-4'>
-                      <div className='flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 dark:bg-gradient-to-b dark:from-blue-500/10 dark:to-blue-600/10'>
-                        <FileText className='h-5 w-5 text-blue-500' />
+                      <div className='flex size-10 items-center justify-center rounded-xl bg-blue-50 dark:bg-gradient-to-b dark:from-blue-500/10 dark:to-blue-600/10'>
+                        <FileText className='size-5 text-blue-500' />
                       </div>
                       <div>
                         <h3 className='font-medium text-gray-900 dark:text-white'>
@@ -196,15 +196,15 @@ export default function DashboardPage() {
                         </h3>
                         <div className='flex items-center gap-3 text-sm text-gray-600 dark:text-zinc-400'>
                           <span className='flex items-center gap-1'>
-                            <Calendar className='h-3 w-3' />
+                            <Calendar className='size-3' />
                             {report.date}
                           </span>
                           <span className='flex items-center gap-1'>
-                            <Clock className='h-3 w-3' />
+                            <Clock className='size-3' />
                             {report.views} views
                           </span>
                           <span className='flex items-center gap-1'>
-                            <User className='h-3 w-3' />
+                            <User className='size-3' />
                             {report.author}
                           </span>
                         </div>
@@ -221,8 +221,8 @@ export default function DashboardPage() {
                         }`}>
                         {report.status}
                       </span>
-                      <button className='flex h-8 w-8 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-600 transition-colors hover:text-gray-900 dark:border-white/10 dark:bg-white/5 dark:text-zinc-400 dark:hover:text-white'>
-                        <Mail className='h-4 w-4' />
+                      <button className='flex size-8 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-600 transition-colors hover:text-gray-900 dark:border-white/10 dark:bg-white/5 dark:text-zinc-400 dark:hover:text-white'>
+                        <Mail className='size-4' />
                       </button>
                     </div>
                   </div>

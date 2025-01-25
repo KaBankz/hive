@@ -30,13 +30,13 @@ export default function Home() {
               href='/auth/signup'
               className='group inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-b from-blue-500 to-blue-600 px-6 py-3 text-sm font-medium text-white transition-all duration-200 hover:from-blue-400 hover:to-blue-500 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]'>
               Start your free trial
-              <ChevronRight className='h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5' />
+              <ChevronRight className='size-4 transition-transform duration-200 group-hover:translate-x-0.5' />
             </Link>
             <Link
               href='#'
               className='group inline-flex items-center justify-center gap-2 rounded-full border border-gray-200 bg-white px-6 py-3 text-sm font-medium text-gray-900 transition-all duration-200 hover:border-gray-300 hover:bg-gray-50 hover:shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10 dark:hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]'>
               Request demo
-              <ChevronRight className='h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5' />
+              <ChevronRight className='size-4 transition-transform duration-200 group-hover:translate-x-0.5' />
             </Link>
           </div>
         </div>
@@ -86,7 +86,7 @@ export default function Home() {
               <div
                 key={i}
                 className='group rounded-2xl border border-gray-200 bg-white p-8 transition duration-200 hover:border-gray-300 hover:bg-gray-50 dark:border-white/[0.1] dark:bg-white/[0.02] dark:hover:border-white/[0.2] dark:hover:bg-white/[0.04]'>
-                <Icon className='mb-4 h-8 w-8 text-blue-500' />
+                <Icon className='mb-4 size-8 text-blue-500' />
                 <h3 className='mb-2 text-xl font-semibold text-gray-900 dark:text-white'>
                   {feature.title}
                 </h3>

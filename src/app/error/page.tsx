@@ -7,8 +7,8 @@ export default function ErrorPage() {
     <div className='flex min-h-screen items-center justify-center bg-gradient-to-b from-gray-50 via-white to-gray-50 px-4 dark:from-zinc-950 dark:via-zinc-950 dark:to-black'>
       <div className='w-full max-w-lg text-center'>
         <div className='flex justify-center'>
-          <div className='flex h-20 w-20 items-center justify-center rounded-2xl bg-red-50 dark:bg-gradient-to-b dark:from-red-500/10 dark:to-red-600/10'>
-            <AlertCircle className='h-10 w-10 text-red-500' />
+          <div className='flex size-20 items-center justify-center rounded-2xl bg-red-50 dark:bg-gradient-to-b dark:from-red-500/10 dark:to-red-600/10'>
+            <AlertCircle className='size-10 text-red-500' />
           </div>
         </div>
 
@@ -23,9 +23,9 @@ export default function ErrorPage() {
           <Link
             href='/'
             className='group inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-b from-blue-500 to-blue-600 px-6 py-3 text-sm font-medium text-white transition-all duration-200 hover:from-blue-400 hover:to-blue-500 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]'>
-            <Home className='h-4 w-4' />
+            <Home className='size-4' />
             Back to Home
-            <ChevronRight className='h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5' />
+            <ChevronRight className='size-4 transition-transform duration-200 group-hover:translate-x-0.5' />
           </Link>
         </div>
       </div>

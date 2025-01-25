@@ -58,7 +58,7 @@ export default function SignUpPage() {
               name='terms'
               type='checkbox'
               required
-              className='h-4 w-4 rounded border-gray-300 bg-white text-blue-500 focus:ring-blue-500 focus:ring-offset-0 dark:border-white/10 dark:bg-white/5'
+              className='size-4 rounded border-gray-300 bg-white text-blue-500 focus:ring-blue-500 focus:ring-offset-0 dark:border-white/10 dark:bg-white/5'
             />
             <label
               htmlFor='terms'
@@ -82,7 +82,7 @@ export default function SignUpPage() {
             type='submit'
             className='group mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-b from-blue-500 to-blue-600 px-4 py-2.5 text-sm font-medium text-white transition-all duration-200 hover:from-blue-400 hover:to-blue-500 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]'>
             Create Account
-            <ChevronRight className='h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5' />
+            <ChevronRight className='size-4 transition-transform duration-200 group-hover:translate-x-0.5' />
           </button>
         </form>
 
