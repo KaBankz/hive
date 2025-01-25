@@ -160,7 +160,7 @@ const SortableSection = ({
             />
           </div>
           <div
-            className={`flex h-5 w-5 items-center justify-center rounded-md border transition ${
+            className={`flex size-5 items-center justify-center rounded-md border transition ${
               isVisible
                 ? 'border-blue-500 bg-blue-500 text-white dark:border-blue-400 dark:bg-blue-400'
                 : 'border-gray-300 group-hover:border-gray-400 dark:border-gray-700 dark:group-hover:border-gray-600'

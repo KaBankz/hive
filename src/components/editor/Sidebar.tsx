@@ -52,10 +52,9 @@ export function Sidebar() {
           {FIELD_ITEMS.map((field) => (
             <div
               key={field.id}
-              className={`group cursor-move rounded-xl border border-${field.color}-100 bg-gradient-to-r from-${field.color}-50 to-white p-4 transition-all hover:border-${field.color}-300`}>
+              className='group cursor-move rounded-xl border border-gray-200 bg-white p-4 transition-all hover:border-gray-300'>
               <div className='flex items-center'>
-                <div
-                  className={`mr-3 flex size-10 items-center justify-center rounded-lg bg-${field.color}-600 text-white`}>
+                <div className='mr-3 flex size-10 items-center justify-center rounded-lg bg-blue-600 text-white'>
                   <field.icon className='size-5' />
                 </div>
                 <div>
@@ -64,9 +63,7 @@ export function Sidebar() {
                     {field.description}
                   </div>
                 </div>
-                <GripVertical
-                  className={`ml-auto size-5 text-gray-300 group-hover:text-${field.color}-400`}
-                />
+                <GripVertical className='ml-auto size-5 text-gray-300' />
               </div>
             </div>
           ))}
