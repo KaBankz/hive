@@ -1,7 +1,8 @@
 'use client';
 
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import Image from 'next/image';
+import { useSearchParams } from 'next/navigation';
 
 import {
   closestCenter,
@@ -182,8 +183,6 @@ const SortableSection = ({
 };
 
 const Sidebar = ({
-  selectedProjectIndex,
-  setSelectedProjectIndex,
   isGenerating,
   onExport,
   sectionVisibility,
@@ -192,8 +191,6 @@ const Sidebar = ({
   orderedSections,
   onDragEnd,
 }: {
-  selectedProjectIndex: number;
-  setSelectedProjectIndex: (index: number) => void;
   isGenerating: boolean;
   onExport: () => void;
   sectionVisibility: SectionVisibility;
@@ -225,22 +222,6 @@ const Sidebar = ({
       <div className='flex h-full flex-col'>
         <div className='flex-none space-y-6 border-b border-gray-200 p-6 dark:border-white/[0.1]'>
           <div className='space-y-4'>
-            <div className='flex items-center justify-between'>
-              <h2 className='flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-white'>
-                <Layers className='size-4 text-blue-500' />
-                Project Selection
-              </h2>
-            </div>
-            <select
-              className='w-full rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm text-gray-900 shadow-sm transition hover:border-gray-300 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-white/[0.1] dark:bg-black/30 dark:text-white dark:hover:border-white/[0.2]'
-              value={selectedProjectIndex}
-              onChange={(e) => setSelectedProjectIndex(Number(e.target.value))}>
-              {dailyReportData.dailyLogs.map((log, index) => (
-                <option key={index} value={index}>
-                  Project {log.projectNumber} - {log.dailyLogDate}
-                </option>
-              ))}
-            </select>
             <button
               onClick={onExport}
               disabled={isGenerating}
@@ -310,7 +291,8 @@ const Sidebar = ({
 };
 
 export default function EditorPage() {
-  const [selectedProjectIndex, setSelectedProjectIndex] = useState(0);
+  const searchParams = useSearchParams();
+  const projectIndex = parseInt(searchParams.get('project') || '0');
   const [isGenerating, setIsGenerating] = useState(false);
   const [sectionVisibility, setSectionVisibility] = useState<SectionVisibility>(
     {
@@ -325,7 +307,7 @@ export default function EditorPage() {
     Array<keyof SectionVisibility>
   >(['reportInfo', 'weather', 'labor', 'equipment', 'photos']);
 
-  const selectedProject = dailyReportData.dailyLogs[selectedProjectIndex];
+  const selectedProject = dailyReportData.dailyLogs[projectIndex];
 
   const sections: SectionConfig[] = [
     {
@@ -820,8 +802,6 @@ export default function EditorPage() {
         </div>
 
         <Sidebar
-          selectedProjectIndex={selectedProjectIndex}
-          setSelectedProjectIndex={setSelectedProjectIndex}
           isGenerating={isGenerating}
           onExport={handleExportPDF}
           sectionVisibility={sectionVisibility}
