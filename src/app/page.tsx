@@ -1,96 +1,101 @@
-import Image from 'next/image';
+import Link from 'next/link';
+
+import {
+  ChevronRight,
+  Clock,
+  FileText,
+  LayoutDashboard,
+  PieChart,
+  Users,
+} from 'lucide-react';
 
 export default function Home() {
   return (
-    <div className='grid min-h-screen grid-rows-[20px_1fr_20px] place-items-center gap-16 p-8 pb-20 font-[family-name:var(--font-geist-sans)] sm:p-20'>
-      <main className='row-start-2 flex flex-col items-center gap-8 sm:items-start'>
-        <Image
-          className='dark:invert'
-          src='/next.svg'
-          alt='Next.js logo'
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className='list-inside list-decimal text-center font-[family-name:var(--font-geist-mono)] text-sm sm:text-left'>
-          <li className='mb-2'>
-            Get started by editing{' '}
-            <code className='rounded bg-black/[.05] px-1 py-0.5 font-semibold dark:bg-white/[.06]'>
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className='flex flex-col items-center gap-4 sm:flex-row'>
-          <a
-            className='flex h-10 items-center justify-center gap-2 rounded-full border border-solid border-transparent bg-foreground px-4 text-sm text-background transition-colors hover:bg-[#383838] sm:h-12 sm:px-5 sm:text-base dark:hover:bg-[#ccc]'
-            href='https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app'
-            target='_blank'
-            rel='noopener noreferrer'>
-            <Image
-              className='dark:invert'
-              src='/vercel.svg'
-              alt='Vercel logomark'
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className='flex h-10 items-center justify-center rounded-full border border-solid border-black/[.08] px-4 text-sm transition-colors hover:border-transparent hover:bg-[#f2f2f2] sm:h-12 sm:min-w-44 sm:px-5 sm:text-base dark:border-white/[.145] dark:hover:bg-[#1a1a1a]'
-            href='https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app'
-            target='_blank'
-            rel='noopener noreferrer'>
-            Read our docs
-          </a>
+    <div className='relative'>
+      <div className='absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-blue-500/20 via-transparent to-transparent'></div>
+      <div className='relative mx-auto max-w-7xl px-4 pt-32 sm:px-6 lg:pt-40'>
+        <div className='text-center'>
+          <h1 className='bg-gradient-to-r from-white to-zinc-400 bg-clip-text pb-4 text-5xl font-bold tracking-tight text-transparent sm:text-7xl'>
+            Construction Management,
+            <br />
+            Reimagined
+          </h1>
+          <p className='mx-auto mt-6 max-w-2xl text-lg text-zinc-400'>
+            The most powerful dashboard for construction managers. Track
+            projects, manage resources, and make data-driven decisions in
+            real-time.
+          </p>
+          <div className='mt-10 flex items-center justify-center gap-4'>
+            <Link
+              href='/auth/signup'
+              className='group inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-b from-blue-500 to-blue-600 px-6 py-3 text-sm font-medium text-white transition-all duration-200 hover:from-blue-400 hover:to-blue-500 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]'>
+              Start your free trial
+              <ChevronRight className='h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5' />
+            </Link>
+            <Link
+              href='#'
+              className='group inline-flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-medium text-white backdrop-blur-3xl transition-all duration-200 hover:bg-white/10 hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]'>
+              Request demo
+              <ChevronRight className='h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5' />
+            </Link>
+          </div>
         </div>
-      </main>
-      <footer className='row-start-3 flex flex-wrap items-center justify-center gap-6'>
-        <a
-          className='flex items-center gap-2 hover:underline hover:underline-offset-4'
-          href='https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app'
-          target='_blank'
-          rel='noopener noreferrer'>
-          <Image
-            aria-hidden
-            src='/file.svg'
-            alt='File icon'
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className='flex items-center gap-2 hover:underline hover:underline-offset-4'
-          href='https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app'
-          target='_blank'
-          rel='noopener noreferrer'>
-          <Image
-            aria-hidden
-            src='/window.svg'
-            alt='Window icon'
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className='flex items-center gap-2 hover:underline hover:underline-offset-4'
-          href='https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app'
-          target='_blank'
-          rel='noopener noreferrer'>
-          <Image
-            aria-hidden
-            src='/globe.svg'
-            alt='Globe icon'
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        {/* Features Grid */}
+        <div className='my-32 grid gap-8 sm:grid-cols-2 lg:grid-cols-3'>
+          {[
+            {
+              icon: LayoutDashboard,
+              title: 'Real-time Progress Tracking',
+              description:
+                'Monitor construction progress with live updates and detailed analytics.',
+            },
+            {
+              icon: Users,
+              title: 'Resource Management',
+              description:
+                'Efficiently allocate workers, equipment, and materials across projects.',
+            },
+            {
+              icon: Clock,
+              title: 'Smart Scheduling',
+              description:
+                "AI-powered scheduling that adapts to your project's changing needs.",
+            },
+            {
+              icon: FileText,
+              title: 'Document Control',
+              description:
+                'Centralized storage for plans, permits, and project documentation.',
+            },
+            {
+              icon: PieChart,
+              title: 'Cost Monitoring',
+              description:
+                'Track budgets and expenses with powerful financial tools.',
+            },
+            {
+              icon: Users,
+              title: 'Team Collaboration',
+              description:
+                'Keep everyone aligned with built-in communication tools.',
+            },
+          ].map((feature, i) => {
+            const Icon = feature.icon;
+            return (
+              <div
+                key={i}
+                className='group rounded-2xl border border-white/[0.1] bg-white/[0.02] p-8 transition duration-200 hover:border-white/[0.2] hover:bg-white/[0.04]'>
+                <Icon className='mb-4 h-8 w-8 text-blue-500' />
+                <h3 className='mb-2 text-xl font-semibold text-white'>
+                  {feature.title}
+                </h3>
+                <p className='text-sm text-zinc-400'>{feature.description}</p>
+              </div>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 }

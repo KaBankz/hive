@@ -1,201 +1,227 @@
 import Link from 'next/link';
 
 import {
-  AlertTriangle,
   BarChart3,
-  Building2,
-  Clipboard,
+  Calendar,
   Clock,
+  FileText,
+  Mail,
+  MessageSquare,
+  Plus,
+  Settings,
+  User,
+  Users,
 } from 'lucide-react';
 
 export default function DashboardPage() {
-  return (
-    <div className='container mx-auto p-6'>
-      {/* Header Stats */}
-      <div className='mb-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4'>
-        <div className='rounded-lg bg-white p-6 shadow-md'>
-          <div className='flex items-center'>
-            <div className='rounded-full bg-blue-100 p-3'>
-              <Building2 className='size-6 text-blue-600' />
-            </div>
-            <div className='ml-4'>
-              <p className='text-sm text-gray-500'>Active Projects</p>
-              <p className='text-2xl font-semibold text-gray-700'>4</p>
-            </div>
-          </div>
-        </div>
-        <div className='rounded-lg bg-white p-6 shadow-md'>
-          <div className='flex items-center'>
-            <div className='rounded-full bg-green-100 p-3'>
-              <Clock className='size-6 text-green-600' />
-            </div>
-            <div className='ml-4'>
-              <p className='text-sm text-gray-500'>Hours This Week</p>
-              <p className='text-2xl font-semibold text-gray-700'>32.5</p>
-            </div>
-          </div>
-        </div>
-        <div className='rounded-lg bg-white p-6 shadow-md'>
-          <div className='flex items-center'>
-            <div className='rounded-full bg-yellow-100 p-3'>
-              <Clipboard className='size-6 text-yellow-600' />
-            </div>
-            <div className='ml-4'>
-              <p className='text-sm text-gray-500'>Tasks Due Today</p>
-              <p className='text-2xl font-semibold text-gray-700'>7</p>
-            </div>
-          </div>
-        </div>
-        <div className='rounded-lg bg-white p-6 shadow-md'>
-          <div className='flex items-center'>
-            <div className='rounded-full bg-purple-100 p-3'>
-              <BarChart3 className='size-6 text-purple-600' />
-            </div>
-            <div className='ml-4'>
-              <p className='text-sm text-gray-500'>Completion Rate</p>
-              <p className='text-2xl font-semibold text-gray-700'>94%</p>
-            </div>
-          </div>
-        </div>
-      </div>
+  // Dummy data for recent reports
+  const recentReports = [
+    {
+      id: 1,
+      date: 'Mar 15, 2024',
+      project: 'Downtown Office Complex',
+      status: 'Completed',
+      views: 12,
+      author: 'John Smith',
+    },
+    {
+      id: 2,
+      date: 'Mar 14, 2024',
+      project: 'Riverside Apartments',
+      status: 'Pending Review',
+      views: 5,
+      author: 'Sarah Johnson',
+    },
+    {
+      id: 3,
+      date: 'Mar 14, 2024',
+      project: 'City Mall Renovation',
+      status: 'Draft',
+      views: 0,
+      author: 'Mike Wilson',
+    },
+  ];
 
-      <div className='grid grid-cols-1 gap-6 lg:grid-cols-2'>
-        {/* Current Projects */}
-        <div className='rounded-lg bg-white p-6 shadow-md'>
-          <div className='mb-4 flex items-center justify-between'>
-            <h2 className='text-xl font-bold text-gray-800'>
-              Current Projects
-            </h2>
-            <Link
-              href='/projects'
-              className='text-sm text-blue-600 hover:text-blue-800'>
-              View all
-            </Link>
+  // Dummy data for project stats
+  const projectStats = [
+    {
+      label: 'Active Projects',
+      value: '12',
+      change: '+2',
+      trend: 'up',
+    },
+    {
+      label: 'Workers On Site',
+      value: '48',
+      change: '-3',
+      trend: 'down',
+    },
+    {
+      label: 'Reports This Week',
+      value: '23',
+      change: '+5',
+      trend: 'up',
+    },
+    {
+      label: 'Safety Incidents',
+      value: '0',
+      change: '0',
+      trend: 'neutral',
+    },
+  ];
+
+  return (
+    <div className='min-h-screen bg-gradient-to-b from-zinc-950 via-zinc-950 to-black'>
+      <div className='mx-auto max-w-7xl px-4 pb-8 pt-24 sm:px-6'>
+        {/* Header Section */}
+        <div className='flex items-center justify-between'>
+          <div>
+            <h1 className='bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-3xl font-bold tracking-tight text-transparent'>
+              Dashboard
+            </h1>
+            <p className='mt-2 text-sm text-zinc-400'>
+              Welcome back! Here&apos;s what&apos;s happening today.
+            </p>
           </div>
-          <div className='space-y-4'>
-            {[
-              {
-                name: 'Downtown Office Complex',
-                progress: 75,
-                dueDate: '2024-04-15',
-              },
-              {
-                name: 'Riverside Apartments',
-                progress: 45,
-                dueDate: '2024-06-30',
-              },
-              {
-                name: 'City Mall Renovation',
-                progress: 90,
-                dueDate: '2024-03-20',
-              },
-            ].map((project) => (
+          <div className='flex gap-3'>
+            <button className='group inline-flex items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm font-medium text-white backdrop-blur-xl transition-all duration-200 hover:bg-white/10 hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]'>
+              <Settings className='h-4 w-4' />
+              Customize Reports
+            </button>
+            <button className='group inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-b from-blue-500 to-blue-600 px-4 py-2 text-sm font-medium text-white transition-all duration-200 hover:from-blue-400 hover:to-blue-500 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]'>
+              <Plus className='h-4 w-4' />
+              New Report
+            </button>
+          </div>
+        </div>
+
+        {/* Main Content */}
+        <div className='mt-8 space-y-8'>
+          {/* Stats Grid */}
+          <div className='grid gap-6 sm:grid-cols-2 lg:grid-cols-4'>
+            {projectStats.map((stat) => (
               <div
-                key={project.name}
-                className='rounded-lg border border-gray-200 p-4'>
-                <div className='mb-2 flex items-center justify-between'>
-                  <h3 className='font-semibold text-gray-700'>
-                    {project.name}
-                  </h3>
-                  <span className='text-sm text-gray-500'>
-                    Due: {project.dueDate}
+                key={stat.label}
+                className='group rounded-2xl border border-white/[0.1] bg-white/[0.02] p-6 transition duration-200 hover:border-white/[0.2] hover:bg-white/[0.04]'>
+                <div className='flex items-center justify-between'>
+                  <p className='text-sm text-zinc-400'>{stat.label}</p>
+                  <span
+                    className={`text-sm ${
+                      stat.trend === 'up'
+                        ? 'text-green-400'
+                        : stat.trend === 'down'
+                          ? 'text-red-400'
+                          : 'text-zinc-400'
+                    }`}>
+                    {stat.change}
                   </span>
                 </div>
-                <div className='h-2 w-full rounded-full bg-gray-200'>
-                  <div
-                    className='h-2 rounded-full bg-blue-600'
-                    style={{ width: `${project.progress}%` }}
-                  />
-                </div>
-                <p className='mt-2 text-right text-sm text-gray-600'>
-                  {project.progress}% Complete
+                <p className='mt-2 text-3xl font-semibold text-white'>
+                  {stat.value}
                 </p>
               </div>
             ))}
           </div>
-        </div>
 
-        {/* Safety Alerts & Tasks */}
-        <div className='space-y-6'>
-          {/* Safety Alerts */}
-          <div className='rounded-lg bg-white p-6 shadow-md'>
-            <div className='mb-4 flex items-center'>
-              <AlertTriangle className='mr-2 size-5 text-red-500' />
-              <h2 className='text-xl font-bold text-gray-800'>Safety Alerts</h2>
-            </div>
-            <div className='space-y-4'>
-              <div className='rounded-lg border-l-4 border-red-500 bg-red-50 p-4'>
-                <p className='font-medium text-red-800'>
-                  High Wind Advisory - Exercise Caution
-                </p>
-                <p className='mt-1 text-sm text-red-700'>
-                  Wind speeds exceeding 20mph expected today
-                </p>
-              </div>
-              <div className='rounded-lg border-l-4 border-yellow-500 bg-yellow-50 p-4'>
-                <p className='font-medium text-yellow-800'>
-                  Equipment Inspection Due
-                </p>
-                <p className='mt-1 text-sm text-yellow-700'>
-                  Crane inspection required by end of week
-                </p>
-              </div>
-            </div>
+          {/* Quick Actions */}
+          <div className='grid gap-6 sm:grid-cols-2 lg:grid-cols-4'>
+            {[
+              {
+                icon: Calendar,
+                label: 'Schedule',
+                description: 'View work schedule',
+              },
+              {
+                icon: Users,
+                label: 'Team',
+                description: 'Manage workers',
+              },
+              {
+                icon: MessageSquare,
+                label: 'Messages',
+                description: '3 unread messages',
+              },
+              {
+                icon: BarChart3,
+                label: 'Analytics',
+                description: 'View project metrics',
+              },
+            ].map((action) => (
+              <Link
+                key={action.label}
+                href='#'
+                className='group flex items-center gap-4 rounded-2xl border border-white/[0.1] bg-white/[0.02] p-4 transition duration-200 hover:border-white/[0.2] hover:bg-white/[0.04]'>
+                <div className='flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-b from-blue-500/10 to-blue-600/10'>
+                  <action.icon className='h-6 w-6 text-blue-500' />
+                </div>
+                <div>
+                  <h3 className='font-medium text-white'>{action.label}</h3>
+                  <p className='text-sm text-zinc-400'>{action.description}</p>
+                </div>
+              </Link>
+            ))}
           </div>
 
-          {/* Today's Tasks */}
-          <div className='rounded-lg bg-white p-6 shadow-md'>
-            <div className='mb-4 flex items-center justify-between'>
-              <h2 className='text-xl font-bold text-gray-800'>
-                Today&apos;s Tasks
+          {/* Recent Reports */}
+          <div>
+            <div className='flex items-center justify-between'>
+              <h2 className='text-xl font-semibold text-white'>
+                Recent Reports
               </h2>
-              <span className='rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-600'>
-                7 remaining
-              </span>
+              <Link
+                href='#'
+                className='text-sm text-zinc-400 transition-colors hover:text-white'>
+                View all
+              </Link>
             </div>
-            <div className='space-y-3'>
-              {[
-                {
-                  task: 'Site safety inspection',
-                  time: '9:00 AM',
-                  completed: true,
-                },
-                {
-                  task: 'Team briefing',
-                  time: '9:30 AM',
-                  completed: true,
-                },
-                {
-                  task: 'Foundation inspection',
-                  time: '11:00 AM',
-                  completed: false,
-                },
-                {
-                  task: 'Material delivery check',
-                  time: '2:00 PM',
-                  completed: false,
-                },
-              ].map((item) => (
-                <div
-                  key={item.task}
-                  className='flex items-center justify-between rounded-lg border border-gray-200 p-3'>
-                  <div className='flex items-center'>
-                    <input
-                      type='checkbox'
-                      checked={item.completed}
-                      readOnly
-                      className='size-4 rounded border-gray-300 text-blue-600'
-                    />
-                    <span
-                      className={`ml-3 ${
-                        item.completed ? 'text-gray-400 line-through' : ''
-                      }`}>
-                      {item.task}
-                    </span>
+            <div className='mt-4 rounded-2xl border border-white/[0.1] bg-white/[0.02]'>
+              <div className='divide-y divide-white/[0.1]'>
+                {recentReports.map((report) => (
+                  <div
+                    key={report.id}
+                    className='flex items-center justify-between p-4'>
+                    <div className='flex items-center gap-4'>
+                      <div className='flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-b from-blue-500/10 to-blue-600/10'>
+                        <FileText className='h-5 w-5 text-blue-500' />
+                      </div>
+                      <div>
+                        <h3 className='font-medium text-white'>
+                          {report.project}
+                        </h3>
+                        <div className='flex items-center gap-3 text-sm text-zinc-400'>
+                          <span className='flex items-center gap-1'>
+                            <Calendar className='h-3 w-3' />
+                            {report.date}
+                          </span>
+                          <span className='flex items-center gap-1'>
+                            <Clock className='h-3 w-3' />
+                            {report.views} views
+                          </span>
+                          <span className='flex items-center gap-1'>
+                            <User className='h-3 w-3' />
+                            {report.author}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className='flex items-center gap-3'>
+                      <span
+                        className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                          report.status === 'Completed'
+                            ? 'bg-green-500/10 text-green-400'
+                            : report.status === 'Pending Review'
+                              ? 'bg-yellow-500/10 text-yellow-400'
+                              : 'bg-zinc-500/10 text-zinc-400'
+                        }`}>
+                        {report.status}
+                      </span>
+                      <button className='flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/5 text-zinc-400 transition-colors hover:text-white'>
+                        <Mail className='h-4 w-4' />
+                      </button>
+                    </div>
                   </div>
-                  <span className='text-sm text-gray-500'>{item.time}</span>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         </div>
