@@ -2,11 +2,12 @@ import Link from 'next/link';
 
 import {
   ChevronRight,
-  Clock,
+  Download,
   FileText,
+  GripVertical,
   LayoutDashboard,
-  PieChart,
-  Users,
+  PenLine,
+  Settings2,
 } from 'lucide-react';
 
 export default function Home() {
@@ -16,26 +17,25 @@ export default function Home() {
       <div className='relative mx-auto max-w-7xl px-4 pt-32 sm:px-6 lg:pt-40'>
         <div className='text-center'>
           <h1 className='bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text pb-4 text-5xl font-bold tracking-tight text-transparent sm:text-7xl dark:from-white dark:to-zinc-400'>
-            Construction Management,
+            Construction Reporting
             <br />
             Reimagined
           </h1>
           <p className='mx-auto mt-6 max-w-2xl text-lg text-gray-600 dark:text-zinc-400'>
-            The most powerful dashboard for construction managers. Track
-            projects, manage resources, and make data-driven decisions in
-            real-time.
+            Create professional construction reports in minutes with our
+            intuitive drag-and-drop editor and customizable templates.
           </p>
           <div className='mt-10 flex items-center justify-center gap-4'>
             <Link
-              href='/auth/signup'
+              href='/editor'
               className='group inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-b from-blue-500 to-blue-600 px-6 py-3 text-sm font-medium text-white transition-all duration-200 hover:from-blue-400 hover:to-blue-500 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]'>
-              Start your free trial
+              Try the editor
               <ChevronRight className='size-4 transition-transform duration-200 group-hover:translate-x-0.5' />
             </Link>
             <Link
               href='#'
               className='group inline-flex items-center justify-center gap-2 rounded-full border border-gray-200 bg-white px-6 py-3 text-sm font-medium text-gray-900 transition-all duration-200 hover:border-gray-300 hover:bg-gray-50 hover:shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10 dark:hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]'>
-              Request demo
+              Watch demo
               <ChevronRight className='size-4 transition-transform duration-200 group-hover:translate-x-0.5' />
             </Link>
           </div>
@@ -45,40 +45,40 @@ export default function Home() {
         <div className='grid gap-8 py-32 sm:grid-cols-2 lg:grid-cols-3'>
           {[
             {
+              icon: GripVertical,
+              title: 'Drag & Drop Editor',
+              description:
+                'Easily reorganize report sections with intuitive drag-and-drop functionality.',
+            },
+            {
+              icon: Download,
+              title: 'PDF Export',
+              description:
+                'Generate professional PDF reports with a single click for easy sharing.',
+            },
+            {
               icon: LayoutDashboard,
-              title: 'Real-time Progress Tracking',
+              title: 'Customizable Templates',
               description:
-                'Monitor construction progress with live updates and detailed analytics.',
+                'Start with pre-built templates or create your own to match your needs.',
             },
             {
-              icon: Users,
-              title: 'Resource Management',
+              icon: Settings2,
+              title: 'Section Controls',
               description:
-                'Efficiently allocate workers, equipment, and materials across projects.',
+                'Show or hide report sections instantly to create the perfect layout.',
             },
             {
-              icon: Clock,
-              title: 'Smart Scheduling',
+              icon: PenLine,
+              title: 'Rich Content Editor',
               description:
-                "AI-powered scheduling that adapts to your project's changing needs.",
+                'Add photos, signatures, and detailed notes to your reports.',
             },
             {
               icon: FileText,
-              title: 'Document Control',
+              title: 'Smart Forms',
               description:
-                'Centralized storage for plans, permits, and project documentation.',
-            },
-            {
-              icon: PieChart,
-              title: 'Cost Monitoring',
-              description:
-                'Track budgets and expenses with powerful financial tools.',
-            },
-            {
-              icon: Users,
-              title: 'Team Collaboration',
-              description:
-                'Keep everyone aligned with built-in communication tools.',
+                'Auto-populate fields and validate data for accurate reporting.',
             },
           ].map((feature, i) => {
             const Icon = feature.icon;
