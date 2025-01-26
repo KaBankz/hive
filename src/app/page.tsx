@@ -27,9 +27,9 @@ export default function Home() {
           </p>
           <div className='mt-10 flex items-center justify-center gap-4'>
             <Link
-              href='/editor'
+              href='/auth/signup'
               className='group inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-b from-blue-500 to-blue-600 px-6 py-3 text-sm font-medium text-white transition-all duration-200 hover:from-blue-400 hover:to-blue-500 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]'>
-              Try the editor
+              Get Started
               <ChevronRight className='size-4 transition-transform duration-200 group-hover:translate-x-0.5' />
             </Link>
             <Link
