@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { MessageCircle, Upload, X } from 'lucide-react';
 
@@ -16,6 +16,27 @@ export function ChatButton() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [uploadedPdf, setUploadedPdf] = useState<File | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  // Scroll to bottom when messages change or chat opens
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, isOpen]);
+
+  // Auto-resize textarea as content changes
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = 'auto';
+      textarea.style.height = `${textarea.scrollHeight}px`;
+    }
+  }, [inputMessage]);
 
   const handlePdfUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -37,6 +58,7 @@ export function ChatButton() {
 
     setMessages((prev) => [...prev, newMessage]);
     setInputMessage('');
+    setIsLoading(true);
 
     try {
       const formData = new FormData();
@@ -72,6 +94,8 @@ export function ChatButton() {
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, errorMessage]);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -80,59 +104,85 @@ export function ChatButton() {
       {/* Floating Button */}
       <button
         onClick={() => setIsOpen(true)}
-        className='fixed bottom-6 right-6 flex size-14 items-center justify-center rounded-full bg-blue-600 text-white shadow-lg transition-all duration-200 hover:scale-105 hover:bg-blue-700'
+        className='fixed bottom-6 right-6 flex size-14 items-center justify-center rounded-full bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-blue-500/25'
         aria-label='Open chat'>
         <MessageCircle className='size-6' />
       </button>
 
       {/* Chat Modal */}
       {isOpen && (
-        <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/50'>
-          <div className='fixed bottom-4 right-4 flex h-[600px] w-96 flex-col rounded-lg bg-white shadow-xl dark:bg-zinc-900'>
+        <div className='fixed inset-0 z-50 flex items-end justify-end p-4 sm:items-center sm:justify-center'>
+          <div
+            className='absolute inset-0 bg-black/30 backdrop-blur-sm transition-opacity'
+            onClick={() => setIsOpen(false)}
+          />
+          <div className='relative flex h-[600px] w-full max-w-[400px] flex-col overflow-hidden rounded-2xl bg-white shadow-2xl transition-all duration-300 sm:h-[650px] dark:bg-zinc-900'>
             {/* Header */}
-            <div className='flex items-center justify-between border-b p-4 dark:border-zinc-700'>
-              <h2 className='text-lg font-semibold'>HiveMind</h2>
+            <div className='flex items-center justify-between border-b bg-white/50 p-4 pb-2 backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-900/50'>
+              <h2 className='text-lg font-semibold text-gray-800 dark:text-white'>
+                HiveMind
+              </h2>
               <button
                 onClick={() => setIsOpen(false)}
-                className='text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
+                className='rounded-full p-1 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-zinc-800 dark:hover:text-gray-200'
                 aria-label='Close chat'>
                 <X className='size-5' />
               </button>
             </div>
 
             {/* Chat Messages Area */}
-            <div className='flex-1 overflow-y-auto p-4'>
+            <div className='flex-1 overflow-y-auto bg-gray-50/50 p-4 dark:bg-zinc-900/50'>
               {messages.length === 0 ? (
-                <div className='text-center text-gray-500 dark:text-gray-400'>
-                  Start a conversation...
+                <div className='flex h-full flex-col items-center justify-center space-y-4 text-center'>
+                  <div className='rounded-full bg-blue-100 p-4 dark:bg-blue-900/25'>
+                    <MessageCircle className='size-8 text-blue-600 dark:text-blue-400' />
+                  </div>
+                  <div>
+                    <h3 className='text-lg font-semibold text-gray-800 dark:text-white'>
+                      Welcome to HiveMind
+                    </h3>
+                    <p className='text-sm text-gray-500 dark:text-gray-400'>
+                      Start a conversation or upload a PDF to begin
+                    </p>
+                  </div>
                 </div>
               ) : (
                 <div className='flex flex-col gap-4'>
                   {messages.map((message) => (
                     <div
                       key={message.id}
-                      className={`flex ${
+                      className={`animate-fade-in flex ${
                         message.sender === 'user'
                           ? 'justify-end'
                           : 'justify-start'
                       }`}>
                       <div
-                        className={`max-w-[80%] rounded-lg px-4 py-2 ${
+                        className={`max-w-[85%] rounded-2xl px-4 py-2.5 shadow-sm ${
                           message.sender === 'user'
-                            ? 'bg-blue-600 text-white'
-                            : 'bg-gray-100 dark:bg-zinc-800'
+                            ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white'
+                            : 'bg-white dark:bg-zinc-800'
                         }`}>
                         {message.text}
                       </div>
                     </div>
                   ))}
+                  {isLoading && (
+                    <div className='flex justify-start'>
+                      <div className='flex max-w-[85%] items-center gap-2 rounded-2xl bg-white px-5 py-3 shadow-sm dark:bg-zinc-800'>
+                        <div className='size-2.5 animate-bounce rounded-full bg-blue-500 opacity-75 [animation-delay:-0.3s]'></div>
+                        <div className='size-2.5 animate-bounce rounded-full bg-blue-500 opacity-75 [animation-delay:-0.15s]'></div>
+                        <div className='size-2.5 animate-bounce rounded-full bg-blue-500 opacity-75'></div>
+                      </div>
+                    </div>
+                  )}
+                  <div ref={messagesEndRef} />
                 </div>
               )}
             </div>
 
             {/* Input Area */}
-            <div className='border-t p-4 dark:border-zinc-700'>
-              <div className='mb-2 flex items-center gap-2'>
+            <div className='border-t bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900'>
+              <div className='mb-3 flex items-center gap-2'>
                 <input
                   type='file'
                   accept='.pdf'
@@ -142,29 +192,37 @@ export function ChatButton() {
                 />
                 <label
                   htmlFor='pdf-upload'
-                  className='flex cursor-pointer items-center gap-2 rounded-lg border border-gray-300 px-3 py-1.5 text-sm hover:bg-gray-100 dark:border-zinc-700 dark:hover:bg-zinc-800'>
+                  className='flex cursor-pointer items-center gap-2 rounded-xl border border-gray-200 bg-gray-50 px-3 py-1.5 text-sm text-gray-600 transition-colors hover:bg-gray-100 dark:border-zinc-700 dark:bg-zinc-800 dark:text-gray-300 dark:hover:bg-zinc-700'>
                   <Upload className='size-4' />
                   {uploadedPdf ? uploadedPdf.name : 'Upload PDF'}
                 </label>
                 {uploadedPdf && (
                   <button
                     onClick={() => setUploadedPdf(null)}
-                    className='text-sm text-red-500 hover:text-red-600'>
+                    className='text-sm font-medium text-red-500 transition-colors hover:text-red-600 dark:text-red-400 dark:hover:text-red-300'>
                     Remove
                   </button>
                 )}
               </div>
               <form className='flex gap-2' onSubmit={handleSubmit}>
-                <input
-                  type='text'
+                <textarea
+                  ref={textareaRef}
+                  rows={1}
                   value={inputMessage}
                   onChange={(e) => setInputMessage(e.target.value)}
                   placeholder='Type your message...'
-                  className='flex-1 rounded-lg border bg-transparent px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-zinc-700'
+                  className='flex-1 resize-none rounded-xl border border-gray-200 bg-gray-50 px-4 py-2.5 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/10 dark:border-zinc-700 dark:bg-zinc-800 dark:placeholder:text-gray-500 dark:focus:border-blue-400 dark:focus:ring-blue-400/10'
+                  style={{ minHeight: '42px', maxHeight: '160px' }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      handleSubmit(e);
+                    }
+                  }}
                 />
                 <button
                   type='submit'
-                  className='rounded-lg bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700'>
+                  className='rounded-xl bg-gradient-to-r from-blue-600 to-blue-500 px-4 py-2.5 font-medium text-white shadow-lg shadow-blue-500/25 transition-all hover:scale-105 hover:shadow-xl hover:shadow-blue-500/25 focus:outline-none focus:ring-4 focus:ring-blue-500/10 disabled:cursor-not-allowed disabled:opacity-50'>
                   Send
                 </button>
               </form>
