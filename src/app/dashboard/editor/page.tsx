@@ -192,15 +192,15 @@ export default function EditorPage() {
                 id='document-container'
                 className='mx-auto w-[8.27in] rounded-lg bg-white p-8 shadow-lg ring-1 ring-black/[0.1]'>
                 {/* Company Header */}
-                <div className='mb-12 border-b border-gray-200 pb-6'>
+                <div className='mb-8 border-b border-gray-200 pb-4'>
                   <div className='flex items-center justify-between'>
-                    <h1 className='text-xl font-semibold text-blue-500'>
+                    <h1 className='text-lg font-semibold text-blue-500'>
                       {dailyReportData.companyName}
                     </h1>
                     <Image
                       src={dailyReportData.companyLogo}
                       alt='Company Logo'
-                      className='h-8'
+                      className='h-6'
                       width={100}
                       height={100}
                     />
@@ -208,7 +208,7 @@ export default function EditorPage() {
                 </div>
 
                 {/* Document Content */}
-                <div className='space-y-12'>
+                <div className='space-y-8'>
                   {/* Render sections in order */}
                   {orderedSections.map((section) => {
                     if (!sectionVisibility[section.id]) return null;
@@ -222,32 +222,32 @@ export default function EditorPage() {
                             <table className='w-full'>
                               <thead>
                                 <tr className='border-b border-gray-200 bg-gray-50/50'>
-                                  <th className='p-4 text-left text-sm font-medium text-gray-600'>
+                                  <th className='p-3 text-left text-xs font-medium text-gray-600'>
                                     Date
                                   </th>
-                                  <th className='p-4 text-left text-sm font-medium text-gray-600'>
+                                  <th className='p-3 text-left text-xs font-medium text-gray-600'>
                                     Project #
                                   </th>
-                                  <th className='p-4 text-left text-sm font-medium text-gray-600'>
+                                  <th className='p-3 text-left text-xs font-medium text-gray-600'>
                                     Project Name
                                   </th>
-                                  <th className='p-4 text-left text-sm font-medium text-gray-600'>
+                                  <th className='p-3 text-left text-xs font-medium text-gray-600'>
                                     Printed By
                                   </th>
                                 </tr>
                               </thead>
                               <tbody>
                                 <tr>
-                                  <td className='p-4 font-medium text-gray-900'>
+                                  <td className='p-3 text-xs font-medium text-gray-900'>
                                     {selectedProject.dailyLogDate}
                                   </td>
-                                  <td className='p-4 font-medium text-gray-900'>
+                                  <td className='p-3 text-xs font-medium text-gray-900'>
                                     {selectedProject.projectNumber}
                                   </td>
-                                  <td className='p-4 font-medium text-gray-900'>
+                                  <td className='p-3 text-xs font-medium text-gray-900'>
                                     {selectedProject.projectName}
                                   </td>
-                                  <td className='p-4 font-medium text-gray-900'>
+                                  <td className='p-3 text-xs font-medium text-gray-900'>
                                     {dailyReportData.printedBy}
                                   </td>
                                 </tr>
@@ -261,23 +261,23 @@ export default function EditorPage() {
                             <div
                               key='weather'
                               className='overflow-hidden rounded-lg border border-gray-200 bg-white/50'>
-                              <div className='border-b border-gray-200 bg-gray-50/50 px-6 py-4'>
-                                <h2 className='text-center text-sm font-semibold uppercase text-gray-700'>
+                              <div className='border-b border-gray-200 bg-gray-50/50 px-4 py-3'>
+                                <h2 className='text-center text-xs font-semibold uppercase text-gray-700'>
                                   Weather
                                 </h2>
                               </div>
                               <div className='grid grid-cols-3 divide-x divide-gray-200'>
                                 {selectedProject.weather.summary.map(
                                   (weather: WeatherSummary, idx: number) => (
-                                    <div key={idx} className='p-6 text-center'>
-                                      <div className='text-sm font-medium text-gray-600'>
+                                    <div key={idx} className='p-4 text-center'>
+                                      <div className='text-xs font-medium text-gray-600'>
                                         {weather.forecastTimeTzFormatted}
                                       </div>
-                                      <div className='mt-2 text-2xl font-semibold text-blue-500'>
+                                      <div className='mt-2 text-lg font-semibold text-blue-500'>
                                         <i className={weather.iconForecast}></i>{' '}
                                         {weather.tempF}°
                                       </div>
-                                      <div className='mt-2 text-xs text-gray-500'>
+                                      <div className='mt-2 text-[10px] text-gray-500'>
                                         <span className='font-medium text-gray-700'>
                                           Wind:
                                         </span>{' '}
@@ -305,26 +305,26 @@ export default function EditorPage() {
                             <div
                               key='labor'
                               className='overflow-hidden rounded-lg border border-gray-200 bg-white/50'>
-                              <div className='border-b border-gray-200 bg-gray-50/50 px-6 py-4'>
-                                <h2 className='text-center text-sm font-semibold uppercase text-gray-700'>
+                              <div className='border-b border-gray-200 bg-gray-50/50 px-4 py-3'>
+                                <h2 className='text-center text-xs font-semibold uppercase text-gray-700'>
                                   Labor
                                 </h2>
                               </div>
-                              <div className='p-6'>
+                              <div className='p-4'>
                                 <table className='w-full'>
                                   <thead>
                                     <tr className='border-b border-gray-200'>
-                                      <th className='pb-3 text-left text-sm font-medium text-gray-600'>
+                                      <th className='pb-2 text-left text-xs font-medium text-gray-600'>
                                         Name
                                       </th>
-                                      <th className='pb-3 text-left text-sm font-medium text-gray-600'>
+                                      <th className='pb-2 text-left text-xs font-medium text-gray-600'>
                                         Cost Code
                                       </th>
-                                      <th className='pb-3 text-right text-sm font-medium text-gray-600'>
+                                      <th className='pb-2 text-right text-xs font-medium text-gray-600'>
                                         {dailyReportData.hoursLabels}
                                       </th>
                                       {selectedProject.labor.hasNotes && (
-                                        <th className='pb-3 text-left text-sm font-medium text-gray-600'>
+                                        <th className='pb-2 text-left text-xs font-medium text-gray-600'>
                                           Notes
                                         </th>
                                       )}
@@ -338,11 +338,11 @@ export default function EditorPage() {
                                           className={cn(
                                             idx % 2 === 0 ? 'bg-gray-50/50' : ''
                                           )}>
-                                          <td className='py-4 pl-4'>
-                                            <div className='font-medium text-gray-900'>
+                                          <td className='py-3 pl-3'>
+                                            <div className='text-xs font-medium text-gray-900'>
                                               {labor.nameRow.nameCell.crewName}
                                             </div>
-                                            <div className='mt-1 text-sm text-gray-500'>
+                                            <div className='mt-1 text-[10px] text-gray-500'>
                                               {labor.nameRow.nameCell.crewHours}
                                             </div>
                                             {labor.nameRow.nameCell
@@ -354,11 +354,11 @@ export default function EditorPage() {
                                                       .signatureFileUrl
                                                   }
                                                   alt='Signature'
-                                                  className='h-12 w-24 object-contain'
+                                                  className='h-8 w-16 object-contain'
                                                   width={100}
                                                   height={100}
                                                 />
-                                                <div className='mt-1 text-[10px] text-gray-500'>
+                                                <div className='mt-1 text-[8px] text-gray-500'>
                                                   Signed{' '}
                                                   {
                                                     labor.nameRow.nameCell
@@ -368,25 +368,25 @@ export default function EditorPage() {
                                               </div>
                                             )}
                                           </td>
-                                          <td className='p-4'>
-                                            <div className='font-medium text-gray-900'>
+                                          <td className='p-3'>
+                                            <div className='text-xs font-medium text-gray-900'>
                                               {
                                                 labor.nameRow.costCodeCell
                                                   .costCode
                                               }
                                             </div>
-                                            <div className='mt-1 text-sm text-gray-500'>
+                                            <div className='mt-1 text-[10px] text-gray-500'>
                                               {
                                                 labor.nameRow.costCodeCell
                                                   .budgetCodeDescription
                                               }
                                             </div>
                                           </td>
-                                          <td className='p-4 text-right text-sm text-gray-900'>
+                                          <td className='p-3 text-right text-xs text-gray-900'>
                                             {labor.nameRow.hoursCell.hours}
                                           </td>
                                           {selectedProject.labor.hasNotes && (
-                                            <td className='p-4 text-sm text-gray-500'>
+                                            <td className='p-3 text-[10px] text-gray-500'>
                                               {labor.nameRow.notesCell}
                                             </td>
                                           )}
@@ -396,10 +396,10 @@ export default function EditorPage() {
                                     <tr className='border-t border-gray-200 bg-gray-50/80'>
                                       <td
                                         colSpan={2}
-                                        className='p-4 text-right font-medium text-gray-900'>
+                                        className='p-3 text-right text-xs font-medium text-gray-900'>
                                         TOTAL
                                       </td>
-                                      <td className='p-4 text-right font-medium text-gray-900'>
+                                      <td className='p-3 text-right text-xs font-medium text-gray-900'>
                                         {selectedProject?.labor?.totalHours}
                                       </td>
                                       {selectedProject?.labor?.hasNotes && (
@@ -419,26 +419,26 @@ export default function EditorPage() {
                             <div
                               key='equipment'
                               className='overflow-hidden rounded-lg border border-gray-200 bg-white/50'>
-                              <div className='border-b border-gray-200 bg-gray-50/50 px-6 py-4'>
-                                <h2 className='text-center text-sm font-semibold uppercase text-gray-700'>
+                              <div className='border-b border-gray-200 bg-gray-50/50 px-4 py-3'>
+                                <h2 className='text-center text-xs font-semibold uppercase text-gray-700'>
                                   Equipment
                                 </h2>
                               </div>
-                              <div className='p-6'>
+                              <div className='p-4'>
                                 <table className='w-full'>
                                   <thead>
                                     <tr className='border-b border-gray-200'>
-                                      <th className='pb-3 text-left text-sm font-medium text-gray-600'>
+                                      <th className='pb-2 text-left text-xs font-medium text-gray-600'>
                                         Name
                                       </th>
-                                      <th className='pb-3 text-left text-sm font-medium text-gray-600'>
+                                      <th className='pb-2 text-left text-xs font-medium text-gray-600'>
                                         Cost Code
                                       </th>
-                                      <th className='pb-3 text-right text-sm font-medium text-gray-600'>
+                                      <th className='pb-2 text-right text-xs font-medium text-gray-600'>
                                         {dailyReportData.hoursLabels}
                                       </th>
                                       {selectedProject.equipment.hasNotes && (
-                                        <th className='pb-3 text-left text-sm font-medium text-gray-600'>
+                                        <th className='pb-2 text-left text-xs font-medium text-gray-600'>
                                           Notes
                                         </th>
                                       )}
@@ -458,7 +458,7 @@ export default function EditorPage() {
                                                 : ''
                                             )}>
                                             <td
-                                              className='p-4'
+                                              className='p-3'
                                               rowSpan={
                                                 equipment.additionalCostCodeRows
                                                   ?.length
@@ -467,13 +467,13 @@ export default function EditorPage() {
                                                       .length + 1
                                                   : 1
                                               }>
-                                              <div className='font-medium text-gray-900'>
+                                              <div className='text-xs font-medium text-gray-900'>
                                                 {
                                                   equipment.nameRow.nameCell
                                                     .equipName
                                                 }
                                               </div>
-                                              <div className='mt-1 text-sm text-gray-500'>
+                                              <div className='mt-1 text-[10px] text-gray-500'>
                                                 {
                                                   equipment.nameRow.nameCell
                                                     .equipHours
@@ -483,32 +483,32 @@ export default function EditorPage() {
                                                 (tag, tagIdx) => (
                                                   <span
                                                     key={tagIdx}
-                                                    className='mt-2 inline-flex items-center gap-1 rounded-full bg-gray-100 px-2 py-1 text-xs font-medium'
+                                                    className='mt-1 inline-flex items-center gap-1 rounded-full bg-gray-100 px-1.5 py-0.5 text-[10px] font-medium'
                                                     style={{
                                                       color: tag.color,
                                                     }}>
-                                                    <Tag size={12} />
+                                                    <Tag size={8} />
                                                     {tag.label}
                                                   </span>
                                                 )
                                               )}
                                             </td>
-                                            <td className='p-4'>
-                                              <div className='font-medium text-gray-900'>
+                                            <td className='p-3'>
+                                              <div className='text-xs font-medium text-gray-900'>
                                                 {
                                                   equipment.nameRow.costCodeCell
                                                     .costCode
                                                 }
                                               </div>
-                                              <div className='mt-1 text-sm text-gray-500'>
+                                              <div className='mt-1 text-[10px] text-gray-500'>
                                                 {
                                                   equipment.nameRow.costCodeCell
                                                     .budgetCodeDescription
                                                 }
                                               </div>
                                             </td>
-                                            <td className='p-4 text-right'>
-                                              <div className='text-sm text-gray-900'>
+                                            <td className='p-3 text-right'>
+                                              <div className='text-xs text-gray-900'>
                                                 {
                                                   equipment.nameRow.hoursCell
                                                     .hours
@@ -518,11 +518,11 @@ export default function EditorPage() {
                                                 (tag, tagIdx) => (
                                                   <span
                                                     key={tagIdx}
-                                                    className='mt-2 inline-flex items-center gap-1 rounded-full bg-gray-100 px-2 py-1 text-xs font-medium'
+                                                    className='mt-1 inline-flex items-center gap-1 rounded-full bg-gray-100 px-1.5 py-0.5 text-[10px] font-medium'
                                                     style={{
                                                       color: tag.color,
                                                     }}>
-                                                    <Tag size={12} />
+                                                    <Tag size={8} />
                                                     {tag.label}
                                                   </span>
                                                 )
@@ -530,7 +530,7 @@ export default function EditorPage() {
                                             </td>
                                             {selectedProject.equipment
                                               .hasNotes && (
-                                              <td className='p-4 text-sm text-gray-500'>
+                                              <td className='p-3 text-[10px] text-gray-500'>
                                                 {equipment.nameRow.notesCell}
                                               </td>
                                             )}
@@ -544,23 +544,23 @@ export default function EditorPage() {
                                                     ? 'bg-gray-50/50'
                                                     : ''
                                                 )}>
-                                                <td className='p-4'>
-                                                  <div className='font-medium text-gray-900'>
+                                                <td className='p-3'>
+                                                  <div className='text-xs font-medium text-gray-900'>
                                                     {row.costCodeCell.costCode}
                                                   </div>
-                                                  <div className='mt-1 text-sm text-gray-500'>
+                                                  <div className='mt-1 text-[10px] text-gray-500'>
                                                     {
                                                       row.costCodeCell
                                                         .budgetCodeDescription
                                                     }
                                                   </div>
                                                 </td>
-                                                <td className='p-4 text-right text-sm text-gray-900'>
+                                                <td className='p-3 text-right text-xs text-gray-900'>
                                                   {row.hoursCell.hours}
                                                 </td>
                                                 {selectedProject.equipment
                                                   .hasNotes && (
-                                                  <td className='p-4 text-sm text-gray-500'>
+                                                  <td className='p-3 text-[10px] text-gray-500'>
                                                     {row.notesCell}
                                                   </td>
                                                 )}
@@ -573,10 +573,10 @@ export default function EditorPage() {
                                     <tr className='border-t border-gray-200 bg-gray-50/80'>
                                       <td
                                         colSpan={2}
-                                        className='p-4 text-right font-medium text-gray-900'>
+                                        className='p-3 text-right text-xs font-medium text-gray-900'>
                                         TOTAL
                                       </td>
-                                      <td className='p-4 text-right font-medium text-gray-900'>
+                                      <td className='p-3 text-right text-xs font-medium text-gray-900'>
                                         {selectedProject?.equipment?.totalHours}
                                       </td>
                                       {selectedProject?.equipment?.hasNotes && (
@@ -594,19 +594,19 @@ export default function EditorPage() {
                           <div
                             key='photos'
                             className='overflow-hidden rounded-lg border border-gray-200 bg-white/50'>
-                            <div className='border-b border-gray-200 bg-gray-50/50 px-6 py-4'>
-                              <h2 className='text-center text-sm font-semibold uppercase text-gray-700'>
+                            <div className='border-b border-gray-200 bg-gray-50/50 px-4 py-3'>
+                              <h2 className='text-center text-xs font-semibold uppercase text-gray-700'>
                                 Site Photos
                               </h2>
                             </div>
-                            <div className='grid grid-cols-2 gap-6 p-6'>
+                            <div className='grid grid-cols-2 gap-4 p-4'>
                               {[
                                 '/site1.jpeg',
                                 '/site2.jpeg',
                                 '/site3.jpeg',
                                 '/site4.jpeg',
                               ].map((photo, idx) => (
-                                <div key={idx} className='space-y-3'>
+                                <div key={idx} className='space-y-2'>
                                   <div className='relative aspect-[4/3] w-full overflow-hidden rounded-lg'>
                                     <Image
                                       src={photo}
@@ -615,7 +615,7 @@ export default function EditorPage() {
                                       className='object-cover'
                                     />
                                   </div>
-                                  <p className='text-sm text-gray-500'>
+                                  <p className='text-[10px] text-gray-500'>
                                     Construction progress photo {idx + 1}
                                   </p>
                                 </div>
