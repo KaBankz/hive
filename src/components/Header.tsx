@@ -66,12 +66,12 @@ export async function Header() {
           ) : (
             <>
               <Link
-                href='/auth/login'
+                href='/login'
                 className='text-sm text-gray-600 transition-colors duration-200 hover:text-gray-900 dark:text-zinc-400 dark:hover:text-white'>
                 Log in
               </Link>
               <Link
-                href='/auth/signup'
+                href='/signup'
                 className='group inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-b from-blue-500 to-blue-600 px-4 py-2 text-sm font-medium text-white transition-all duration-200 hover:from-blue-400 hover:to-blue-500 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]'>
                 Get Started
                 <ChevronRight className='size-4 transition-transform duration-200 group-hover:translate-x-0.5' />
