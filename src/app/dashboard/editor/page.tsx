@@ -97,6 +97,17 @@ type SectionConfig = {
   icon: React.ReactNode;
 };
 
+// Helper function to sort items based on order
+const sortByOrder = <T,>(
+  items: T[],
+  order: string[],
+  getKey: (item: T) => string
+): T[] => {
+  return [...items].sort(
+    (a, b) => order.indexOf(getKey(a)) - order.indexOf(getKey(b))
+  );
+};
+
 export default function EditorPage() {
   const searchParams = useSearchParams();
   const projectIndex = parseInt(searchParams.get('project') || '0');
@@ -200,18 +211,63 @@ export default function EditorPage() {
     );
   });
 
+  // Track sub-item order
+  const [subItemOrder, setSubItemOrder] = useState<{
+    [K in keyof SubItemVisibility]: string[];
+  }>(() => {
+    const selectedProject = dailyReportData.dailyLogs[projectIndex];
+    return {
+      weather:
+        selectedProject.weather?.summary.map(
+          (w) => w.forecastTimeTzFormatted
+        ) || [],
+      labor:
+        selectedProject.labor?.details.map(
+          (l) => l.nameRow.nameCell.crewName
+        ) || [],
+      equipment:
+        selectedProject.equipment?.details.map(
+          (e) => e.nameRow.nameCell.equipName
+        ) || [],
+      photos:
+        selectedProject.images?.details.map(
+          (p, idx) => p.url || `photo-${idx}`
+        ) || [],
+    };
+  });
+
   const orderedSections = sectionOrder
     .map((id) => availableSections.find((s) => s.id === id))
     .filter(Boolean) as SectionConfig[];
 
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event;
-    if (active.id !== over?.id) {
+
+    if (!over) return;
+
+    // Handle section reordering
+    if (active.data.current?.type === 'section') {
       setSectionOrder((items) => {
         const oldIndex = items.indexOf(active.id as keyof SectionVisibility);
-        const newIndex = items.indexOf(over?.id as keyof SectionVisibility);
+        const newIndex = items.indexOf(over.id as keyof SectionVisibility);
         return arrayMove(items, oldIndex, newIndex);
       });
+    }
+    // Handle sub-item reordering
+    else if (
+      active.data.current?.type === 'sub-item' &&
+      active.data.current?.sectionId
+    ) {
+      const sectionId = active.data.current
+        .sectionId as keyof SubItemVisibility;
+      setSubItemOrder((prev) => ({
+        ...prev,
+        [sectionId]: arrayMove(
+          prev[sectionId],
+          prev[sectionId].indexOf(active.id as string),
+          prev[sectionId].indexOf(over.id as string)
+        ),
+      }));
     }
   }
 
@@ -303,7 +359,6 @@ export default function EditorPage() {
 
                 {/* Document Content */}
                 <div className='space-y-8'>
-                  {/* Render sections in order */}
                   {orderedSections.map((section) => {
                     if (!sectionVisibility[section.id]) return null;
 
@@ -361,13 +416,18 @@ export default function EditorPage() {
                                 </h2>
                               </div>
                               <div className='grid grid-cols-3 divide-x divide-gray-200'>
-                                {selectedProject.weather.summary.map(
-                                  (weather: WeatherSummary, idx: number) =>
+                                {sortByOrder(
+                                  selectedProject.weather
+                                    .summary as WeatherSummary[],
+                                  subItemOrder.weather,
+                                  (w) => w.forecastTimeTzFormatted
+                                ).map(
+                                  (weather) =>
                                     subItemVisibility.weather[
                                       weather.forecastTimeTzFormatted
                                     ] && (
                                       <div
-                                        key={idx}
+                                        key={weather.forecastTimeTzFormatted}
                                         className='p-4 text-center'>
                                         <div className='text-xs font-medium text-gray-600'>
                                           {weather.forecastTimeTzFormatted}
@@ -433,13 +493,19 @@ export default function EditorPage() {
                                     </tr>
                                   </thead>
                                   <tbody className='divide-y divide-gray-200'>
-                                    {selectedProject.labor.details.map(
+                                    {sortByOrder(
+                                      selectedProject.labor.details,
+                                      subItemOrder.labor,
+                                      (l) => l.nameRow.nameCell.crewName
+                                    ).map(
                                       (labor: LaborDetail, idx: number) =>
                                         subItemVisibility.labor[
                                           labor.nameRow.nameCell.crewName
                                         ] && (
                                           <tr
-                                            key={idx}
+                                            key={
+                                              labor.nameRow.nameCell.crewName
+                                            }
                                             className={cn(
                                               idx % 2 === 0
                                                 ? 'bg-gray-50/50'
@@ -559,7 +625,11 @@ export default function EditorPage() {
                                     </tr>
                                   </thead>
                                   <tbody className='divide-y divide-gray-200'>
-                                    {selectedProject.equipment.details.map(
+                                    {sortByOrder(
+                                      selectedProject.equipment.details,
+                                      subItemOrder.equipment,
+                                      (e) => e.nameRow.nameCell.equipName
+                                    ).map(
                                       (
                                         equipment: EquipmentDetail,
                                         idx: number
@@ -567,7 +637,11 @@ export default function EditorPage() {
                                         subItemVisibility.equipment[
                                           equipment.nameRow.nameCell.equipName
                                         ] && (
-                                          <Fragment key={`equip-${idx}`}>
+                                          <Fragment
+                                            key={
+                                              equipment.nameRow.nameCell
+                                                .equipName
+                                            }>
                                             <tr
                                               className={cn(
                                                 idx % 2 === 0
@@ -723,7 +797,13 @@ export default function EditorPage() {
                                 </h2>
                               </div>
                               <div className='grid grid-cols-2 gap-4 p-4'>
-                                {selectedProject.images.details.map(
+                                {sortByOrder(
+                                  selectedProject.images.details,
+                                  subItemOrder.photos,
+                                  (p) =>
+                                    p.url ||
+                                    `photo-${selectedProject.images.details.indexOf(p)}`
+                                ).map(
                                   (
                                     photo: { url: string; note: string },
                                     idx: number
@@ -731,7 +811,9 @@ export default function EditorPage() {
                                     subItemVisibility.photos[
                                       photo.url || `photo-${idx}`
                                     ] && (
-                                      <div key={idx} className='space-y-2'>
+                                      <div
+                                        key={photo.url || `photo-${idx}`}
+                                        className='space-y-2'>
                                         <div className='relative aspect-[4/3] w-full overflow-hidden rounded-lg'>
                                           <Image
                                             src={photo.url}
@@ -752,6 +834,8 @@ export default function EditorPage() {
                             </div>
                           )
                         );
+                      default:
+                        return null;
                     }
                   })}
                 </div>
@@ -773,6 +857,7 @@ export default function EditorPage() {
           showPageBreaks={showPageBreaks}
           onTogglePageBreaks={setShowPageBreaks}
           selectedProject={selectedProject}
+          subItemOrder={subItemOrder}
         />
       </div>
     </div>

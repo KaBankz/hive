@@ -58,6 +58,7 @@ type SidebarProps = {
   showPageBreaks?: boolean;
   onTogglePageBreaks?: (show: boolean) => void;
   selectedProject: any; // We should type this properly but using any for now
+  subItemOrder: { [K in keyof SubItemVisibility]: string[] };
 };
 
 export function Sidebar({
@@ -73,6 +74,7 @@ export function Sidebar({
   showPageBreaks = true,
   onTogglePageBreaks,
   selectedProject,
+  subItemOrder,
 }: SidebarProps) {
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -92,38 +94,48 @@ export function Sidebar({
   const getSubItems = (
     section: SectionConfig
   ): { id: string; label: string }[] => {
-    switch (section.id) {
-      case 'weather':
-        return (
-          selectedProject.weather?.summary.map((w: any) => ({
-            id: w.forecastTimeTzFormatted,
-            label: `${w.forecastTimeTzFormatted} - ${w.tempF}°F`,
-          })) || []
-        );
-      case 'labor':
-        return (
-          selectedProject.labor?.details.map((l: any) => ({
-            id: l.nameRow.nameCell.crewName,
-            label: l.nameRow.nameCell.crewName,
-          })) || []
-        );
-      case 'equipment':
-        return (
-          selectedProject.equipment?.details.map((e: any) => ({
-            id: e.nameRow.nameCell.equipName,
-            label: e.nameRow.nameCell.equipName,
-          })) || []
-        );
-      case 'photos':
-        return (
-          selectedProject.images?.details.map((p: any, idx: number) => ({
-            id: p.url || `photo-${idx}`,
-            label: p.note || `Photo ${idx + 1}`,
-          })) || []
-        );
-      default:
-        return [];
+    const items = (() => {
+      switch (section.id) {
+        case 'weather':
+          return (
+            selectedProject.weather?.summary.map((w: any) => ({
+              id: w.forecastTimeTzFormatted,
+              label: `${w.forecastTimeTzFormatted} - ${w.tempF}°F`,
+            })) || []
+          );
+        case 'labor':
+          return (
+            selectedProject.labor?.details.map((l: any) => ({
+              id: l.nameRow.nameCell.crewName,
+              label: l.nameRow.nameCell.crewName,
+            })) || []
+          );
+        case 'equipment':
+          return (
+            selectedProject.equipment?.details.map((e: any) => ({
+              id: e.nameRow.nameCell.equipName,
+              label: e.nameRow.nameCell.equipName,
+            })) || []
+          );
+        case 'photos':
+          return (
+            selectedProject.images?.details.map((p: any, idx: number) => ({
+              id: p.url || `photo-${idx}`,
+              label: p.note || `Photo ${idx + 1}`,
+            })) || []
+          );
+        default:
+          return [];
+      }
+    })();
+
+    // Sort items based on subItemOrder if available
+    if (subItemOrder[section.id as keyof SubItemVisibility]) {
+      const order = subItemOrder[section.id as keyof SubItemVisibility];
+      return items.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
     }
+
+    return items;
   };
 
   return (
@@ -207,24 +219,34 @@ export function Sidebar({
               items={sectionOrder}
               strategy={verticalListSortingStrategy}>
               <div className='space-y-4'>
-                {orderedSections.map((section) => (
-                  <SortableSection
-                    key={section.id}
-                    section={section}
-                    isVisible={sectionVisibility[section.id]}
-                    onToggle={() => toggleSection(section.id)}
-                    subItems={getSubItems(section)}
-                    subItemVisibility={
-                      subItemVisibility[section.id as keyof SubItemVisibility]
-                    }
-                    onToggleSubItem={(itemId) =>
-                      onToggleSubItem(
-                        section.id as keyof SubItemVisibility,
-                        itemId
-                      )
-                    }
-                  />
-                ))}
+                {orderedSections.map((section) => {
+                  const sectionSubItems = getSubItems(section);
+                  return (
+                    <div key={section.id}>
+                      <SortableContext
+                        items={sectionSubItems.map((item) => item.id)}
+                        strategy={verticalListSortingStrategy}>
+                        <SortableSection
+                          section={section}
+                          isVisible={sectionVisibility[section.id]}
+                          onToggle={() => toggleSection(section.id)}
+                          subItems={sectionSubItems}
+                          subItemVisibility={
+                            subItemVisibility[
+                              section.id as keyof SubItemVisibility
+                            ]
+                          }
+                          onToggleSubItem={(itemId) =>
+                            onToggleSubItem(
+                              section.id as keyof SubItemVisibility,
+                              itemId
+                            )
+                          }
+                        />
+                      </SortableContext>
+                    </div>
+                  );
+                })}
               </div>
             </SortableContext>
           </DndContext>

@@ -36,6 +36,74 @@ type SortableSectionProps = {
   onToggleSubItem?: (itemId: string) => void;
 };
 
+function SortableSubItem({
+  item,
+  isVisible,
+  onToggle,
+  sectionId,
+}: {
+  item: { id: string; label: string };
+  isVisible: boolean;
+  onToggle: () => void;
+  sectionId: keyof SectionVisibility;
+}) {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: item.id,
+    data: {
+      type: 'sub-item',
+      sectionId,
+    },
+  });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+  return (
+    <div ref={setNodeRef} style={style}>
+      <button
+        onClick={onToggle}
+        className={cn(
+          'flex w-full items-center justify-between rounded-md px-3 py-1.5 text-xs transition',
+          isVisible
+            ? 'bg-blue-50/50 text-blue-700 dark:bg-blue-950/50 dark:text-blue-300'
+            : 'text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-900'
+        )}>
+        <div className='flex items-center gap-2'>
+          <div
+            {...attributes}
+            {...listeners}
+            className='cursor-grab active:cursor-grabbing'>
+            <GripVertical
+              size={12}
+              className='text-gray-400 transition group-hover:text-gray-500 dark:text-gray-600 dark:group-hover:text-gray-500'
+            />
+          </div>
+          <span className='break-words text-left'>{item.label}</span>
+        </div>
+        <div
+          className={cn(
+            'flex size-4 flex-none items-center justify-center rounded-md border transition',
+            isVisible
+              ? 'border-blue-500 bg-blue-500 text-white dark:border-blue-400 dark:bg-blue-400'
+              : 'border-gray-300 group-hover:border-gray-400 dark:border-gray-700 dark:group-hover:border-gray-600'
+          )}>
+          {isVisible && <Check size={10} />}
+        </div>
+      </button>
+    </div>
+  );
+}
+
 export function SortableSection({
   section,
   isVisible,
@@ -52,7 +120,12 @@ export function SortableSection({
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: section.id });
+  } = useSortable({
+    id: section.id,
+    data: {
+      type: 'section',
+    },
+  });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -137,26 +210,13 @@ export function SortableSection({
         {hasSubItems && isExpanded && isVisible && (
           <div className='ml-11 space-y-1'>
             {subItems.map((item) => (
-              <button
+              <SortableSubItem
                 key={item.id}
-                onClick={() => onToggleSubItem?.(item.id)}
-                className={cn(
-                  'flex w-full items-center justify-between rounded-md px-3 py-1.5 text-xs transition',
-                  subItemVisibility?.[item.id]
-                    ? 'bg-blue-50/50 text-blue-700 dark:bg-blue-950/50 dark:text-blue-300'
-                    : 'text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-900'
-                )}>
-                <span className='mr-2 break-words text-left'>{item.label}</span>
-                <div
-                  className={cn(
-                    'flex size-4 flex-none items-center justify-center rounded-md border transition',
-                    subItemVisibility?.[item.id]
-                      ? 'border-blue-500 bg-blue-500 text-white dark:border-blue-400 dark:bg-blue-400'
-                      : 'border-gray-300 group-hover:border-gray-400 dark:border-gray-700 dark:group-hover:border-gray-600'
-                  )}>
-                  {subItemVisibility?.[item.id] && <Check size={10} />}
-                </div>
-              </button>
+                item={item}
+                isVisible={subItemVisibility?.[item.id] ?? false}
+                onToggle={() => onToggleSubItem?.(item.id)}
+                sectionId={section.id}
+              />
             ))}
           </div>
         )}
