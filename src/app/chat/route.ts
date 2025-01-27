@@ -1,10 +1,12 @@
 export async function POST(req: Request) {
   const formData = await req.formData();
 
-  const question = formData.get('question');
-  const file = formData.get('file');
+  const response = await fetch(`${process.env.API_URL}/ask`, {
+    method: 'POST',
+    body: formData,
+  });
 
-  console.log(question, file);
+  const data = await response.json();
 
-  return Response.json({ answer: 'Hello World' });
+  return Response.json(data);
 }
