@@ -151,7 +151,7 @@ export function ChatButton() {
                   {messages.map((message) => (
                     <div
                       key={message.id}
-                      className={`animate-fade-in flex ${
+                      className={`flex ${
                         message.sender === 'user'
                           ? 'justify-end'
                           : 'justify-start'
