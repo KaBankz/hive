@@ -39,6 +39,8 @@ import {
   Users,
 } from 'lucide-react';
 
+import { cn } from '@/utils/cn';
+
 import dailyReportData from '../../../../public/dailyReportData.json';
 
 interface WeatherSummary {
@@ -144,11 +146,12 @@ const SortableSection = ({
     <div ref={setNodeRef} style={style} className='touch-none'>
       <button
         onClick={onToggle}
-        className={`group flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm transition ${
+        className={cn(
+          'group flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm transition',
           isVisible
             ? 'bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300'
             : 'text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-900'
-        }`}>
+        )}>
         <div className='flex items-center gap-3'>
           <div
             {...attributes}
@@ -160,22 +163,24 @@ const SortableSection = ({
             />
           </div>
           <div
-            className={`flex size-5 items-center justify-center rounded-md border transition ${
+            className={cn(
+              'flex size-5 items-center justify-center rounded-md border transition',
               isVisible
                 ? 'border-blue-500 bg-blue-500 text-white dark:border-blue-400 dark:bg-blue-400'
                 : 'border-gray-300 group-hover:border-gray-400 dark:border-gray-700 dark:group-hover:border-gray-600'
-            }`}>
+            )}>
             {isVisible ? <Check size={12} /> : section.icon}
           </div>
           {section.label}
         </div>
         <ChevronRight
           size={16}
-          className={`transition ${
+          className={cn(
+            'transition',
             isVisible
               ? 'text-blue-500 dark:text-blue-400'
               : 'text-gray-400 dark:text-gray-600'
-          }`}
+          )}
         />
       </button>
     </div>
@@ -535,9 +540,9 @@ export default function EditorPage() {
                                       (labor: LaborDetail, idx: number) => (
                                         <tr
                                           key={idx}
-                                          className={
+                                          className={cn(
                                             idx % 2 === 0 ? 'bg-gray-50/50' : ''
-                                          }>
+                                          )}>
                                           <td className='py-4 pl-4'>
                                             <div className='font-medium text-gray-900'>
                                               {labor.nameRow.nameCell.crewName}
@@ -652,11 +657,11 @@ export default function EditorPage() {
                                       ) => (
                                         <Fragment key={`equip-${idx}`}>
                                           <tr
-                                            className={
+                                            className={cn(
                                               idx % 2 === 0
                                                 ? 'bg-gray-50/50'
                                                 : ''
-                                            }>
+                                            )}>
                                             <td
                                               className='p-4'
                                               rowSpan={
@@ -739,11 +744,11 @@ export default function EditorPage() {
                                             (row, rowIdx) => (
                                               <tr
                                                 key={`equip-${idx}-row-${rowIdx}`}
-                                                className={
+                                                className={cn(
                                                   idx % 2 === 0
                                                     ? 'bg-gray-50/50'
                                                     : ''
-                                                }>
+                                                )}>
                                                 <td className='p-4'>
                                                   <div className='font-medium text-gray-900'>
                                                     {row.costCodeCell.costCode}
