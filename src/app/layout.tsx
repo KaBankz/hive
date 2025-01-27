@@ -6,6 +6,7 @@ import '@/app/globals.css';
 import { ChatButton } from '@/components/ChatButton';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
+import { createClient } from '@/utils/supabase/server';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -23,11 +24,17 @@ export const metadata: Metadata = {
     'The most powerful dashboard for construction managers. Track projects, manage resources, and make data-driven decisions in real-time.',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   return (
     <html lang='en'>
       <body
@@ -36,7 +43,7 @@ export default function RootLayout({
           <Header />
           <main className='flex-1'>{children}</main>
           <Footer />
-          <ChatButton />
+          {user && <ChatButton />}
         </div>
       </body>
     </html>
