@@ -13,7 +13,7 @@ import {
   Star,
 } from 'lucide-react';
 
-import dailyReportData from '../../../public/dailyReportData.json';
+import dailyReportData from '../../../../public/dailyReportData.json';
 
 type DailyLog = {
   dailyLogDate: string;
