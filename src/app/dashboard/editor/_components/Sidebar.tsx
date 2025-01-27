@@ -12,7 +12,7 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import { Download, Eye, EyeOff, Layers } from 'lucide-react';
+import { Download, Eye, EyeOff, Layers, Scissors } from 'lucide-react';
 
 import { SortableSection } from './SortableSection';
 
@@ -30,15 +30,7 @@ type SectionConfig = {
   icon: React.ReactNode;
 };
 
-export function Sidebar({
-  isGenerating,
-  onExport,
-  sectionVisibility,
-  setSectionVisibility,
-  sectionOrder,
-  orderedSections,
-  onDragEnd,
-}: {
+type SidebarProps = {
   isGenerating: boolean;
   onExport: () => void;
   sectionVisibility: SectionVisibility;
@@ -50,7 +42,21 @@ export function Sidebar({
   sectionOrder: Array<keyof SectionVisibility>;
   orderedSections: SectionConfig[];
   onDragEnd: (event: DragEndEvent) => void;
-}) {
+  showPageBreaks?: boolean;
+  onTogglePageBreaks?: (show: boolean) => void;
+};
+
+export function Sidebar({
+  isGenerating,
+  onExport,
+  sectionVisibility,
+  setSectionVisibility,
+  sectionOrder,
+  orderedSections,
+  onDragEnd,
+  showPageBreaks = true,
+  onTogglePageBreaks,
+}: SidebarProps) {
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -76,6 +82,28 @@ export function Sidebar({
               className='group inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-b from-blue-500 to-blue-600 px-4 py-2 text-sm font-medium text-white transition-all duration-200 hover:from-blue-400 hover:to-blue-500 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] disabled:opacity-50'>
               <Download className='size-4' />
               <span>{isGenerating ? 'Generating PDF...' : 'Export PDF'}</span>
+            </button>
+          </div>
+          <div className='h-px bg-gray-200 dark:bg-white/[0.1]' />
+          <div className='flex items-center justify-between'>
+            <h2 className='flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-white'>
+              <Scissors className='size-4 text-blue-500' />
+              Page Breaks
+            </h2>
+            <button
+              onClick={() => onTogglePageBreaks?.(!showPageBreaks)}
+              className='inline-flex items-center gap-1.5 rounded-lg border border-gray-200 px-2.5 py-1.5 text-xs font-medium text-gray-700 transition-colors duration-200 hover:border-gray-300 hover:bg-gray-50 dark:border-white/[0.1] dark:text-zinc-400 dark:hover:border-white/[0.2] dark:hover:bg-white/[0.02]'>
+              {showPageBreaks ? (
+                <>
+                  <EyeOff className='size-3.5' />
+                  Hide
+                </>
+              ) : (
+                <>
+                  <Eye className='size-3.5' />
+                  Show
+                </>
+              )}
             </button>
           </div>
           <div className='h-px bg-gray-200 dark:bg-white/[0.1]' />
@@ -126,7 +154,9 @@ export function Sidebar({
                     key={section.id}
                     section={section}
                     isVisible={sectionVisibility[section.id]}
-                    onToggle={() => toggleSection(section.id)}
+                    onToggle={() =>
+                      toggleSection(section.id as keyof SectionVisibility)
+                    }
                   />
                 ))}
               </div>

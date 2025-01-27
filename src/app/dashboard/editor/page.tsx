@@ -94,6 +94,7 @@ export default function EditorPage() {
   const searchParams = useSearchParams();
   const projectIndex = parseInt(searchParams.get('project') || '0');
   const [isGenerating, setIsGenerating] = useState(false);
+  const [showPageBreaks, setShowPageBreaks] = useState(true);
   const [sectionVisibility, setSectionVisibility] = useState<SectionVisibility>(
     {
       reportInfo: true,
@@ -198,7 +199,18 @@ export default function EditorPage() {
             <div className='mx-auto py-8'>
               <div
                 id='document-container'
-                className='mx-auto w-[7.9in] rounded-lg bg-white px-8 py-4 shadow-lg ring-1 ring-black/[0.1]'>
+                className='relative mx-auto w-[8.27in] rounded-lg bg-white px-8 py-4 shadow-lg ring-1 ring-black/[0.1]'>
+                {/* Page break lines */}
+                {showPageBreaks && (
+                  <div
+                    className='pointer-events-none absolute -inset-y-4 inset-x-0 z-10'
+                    style={{
+                      backgroundImage:
+                        'repeating-linear-gradient(to bottom, transparent, transparent calc(11.69in + 2rem - 2px), #ef4444 calc(11.69in + 2rem - 2px), #ef4444 calc(11.69in + 2rem))',
+                      backgroundSize: '100% calc(11.69in + 3rem)',
+                    }}
+                  />
+                )}
                 {/* Company Header */}
                 <div className='mb-8 border-b border-gray-200 pb-4'>
                   <div className='flex items-center justify-between'>
@@ -651,6 +663,8 @@ export default function EditorPage() {
           sectionOrder={sectionOrder}
           orderedSections={orderedSections}
           onDragEnd={handleDragEnd}
+          showPageBreaks={showPageBreaks}
+          onTogglePageBreaks={setShowPageBreaks}
         />
       </div>
     </div>
