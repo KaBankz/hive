@@ -159,19 +159,27 @@ export default function EditorPage() {
       if (!element) return;
 
       const opt = {
-        margin: [40, 40, 60, 40],
+        margin: [6, 12, 6, 12],
         filename: `daily-report-${selectedProject.projectNumber}-${selectedProject.dailyLogDate}.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
+        image: {
+          type: 'jpeg',
+          quality: 1,
+        },
         html2canvas: {
-          scale: 2,
+          scale: 3,
           useCORS: true,
           letterRendering: true,
-          width: 794,
+          scrollX: 0,
+          scrollY: 0,
+          imageTimeout: 0,
+          width: element.offsetWidth,
         },
         jsPDF: {
           unit: 'pt',
           format: 'a4',
           orientation: 'portrait',
+          precision: 16,
+          compress: true,
         },
       };
 
@@ -186,11 +194,11 @@ export default function EditorPage() {
       <div className='flex h-full'>
         {/* Document Preview */}
         <div className='flex-1'>
-          <div className='h-full overflow-auto'>
-            <div className='mx-auto h-screen max-w-7xl'>
+          <div className='h-[calc(100vh-4rem)] overflow-auto'>
+            <div className='mx-auto py-8'>
               <div
                 id='document-container'
-                className='mx-auto w-[8.27in] rounded-lg bg-white p-8 shadow-lg ring-1 ring-black/[0.1]'>
+                className='mx-auto w-[7.9in] rounded-lg bg-white px-8 py-4 shadow-lg ring-1 ring-black/[0.1]'>
                 {/* Company Header */}
                 <div className='mb-8 border-b border-gray-200 pb-4'>
                   <div className='flex items-center justify-between'>
@@ -200,9 +208,10 @@ export default function EditorPage() {
                     <Image
                       src={dailyReportData.companyLogo}
                       alt='Company Logo'
-                      className='h-6'
                       width={100}
-                      height={100}
+                      height={24}
+                      className='object-contain'
+                      unoptimized
                     />
                   </div>
                 </div>
@@ -354,9 +363,10 @@ export default function EditorPage() {
                                                       .signatureFileUrl
                                                   }
                                                   alt='Signature'
-                                                  className='h-8 w-16 object-contain'
                                                   width={100}
-                                                  height={100}
+                                                  height={32}
+                                                  className='object-contain'
+                                                  unoptimized
                                                 />
                                                 <div className='mt-1 text-[8px] text-gray-500'>
                                                   Signed{' '}
@@ -611,8 +621,10 @@ export default function EditorPage() {
                                     <Image
                                       src={photo}
                                       alt={`Site photo ${idx + 1}`}
-                                      fill
-                                      className='object-cover'
+                                      width={400}
+                                      height={300}
+                                      className='size-full object-cover'
+                                      unoptimized
                                     />
                                   </div>
                                   <p className='text-[10px] text-gray-500'>
