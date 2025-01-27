@@ -68,7 +68,7 @@ export function ChatButton() {
         formData.append('file', uploadedPdf);
       }
 
-      const response = await fetch('http://192.168.1.16:5000/ask', {
+      const response = await fetch('/chat', {
         method: 'POST',
         body: formData,
       });

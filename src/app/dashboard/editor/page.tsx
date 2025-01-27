@@ -39,7 +39,7 @@ import {
   Users,
 } from 'lucide-react';
 
-import dailyReportData from '../../../../../public/dailyReportData.json';
+import dailyReportData from '../../../../public/dailyReportData.json';
 
 interface WeatherSummary {
   forecastTimeTzFormatted: string;
