@@ -24,10 +24,21 @@ type SectionVisibility = {
   photos: boolean;
 };
 
+type SubItemVisibility = {
+  weather: { [key: string]: boolean }; // key is forecastTimeTzFormatted
+  labor: { [key: string]: boolean }; // key is crewName
+  equipment: { [key: string]: boolean }; // key is equipName
+  photos: { [key: string]: boolean }; // key is photo url
+};
+
 type SectionConfig = {
   id: keyof SectionVisibility;
   label: string;
   icon: React.ReactNode;
+  subItems?: {
+    id: string;
+    label: string;
+  }[];
 };
 
 type SidebarProps = {
@@ -39,11 +50,14 @@ type SidebarProps = {
       | SectionVisibility
       | ((prev: SectionVisibility) => SectionVisibility)
   ) => void;
+  subItemVisibility: SubItemVisibility;
+  onToggleSubItem: (section: keyof SubItemVisibility, itemKey: string) => void;
   sectionOrder: Array<keyof SectionVisibility>;
   orderedSections: SectionConfig[];
   onDragEnd: (event: DragEndEvent) => void;
   showPageBreaks?: boolean;
   onTogglePageBreaks?: (show: boolean) => void;
+  selectedProject: any; // We should type this properly but using any for now
 };
 
 export function Sidebar({
@@ -51,11 +65,14 @@ export function Sidebar({
   onExport,
   sectionVisibility,
   setSectionVisibility,
+  subItemVisibility,
+  onToggleSubItem,
   sectionOrder,
   orderedSections,
   onDragEnd,
   showPageBreaks = true,
   onTogglePageBreaks,
+  selectedProject,
 }: SidebarProps) {
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -71,9 +88,48 @@ export function Sidebar({
     }));
   };
 
+  // Get sub-items for each section
+  const getSubItems = (
+    section: SectionConfig
+  ): { id: string; label: string }[] => {
+    switch (section.id) {
+      case 'weather':
+        return (
+          selectedProject.weather?.summary.map((w: any) => ({
+            id: w.forecastTimeTzFormatted,
+            label: `${w.forecastTimeTzFormatted} - ${w.tempF}°F`,
+          })) || []
+        );
+      case 'labor':
+        return (
+          selectedProject.labor?.details.map((l: any) => ({
+            id: l.nameRow.nameCell.crewName,
+            label: l.nameRow.nameCell.crewName,
+          })) || []
+        );
+      case 'equipment':
+        return (
+          selectedProject.equipment?.details.map((e: any) => ({
+            id: e.nameRow.nameCell.equipName,
+            label: e.nameRow.nameCell.equipName,
+          })) || []
+        );
+      case 'photos':
+        return (
+          selectedProject.images?.details.map((p: any, idx: number) => ({
+            id: p.url || `photo-${idx}`,
+            label: p.note || `Photo ${idx + 1}`,
+          })) || []
+        );
+      default:
+        return [];
+    }
+  };
+
   return (
     <div className='w-80 flex-none border-l border-gray-200 bg-white/70 backdrop-blur-xl backdrop-saturate-150 dark:border-white/[0.1] dark:bg-black/30'>
-      <div className='flex h-full flex-col'>
+      <div className='flex h-[calc(100vh-4rem)] flex-col'>
+        {/* Fixed header */}
         <div className='flex-none space-y-6 border-b border-gray-200 p-6 dark:border-white/[0.1]'>
           <div className='space-y-4'>
             <button
@@ -140,6 +196,8 @@ export function Sidebar({
             </button>
           </div>
         </div>
+
+        {/* Scrollable content */}
         <div className='flex-1 overflow-y-auto p-6'>
           <DndContext
             sensors={sensors}
@@ -154,8 +212,16 @@ export function Sidebar({
                     key={section.id}
                     section={section}
                     isVisible={sectionVisibility[section.id]}
-                    onToggle={() =>
-                      toggleSection(section.id as keyof SectionVisibility)
+                    onToggle={() => toggleSection(section.id)}
+                    subItems={getSubItems(section)}
+                    subItemVisibility={
+                      subItemVisibility[section.id as keyof SubItemVisibility]
+                    }
+                    onToggleSubItem={(itemId) =>
+                      onToggleSubItem(
+                        section.id as keyof SubItemVisibility,
+                        itemId
+                      )
                     }
                   />
                 ))}
