@@ -1,12 +1,19 @@
 'use client';
 
+import { useActionState } from 'react';
 import Link from 'next/link';
 
 import { ChevronRight } from 'lucide-react';
 
-import { login } from './actions';
+import { login } from '@/app/(auth)/login/actions';
+
+const initialState = {
+  error: '',
+};
 
 export default function LoginPage() {
+  const [state, formAction, pending] = useActionState(login, initialState);
+
   return (
     <div className='flex min-h-screen items-center justify-center bg-gradient-to-b from-gray-50 via-white to-gray-50 px-4 dark:from-zinc-950 dark:via-zinc-950 dark:to-black'>
       <div className='w-full max-w-sm'>
@@ -19,7 +26,7 @@ export default function LoginPage() {
           </p>
         </div>
 
-        <form action={login} className='mt-8 space-y-4'>
+        <form action={formAction} className='mt-8 space-y-4'>
           <div>
             <label
               htmlFor='email'
@@ -75,11 +82,18 @@ export default function LoginPage() {
 
           <button
             type='submit'
+            disabled={pending}
             className='group mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-b from-blue-500 to-blue-600 px-4 py-2.5 text-sm font-medium text-white transition-all duration-200 hover:from-blue-400 hover:to-blue-500 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]'>
             Sign in
             <ChevronRight className='size-4 transition-transform duration-200 group-hover:translate-x-0.5' />
           </button>
         </form>
+
+        {state.error && (
+          <div className='mt-4 text-center text-sm text-red-500'>
+            {state.error}
+          </div>
+        )}
 
         <p className='mt-6 text-center text-sm text-gray-600 dark:text-zinc-400'>
           Don&apos;t have an account?{' '}

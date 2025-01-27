@@ -1,17 +1,21 @@
 'use client';
 
+import { useActionState } from 'react';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
 
 import { ChevronRight, Mail } from 'lucide-react';
 
-import { signup } from './actions';
+import { signup } from '@/app/(auth)/signup/actions';
+
+const initialState = {
+  confirmationSent: false,
+  error: '',
+};
 
 export default function SignUpPage() {
-  const searchParams = useSearchParams();
-  const confirmationSent = searchParams.get('confirmation_sent') === '1';
+  const [state, formAction, pending] = useActionState(signup, initialState);
 
-  if (confirmationSent) {
+  if (state.confirmationSent) {
     return <ConfirmationMessage />;
   }
 
@@ -27,7 +31,7 @@ export default function SignUpPage() {
           </p>
         </div>
 
-        <form action={signup} className='mt-8 space-y-4'>
+        <form action={formAction} className='mt-8 space-y-4'>
           <div>
             <label
               htmlFor='email'
@@ -88,11 +92,18 @@ export default function SignUpPage() {
 
           <button
             type='submit'
+            disabled={pending}
             className='group mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-b from-blue-500 to-blue-600 px-4 py-2.5 text-sm font-medium text-white transition-all duration-200 hover:from-blue-400 hover:to-blue-500 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]'>
             Create Account
             <ChevronRight className='size-4 transition-transform duration-200 group-hover:translate-x-0.5' />
           </button>
         </form>
+
+        {state.error && (
+          <div className='mt-4 text-center text-sm text-red-500'>
+            {state.error}
+          </div>
+        )}
 
         <p className='mt-6 text-center text-sm text-gray-600 dark:text-zinc-400'>
           Already have an account?{' '}
