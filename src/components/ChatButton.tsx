@@ -2,7 +2,9 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-import { MessageCircle, Upload, X } from 'lucide-react';
+import { MessageCircle, X } from 'lucide-react';
+
+import { usePdf } from '@/context/PdfContext';
 
 type Message = {
   id: string;
@@ -15,10 +17,10 @@ export function ChatButton() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
-  const [uploadedPdf, setUploadedPdf] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const { pdfBlob } = usePdf();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -37,13 +39,6 @@ export function ChatButton() {
       textarea.style.height = `${textarea.scrollHeight}px`;
     }
   }, [inputMessage]);
-
-  const handlePdfUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file && file.type === 'application/pdf') {
-      setUploadedPdf(file);
-    }
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -64,8 +59,8 @@ export function ChatButton() {
       const formData = new FormData();
       formData.append('question', inputMessage.trim());
 
-      if (uploadedPdf) {
-        formData.append('file', uploadedPdf);
+      if (pdfBlob) {
+        formData.append('file', pdfBlob, 'current-document.pdf');
       }
 
       const response = await fetch('/chat', {
@@ -74,8 +69,6 @@ export function ChatButton() {
       });
 
       const data = await response.json();
-
-      // Remove markdown formatting using regex
       const cleanResponse = data.answer.replace(/[*_`#\[\]]/g, '');
 
       const responseMessage: Message = {
@@ -142,7 +135,7 @@ export function ChatButton() {
                       Welcome to HiveMind
                     </h3>
                     <p className='text-sm text-gray-500 dark:text-gray-400'>
-                      Start a conversation or upload a PDF to begin
+                      Ask questions about your daily report
                     </p>
                   </div>
                 </div>
@@ -182,28 +175,6 @@ export function ChatButton() {
 
             {/* Input Area */}
             <div className='border-t bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900'>
-              <div className='mb-3 flex items-center gap-2'>
-                <input
-                  type='file'
-                  accept='.pdf'
-                  onChange={handlePdfUpload}
-                  className='hidden'
-                  id='pdf-upload'
-                />
-                <label
-                  htmlFor='pdf-upload'
-                  className='flex cursor-pointer items-center gap-2 rounded-xl border border-gray-200 bg-gray-50 px-3 py-1.5 text-sm text-gray-600 transition-colors hover:bg-gray-100 dark:border-zinc-700 dark:bg-zinc-800 dark:text-gray-300 dark:hover:bg-zinc-700'>
-                  <Upload className='size-4' />
-                  {uploadedPdf ? uploadedPdf.name : 'Upload PDF'}
-                </label>
-                {uploadedPdf && (
-                  <button
-                    onClick={() => setUploadedPdf(null)}
-                    className='text-sm font-medium text-red-500 transition-colors hover:text-red-600 dark:text-red-400 dark:hover:text-red-300'>
-                    Remove
-                  </button>
-                )}
-              </div>
               <form className='flex gap-2' onSubmit={handleSubmit}>
                 <textarea
                   ref={textareaRef}

@@ -6,6 +6,7 @@ import '@/app/globals.css';
 import { ChatButton } from '@/components/ChatButton';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
+import { PdfProvider } from '@/context/PdfContext';
 import { createClient } from '@/utils/supabase/server';
 
 const geistSans = Geist({
@@ -39,12 +40,14 @@ export default async function RootLayout({
     <html lang='en'>
       <body
         className={`${geistSans.variable} ${geistMono.variable} bg-white antialiased dark:bg-black`}>
-        <div className='flex min-h-screen flex-col bg-white text-gray-900 dark:bg-gradient-to-b dark:from-black dark:to-zinc-900 dark:text-white'>
-          <Header />
-          <main className='flex-1'>{children}</main>
-          <Footer />
-          {user && <ChatButton />}
-        </div>
+        <PdfProvider>
+          <div className='flex min-h-screen flex-col bg-white text-gray-900 dark:bg-gradient-to-b dark:from-black dark:to-zinc-900 dark:text-white'>
+            <Header />
+            <main className='flex-1'>{children}</main>
+            <Footer />
+            {user && <ChatButton />}
+          </div>
+        </PdfProvider>
       </body>
     </html>
   );

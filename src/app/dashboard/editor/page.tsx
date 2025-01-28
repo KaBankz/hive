@@ -1,6 +1,6 @@
 'use client';
 
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 
@@ -10,6 +10,7 @@ import { arrayMove } from '@dnd-kit/sortable';
 import html2pdf from 'html2pdf.js';
 import { Cloud, FileText, ImageIcon, Tag, Truck, Users } from 'lucide-react';
 
+import { usePdf } from '@/context/PdfContext';
 import { cn } from '@/utils/cn';
 
 import dailyReportData from '../../../../public/dailyReportData.json';
@@ -122,6 +123,8 @@ export default function EditorPage() {
       photos: true,
     }
   );
+
+  const { setPdfBlob } = usePdf();
 
   // Initialize sub-item visibility
   const [subItemVisibility, setSubItemVisibility] = useState<SubItemVisibility>(
@@ -302,11 +305,65 @@ export default function EditorPage() {
         },
       };
 
-      await html2pdf().set(opt).from(element).save();
+      // Generate PDF blob
+      const pdf = await html2pdf().set(opt).from(element).output('blob');
+      setPdfBlob(pdf);
+
+      // Save the file
+      const pdfUrl = URL.createObjectURL(pdf);
+      const link = document.createElement('a');
+      link.href = pdfUrl;
+      link.download = opt.filename;
+      link.click();
+      URL.revokeObjectURL(pdfUrl);
     } finally {
       setIsGenerating(false);
     }
   };
+
+  // Auto-generate PDF for chat context when content changes
+  useEffect(() => {
+    const generatePdfForChat = async () => {
+      const element = document.getElementById('document-container');
+      if (!element) return;
+
+      const opt = {
+        margin: [6, 12, 6, 12],
+        image: { type: 'jpeg', quality: 0.8 },
+        html2canvas: {
+          scale: 2,
+          useCORS: true,
+          letterRendering: true,
+          scrollX: 0,
+          scrollY: 0,
+          width: element.offsetWidth,
+        },
+        jsPDF: {
+          unit: 'pt',
+          format: 'a4',
+          orientation: 'portrait',
+          compress: true,
+        },
+      };
+
+      try {
+        const pdf = await html2pdf().set(opt).from(element).output('blob');
+        setPdfBlob(pdf);
+      } catch (error) {
+        console.error('Error generating PDF for chat:', error);
+      }
+    };
+
+    // Debounce the PDF generation to avoid too frequent updates
+    const timeoutId = setTimeout(generatePdfForChat, 1000);
+    return () => clearTimeout(timeoutId);
+  }, [
+    sectionVisibility,
+    subItemVisibility,
+    sectionOrder,
+    subItemOrder,
+    setPdfBlob,
+  ]);
 
   // Add toggle functions for sub-items
   const toggleSubItem = (section: keyof SubItemVisibility, itemKey: string) => {
