@@ -422,6 +422,12 @@ export default function EditorPage() {
                       height={24}
                       className='object-contain'
                       unoptimized
+                      onError={(e) => {
+                        // Use next.svg as fallback
+                        const img = e.target as HTMLImageElement;
+                        img.src = '/next.svg';
+                      }}
+                      priority
                     />
                   </div>
                 </div>
