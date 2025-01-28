@@ -816,7 +816,11 @@ export default function EditorPage() {
                                         className='space-y-2'>
                                         <div className='relative aspect-[4/3] w-full overflow-hidden rounded-lg'>
                                           <Image
-                                            src={photo.url}
+                                            src={
+                                              photo.url.startsWith('https')
+                                                ? photo.url
+                                                : `/${photo.url}`
+                                            }
                                             alt={`Site photo ${idx + 1}`}
                                             width={400}
                                             height={300}
