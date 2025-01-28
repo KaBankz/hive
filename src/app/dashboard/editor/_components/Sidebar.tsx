@@ -22,6 +22,7 @@ type SectionVisibility = {
   labor: boolean;
   equipment: boolean;
   photos: boolean;
+  questions: boolean;
 };
 
 type SubItemVisibility = {
@@ -29,6 +30,7 @@ type SubItemVisibility = {
   labor: { [key: string]: boolean }; // key is crewName
   equipment: { [key: string]: boolean }; // key is equipName
   photos: { [key: string]: boolean }; // key is photo url
+  questions: { [key: string]: boolean }; // key is fullName
 };
 
 type SectionConfig = {
@@ -124,6 +126,13 @@ export function Sidebar({
               label: p.note || `Photo ${idx + 1}`,
             })) || []
           );
+        case 'questions':
+          return (
+            selectedProject.questions?.details.map((q: any) => ({
+              id: q.fullName,
+              label: q.fullName,
+            })) || []
+          );
         default:
           return [];
       }
@@ -190,6 +199,7 @@ export function Sidebar({
                     labor: !allVisible,
                     equipment: !allVisible,
                     photos: !allVisible,
+                    questions: !allVisible,
                   };
                 })
               }

@@ -81,6 +81,7 @@ type SectionVisibility = {
   labor: boolean;
   equipment: boolean;
   photos: boolean;
+  questions: boolean;
 };
 
 type SubItemVisibility = {
@@ -88,6 +89,7 @@ type SubItemVisibility = {
   labor: { [key: string]: boolean }; // key is crewName
   equipment: { [key: string]: boolean }; // key is equipName
   photos: { [key: string]: boolean }; // key is photo url
+  questions: { [key: string]: boolean }; // key is fullName
 };
 
 type SectionConfig = {
@@ -114,6 +116,7 @@ type SectionRef = {
   labor?: HTMLDivElement | null;
   equipment?: HTMLDivElement | null;
   photos?: HTMLDivElement | null;
+  questions?: HTMLDivElement | null;
 };
 
 export default function EditorPage() {
@@ -128,6 +131,7 @@ export default function EditorPage() {
       labor: true,
       equipment: true,
       photos: true,
+      questions: true,
     }
   );
 
@@ -170,6 +174,14 @@ export default function EditorPage() {
             },
             {} as { [key: string]: boolean }
           ) || {},
+        questions:
+          selectedProject.questions?.details.reduce(
+            (acc, item) => {
+              acc[item.fullName] = true;
+              return acc;
+            },
+            {} as { [key: string]: boolean }
+          ) || {},
       };
     }
   );
@@ -203,6 +215,11 @@ export default function EditorPage() {
       label: 'Photos',
       icon: <ImageIcon size={12} className='text-gray-500' />,
     },
+    (selectedProject.questions?.details?.length ?? 0) > 0 && {
+      id: 'questions',
+      label: 'Questions',
+      icon: <FileText size={12} className='text-gray-500' />,
+    },
   ].filter(Boolean) as SectionConfig[];
 
   // Keep section order in sync with available sections
@@ -215,6 +232,7 @@ export default function EditorPage() {
       'labor',
       'equipment',
       'photos',
+      'questions',
     ];
     return defaultOrder.filter((id) =>
       availableSections.some((section) => section.id === id)
@@ -243,6 +261,8 @@ export default function EditorPage() {
         selectedProject.images?.details.map(
           (p, idx) => p.url || `photo-${idx}`
         ) || [],
+      questions:
+        selectedProject.questions?.details.map((q) => q.fullName) || [],
     };
   });
 
@@ -942,6 +962,88 @@ export default function EditorPage() {
                                               <p className='text-[10px] text-gray-500'>
                                                 {photo.note}
                                               </p>
+                                            </div>
+                                          )
+                                      )}
+                                    </div>
+                                  </div>
+                                )
+                              );
+                            case 'questions':
+                              return (
+                                selectedProject.questions && (
+                                  <div className='overflow-hidden rounded-lg border border-gray-200 bg-white/50'>
+                                    <div className='border-b border-gray-200 bg-gray-50/50 px-4 py-3'>
+                                      <h2 className='text-center text-xs font-semibold uppercase text-gray-700'>
+                                        Questions
+                                      </h2>
+                                    </div>
+                                    <div className='p-4'>
+                                      {sortByOrder(
+                                        selectedProject.questions.details,
+                                        subItemOrder.questions,
+                                        (q) => q.fullName
+                                      ).map(
+                                        (person) =>
+                                          subItemVisibility.questions[
+                                            person.fullName
+                                          ] && (
+                                            <div
+                                              key={person.fullName}
+                                              className='mb-6 last:mb-0'>
+                                              <div className='mb-3 text-sm font-medium text-gray-900'>
+                                                {person.fullName}
+                                              </div>
+                                              <table className='w-full table-fixed'>
+                                                <thead>
+                                                  <tr className='border-b border-gray-200'>
+                                                    <th className='w-12 pb-2 text-left text-xs font-medium text-gray-600'>
+                                                      #
+                                                    </th>
+                                                    <th className='w-[calc(50%-3rem)] pb-2 text-left text-xs font-medium text-gray-600'>
+                                                      Question
+                                                    </th>
+                                                    <th className='w-[calc(50%-3rem)] pb-2 text-left text-xs font-medium text-gray-600'>
+                                                      Response
+                                                    </th>
+                                                  </tr>
+                                                </thead>
+                                                <tbody className='divide-y divide-gray-200'>
+                                                  {person.responses.map(
+                                                    (response) => (
+                                                      <tr
+                                                        key={
+                                                          response.questionSortOrder
+                                                        }>
+                                                        <td className='py-3 pr-4 text-xs text-gray-900'>
+                                                          {
+                                                            response.questionSortOrder
+                                                          }
+                                                        </td>
+                                                        <td className='py-3 pr-4 text-xs text-gray-900'>
+                                                          <div className='break-words'>
+                                                            {
+                                                              response.questionText
+                                                            }
+                                                          </div>
+                                                        </td>
+                                                        <td className='py-3 text-xs text-gray-900'>
+                                                          <div className='break-words'>
+                                                            {
+                                                              response.responseValue
+                                                            }
+                                                          </div>
+                                                          <div className='mt-1 text-[10px] text-gray-500'>
+                                                            {
+                                                              response.localTzResponseTimeStamp
+                                                            }
+                                                          </div>
+                                                        </td>
+                                                      </tr>
+                                                    )
+                                                  )}
+                                                </tbody>
+                                              </table>
                                             </div>
                                           )
                                       )}
