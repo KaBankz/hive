@@ -146,12 +146,12 @@ export default function EditorPage() {
       labor: true,
       equipment: true,
       photos: true,
-      questions: true,
-      quantities: true,
-      deliveries: true,
-      inspections: true,
-      visitors: true,
-      notes: true,
+      questions: false,
+      quantities: false,
+      deliveries: false,
+      inspections: false,
+      visitors: false,
+      notes: false,
     }
   );
 
