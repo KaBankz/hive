@@ -10,6 +10,10 @@ export default {
         marquee: 'marquee var(--duration) linear infinite',
         'marquee-vertical': 'marquee-vertical var(--duration) linear infinite',
         'marquee-reverse': 'marquee-reverse var(--duration) linear infinite',
+        'spin-slow': 'spin 3s linear infinite',
+        'spin-reverse-slow': 'spin-reverse 4s linear infinite',
+        'spin-reverse-slower': 'spin-reverse 6s linear infinite',
+        'ping-slow': 'ping 3s cubic-bezier(0, 0, 0.2, 1) infinite',
       },
       keyframes: {
         'border-beam': {
@@ -36,6 +40,10 @@ export default {
         'marquee-reverse': {
           from: { transform: 'translateX(0)' },
           to: { transform: 'translateX(calc(50% + var(--gap)/2))' },
+        },
+        'spin-reverse': {
+          from: { transform: 'rotate(360deg)' },
+          to: { transform: 'rotate(0deg)' },
         },
       },
     },

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-import { MessageCircle, X } from 'lucide-react';
+import { Brain, MessageCircle, Sparkles, Wand2, X } from 'lucide-react';
 
 import { usePdf } from '@/context/PdfContext';
 
@@ -183,17 +183,50 @@ export function ChatButton() {
             <div className='flex-1 overflow-y-auto bg-gray-50/50 p-4 dark:bg-zinc-900/50'>
               {messages.length === 0 ? (
                 <div className='flex h-full flex-col items-center justify-center space-y-4 text-center'>
-                  <div className='rounded-full bg-blue-100 p-4 dark:bg-blue-900/25'>
-                    <MessageCircle className='size-8 text-blue-600 dark:text-blue-400' />
-                  </div>
-                  <div>
-                    <h3 className='text-lg font-semibold text-gray-800 dark:text-white'>
-                      Welcome to HiveMind
-                    </h3>
-                    <p className='text-sm text-gray-500 dark:text-gray-400'>
-                      Ask questions about your daily report
-                    </p>
-                  </div>
+                  {isLoading ? (
+                    <div className='flex flex-col items-center space-y-6'>
+                      <div className='relative flex size-20 items-center justify-center'>
+                        <div className='animate-ping-slow absolute inset-0 opacity-20'>
+                          <div className='size-full rounded-full bg-blue-500/50' />
+                        </div>
+                        <div className='animate-spin-slow absolute size-full'>
+                          <div className='absolute inset-1 rounded-full border-2 border-blue-500/30' />
+                        </div>
+                        <div className='animate-spin-reverse-slower absolute size-full'>
+                          <div className='absolute inset-2 rounded-full border-2 border-dashed border-blue-500/20' />
+                        </div>
+                        <Brain className='relative size-8 animate-pulse text-blue-500' />
+                        <div className='absolute -right-1 -top-1 animate-bounce'>
+                          <Sparkles className='size-5 text-blue-400' />
+                        </div>
+                        <div className='absolute -bottom-2 -left-1 animate-bounce delay-100'>
+                          <Sparkles className='size-4 text-blue-400' />
+                        </div>
+                      </div>
+                      <div>
+                        <h3 className='text-lg font-semibold text-gray-800 dark:text-white'>
+                          Analyzing Report
+                        </h3>
+                        <p className='text-sm text-gray-500 dark:text-gray-400'>
+                          Processing with AI magic ✨
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      <div className='rounded-full bg-blue-100 p-4 dark:bg-blue-900/25'>
+                        <MessageCircle className='size-8 text-blue-600 dark:text-blue-400' />
+                      </div>
+                      <div>
+                        <h3 className='text-lg font-semibold text-gray-800 dark:text-white'>
+                          Welcome to HiveMind
+                        </h3>
+                        <p className='text-sm text-gray-500 dark:text-gray-400'>
+                          Ask questions about your daily report
+                        </p>
+                      </div>
+                    </>
+                  )}
                 </div>
               ) : (
                 <div className='flex flex-col gap-4'>
