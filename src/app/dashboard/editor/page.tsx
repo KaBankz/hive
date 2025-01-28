@@ -84,6 +84,7 @@ type SectionVisibility = {
   questions: boolean;
   quantities: boolean;
   deliveries: boolean;
+  inspections: boolean;
 };
 
 type SubItemVisibility = {
@@ -94,6 +95,7 @@ type SubItemVisibility = {
   questions: { [key: string]: boolean }; // key is fullName
   quantities: { [key: string]: boolean }; // key is itemNumber
   deliveries: { [key: string]: boolean }; // key is itemNumber
+  inspections: { [key: string]: boolean }; // key is itemNumber
 };
 
 type SectionConfig = {
@@ -123,6 +125,7 @@ type SectionRef = {
   questions?: HTMLDivElement | null;
   quantities?: HTMLDivElement | null;
   deliveries?: HTMLDivElement | null;
+  inspections?: HTMLDivElement | null;
 };
 
 export default function EditorPage() {
@@ -140,6 +143,7 @@ export default function EditorPage() {
       questions: true,
       quantities: true,
       deliveries: true,
+      inspections: true,
     }
   );
 
@@ -206,6 +210,14 @@ export default function EditorPage() {
             },
             {} as { [key: string]: boolean }
           ) || {},
+        inspections:
+          selectedProject.inspections?.details.reduce(
+            (acc, item) => {
+              acc[item.itemNumber] = true;
+              return acc;
+            },
+            {} as { [key: string]: boolean }
+          ) || {},
       };
     }
   );
@@ -254,6 +266,11 @@ export default function EditorPage() {
       label: 'Deliveries',
       icon: <FileText size={12} className='text-gray-500' />,
     },
+    (selectedProject.inspections?.details?.length ?? 0) > 0 && {
+      id: 'inspections',
+      label: 'Inspections',
+      icon: <FileText size={12} className='text-gray-500' />,
+    },
   ].filter(Boolean) as SectionConfig[];
 
   // Keep section order in sync with available sections
@@ -269,6 +286,7 @@ export default function EditorPage() {
       'questions',
       'quantities',
       'deliveries',
+      'inspections',
     ];
     return defaultOrder.filter((id) =>
       availableSections.some((section) => section.id === id)
@@ -303,6 +321,8 @@ export default function EditorPage() {
         selectedProject.quantities?.details.map((q) => q.itemNumber) || [],
       deliveries:
         selectedProject.deliveries?.details.map((d) => d.itemNumber) || [],
+      inspections:
+        selectedProject.inspections?.details.map((i) => i.itemNumber) || [],
     };
   });
 
@@ -1295,6 +1315,152 @@ export default function EditorPage() {
                                                             : `/${image.url}`
                                                         }
                                                         alt={`Delivery photo ${idx + 1}`}
+                                                        width={400}
+                                                        height={300}
+                                                        className='size-full object-cover'
+                                                        unoptimized
+                                                      />
+                                                    </div>
+                                                    <p className='text-[10px] text-gray-500'>
+                                                      {image.label}
+                                                    </p>
+                                                  </div>
+                                                )
+                                              )}
+                                            </div>
+                                          </div>
+                                        )}
+                                    </div>
+                                  </div>
+                                )
+                              );
+                            case 'inspections':
+                              return (
+                                selectedProject.inspections && (
+                                  <div className='overflow-hidden rounded-lg border border-gray-200 bg-white/50'>
+                                    <div className='border-b border-gray-200 bg-gray-50/50 px-4 py-3'>
+                                      <h2 className='text-center text-xs font-semibold uppercase text-gray-700'>
+                                        Inspections
+                                      </h2>
+                                    </div>
+                                    <div className='p-4'>
+                                      <table className='w-full'>
+                                        <thead>
+                                          <tr className='border-b border-gray-200'>
+                                            <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+                                              Item #
+                                            </th>
+                                            <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+                                              Time
+                                            </th>
+                                            <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+                                              End Time
+                                            </th>
+                                            <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+                                              Type
+                                            </th>
+                                            <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+                                              Entity
+                                            </th>
+                                            <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+                                              Inspector
+                                            </th>
+                                            <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+                                              Location
+                                            </th>
+                                            <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+                                              Area
+                                            </th>
+                                            <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+                                              Notes
+                                            </th>
+                                          </tr>
+                                        </thead>
+                                        <tbody className='divide-y divide-gray-200'>
+                                          {sortByOrder(
+                                            selectedProject.inspections.details,
+                                            subItemOrder.inspections,
+                                            (i) => i.itemNumber
+                                          ).map(
+                                            (inspection, idx) =>
+                                              subItemVisibility.inspections[
+                                                inspection.itemNumber
+                                              ] && (
+                                                <tr
+                                                  key={inspection.itemNumber}
+                                                  className={cn(
+                                                    idx % 2 === 0
+                                                      ? 'bg-gray-50/50'
+                                                      : ''
+                                                  )}>
+                                                  <td className='py-3 text-xs text-gray-900'>
+                                                    {inspection.itemNumber}
+                                                  </td>
+                                                  <td className='py-3 text-xs text-gray-900'>
+                                                    {
+                                                      inspection.startTimeLocalString
+                                                    }
+                                                  </td>
+                                                  <td className='py-3 text-xs text-gray-900'>
+                                                    {
+                                                      inspection.endTimeLocalString
+                                                    }
+                                                  </td>
+                                                  <td className='py-3 text-xs text-gray-900'>
+                                                    {inspection.inspectionType}
+                                                  </td>
+                                                  <td className='py-3 text-xs text-gray-900'>
+                                                    {
+                                                      inspection.inspectionEntity
+                                                    }
+                                                  </td>
+                                                  <td className='py-3 text-xs text-gray-900'>
+                                                    {inspection.inspectorName}
+                                                  </td>
+                                                  <td className='py-3 text-xs text-gray-900'>
+                                                    {
+                                                      inspection.inspectionLocation
+                                                    }
+                                                  </td>
+                                                  <td className='py-3 text-xs text-gray-900'>
+                                                    {inspection.inspectionArea}
+                                                  </td>
+                                                  <td className='py-3 text-xs text-gray-900'>
+                                                    {inspection.inspectionNotes}
+                                                  </td>
+                                                </tr>
+                                              )
+                                          )}
+                                        </tbody>
+                                      </table>
+
+                                      {selectedProject.inspections.images &&
+                                        selectedProject.inspections.images
+                                          .length > 0 && (
+                                          <div className='mt-6 border-t border-gray-200 pt-6'>
+                                            <h3 className='mb-4 text-xs font-medium text-gray-700'>
+                                              Inspection Photos
+                                            </h3>
+                                            <div className='grid grid-cols-2 gap-4'>
+                                              {selectedProject.inspections.images.map(
+                                                (image, idx) => (
+                                                  <div
+                                                    key={`${image.label}-${idx}`}
+                                                    className='break-inside-avoid-page'
+                                                    style={{
+                                                      pageBreakInside: 'avoid',
+                                                      breakInside: 'avoid-page',
+                                                    }}>
+                                                    <div className='relative aspect-[4/3] w-full overflow-hidden rounded-lg'>
+                                                      <Image
+                                                        src={
+                                                          image.url.startsWith(
+                                                            'https'
+                                                          )
+                                                            ? image.url
+                                                            : `/${image.url}`
+                                                        }
+                                                        alt={`Inspection photo ${idx + 1}`}
                                                         width={400}
                                                         height={300}
                                                         className='size-full object-cover'
