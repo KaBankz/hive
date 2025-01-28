@@ -83,6 +83,7 @@ type SectionVisibility = {
   photos: boolean;
   questions: boolean;
   quantities: boolean;
+  deliveries: boolean;
 };
 
 type SubItemVisibility = {
@@ -92,6 +93,7 @@ type SubItemVisibility = {
   photos: { [key: string]: boolean }; // key is photo url
   questions: { [key: string]: boolean }; // key is fullName
   quantities: { [key: string]: boolean }; // key is itemNumber
+  deliveries: { [key: string]: boolean }; // key is itemNumber
 };
 
 type SectionConfig = {
@@ -120,6 +122,7 @@ type SectionRef = {
   photos?: HTMLDivElement | null;
   questions?: HTMLDivElement | null;
   quantities?: HTMLDivElement | null;
+  deliveries?: HTMLDivElement | null;
 };
 
 export default function EditorPage() {
@@ -136,6 +139,7 @@ export default function EditorPage() {
       photos: true,
       questions: true,
       quantities: true,
+      deliveries: true,
     }
   );
 
@@ -194,6 +198,14 @@ export default function EditorPage() {
             },
             {} as { [key: string]: boolean }
           ) || {},
+        deliveries:
+          selectedProject.deliveries?.details.reduce(
+            (acc, item) => {
+              acc[item.itemNumber] = true;
+              return acc;
+            },
+            {} as { [key: string]: boolean }
+          ) || {},
       };
     }
   );
@@ -237,6 +249,11 @@ export default function EditorPage() {
       label: 'Quantities',
       icon: <FileText size={12} className='text-gray-500' />,
     },
+    (selectedProject.deliveries?.details?.length ?? 0) > 0 && {
+      id: 'deliveries',
+      label: 'Deliveries',
+      icon: <FileText size={12} className='text-gray-500' />,
+    },
   ].filter(Boolean) as SectionConfig[];
 
   // Keep section order in sync with available sections
@@ -251,6 +268,7 @@ export default function EditorPage() {
       'photos',
       'questions',
       'quantities',
+      'deliveries',
     ];
     return defaultOrder.filter((id) =>
       availableSections.some((section) => section.id === id)
@@ -283,6 +301,8 @@ export default function EditorPage() {
         selectedProject.questions?.details.map((q) => q.fullName) || [],
       quantities:
         selectedProject.quantities?.details.map((q) => q.itemNumber) || [],
+      deliveries:
+        selectedProject.deliveries?.details.map((d) => d.itemNumber) || [],
     };
   });
 
@@ -1160,6 +1180,136 @@ export default function EditorPage() {
                                           )}
                                         </tbody>
                                       </table>
+                                    </div>
+                                  </div>
+                                )
+                              );
+                            case 'deliveries':
+                              return (
+                                selectedProject.deliveries && (
+                                  <div className='overflow-hidden rounded-lg border border-gray-200 bg-white/50'>
+                                    <div className='border-b border-gray-200 bg-gray-50/50 px-4 py-3'>
+                                      <h2 className='text-center text-xs font-semibold uppercase text-gray-700'>
+                                        Deliveries
+                                      </h2>
+                                    </div>
+                                    <div className='p-4'>
+                                      <table className='w-full'>
+                                        <thead>
+                                          <tr className='border-b border-gray-200'>
+                                            <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+                                              Item #
+                                            </th>
+                                            <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+                                              Time
+                                            </th>
+                                            <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+                                              From
+                                            </th>
+                                            <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+                                              Tracking #
+                                            </th>
+                                            <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+                                              Location
+                                            </th>
+                                            <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+                                              Contents
+                                            </th>
+                                            <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+                                              Notes
+                                            </th>
+                                          </tr>
+                                        </thead>
+                                        <tbody className='divide-y divide-gray-200'>
+                                          {sortByOrder(
+                                            selectedProject.deliveries.details,
+                                            subItemOrder.deliveries,
+                                            (d) => d.itemNumber
+                                          ).map(
+                                            (delivery, idx) =>
+                                              subItemVisibility.deliveries[
+                                                delivery.itemNumber
+                                              ] && (
+                                                <tr
+                                                  key={delivery.itemNumber}
+                                                  className={cn(
+                                                    idx % 2 === 0
+                                                      ? 'bg-gray-50/50'
+                                                      : ''
+                                                  )}>
+                                                  <td className='py-3 text-xs text-gray-900'>
+                                                    {delivery.itemNumber}
+                                                  </td>
+                                                  <td className='py-3 text-xs text-gray-900'>
+                                                    {
+                                                      delivery.deliveryTimeLocalString
+                                                    }
+                                                  </td>
+                                                  <td className='py-3 text-xs text-gray-900'>
+                                                    {delivery.deliveryFrom}
+                                                  </td>
+                                                  <td className='py-3 text-xs text-gray-900'>
+                                                    {
+                                                      delivery.deliveryTrackingNumber
+                                                    }
+                                                  </td>
+                                                  <td className='py-3 text-xs text-gray-900'>
+                                                    {delivery.deliveryLocation}
+                                                  </td>
+                                                  <td className='py-3 text-xs text-gray-900'>
+                                                    {delivery.deliveryContents}
+                                                  </td>
+                                                  <td className='py-3 text-xs text-gray-900'>
+                                                    {delivery.deliveryNotes}
+                                                  </td>
+                                                </tr>
+                                              )
+                                          )}
+                                        </tbody>
+                                      </table>
+
+                                      {selectedProject.deliveries.images &&
+                                        selectedProject.deliveries.images
+                                          .length > 0 && (
+                                          <div className='mt-6 border-t border-gray-200 pt-6'>
+                                            <h3 className='mb-4 text-xs font-medium text-gray-700'>
+                                              Delivery Photos
+                                            </h3>
+                                            <div className='grid grid-cols-2 gap-4'>
+                                              {selectedProject.deliveries.images.map(
+                                                (image, idx) => (
+                                                  <div
+                                                    key={`${image.label}-${idx}`}
+                                                    className='break-inside-avoid-page'
+                                                    style={{
+                                                      pageBreakInside: 'avoid',
+                                                      breakInside: 'avoid-page',
+                                                    }}>
+                                                    <div className='relative aspect-[4/3] w-full overflow-hidden rounded-lg'>
+                                                      <Image
+                                                        src={
+                                                          image.url.startsWith(
+                                                            'https'
+                                                          )
+                                                            ? image.url
+                                                            : `/${image.url}`
+                                                        }
+                                                        alt={`Delivery photo ${idx + 1}`}
+                                                        width={400}
+                                                        height={300}
+                                                        className='size-full object-cover'
+                                                        unoptimized
+                                                      />
+                                                    </div>
+                                                    <p className='text-[10px] text-gray-500'>
+                                                      {image.label}
+                                                    </p>
+                                                  </div>
+                                                )
+                                              )}
+                                            </div>
+                                          </div>
+                                        )}
                                     </div>
                                   </div>
                                 )

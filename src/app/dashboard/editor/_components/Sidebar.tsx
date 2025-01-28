@@ -24,6 +24,7 @@ type SectionVisibility = {
   photos: boolean;
   questions: boolean;
   quantities: boolean;
+  deliveries: boolean;
 };
 
 type SubItemVisibility = {
@@ -33,6 +34,7 @@ type SubItemVisibility = {
   photos: { [key: string]: boolean }; // key is photo url
   questions: { [key: string]: boolean }; // key is fullName
   quantities: { [key: string]: boolean }; // key is itemNumber
+  deliveries: { [key: string]: boolean }; // key is itemNumber
 };
 
 type SectionConfig = {
@@ -140,6 +142,13 @@ export function Sidebar({
             selectedProject.quantities?.details.map((q: any) => ({
               id: q.itemNumber,
               label: `Item ${q.itemNumber} - ${q._costCodeAndDescription || 'No Description'}`,
+            })) || []
+          );
+        case 'deliveries':
+          return (
+            selectedProject.deliveries?.details.map((d: any) => ({
+              id: d.itemNumber,
+              label: `${d.deliveryFrom} - ${d.deliveryContents}`,
             })) || []
           );
         default:
