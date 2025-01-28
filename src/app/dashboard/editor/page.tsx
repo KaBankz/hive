@@ -85,6 +85,7 @@ type SectionVisibility = {
   quantities: boolean;
   deliveries: boolean;
   inspections: boolean;
+  visitors: boolean;
 };
 
 type SubItemVisibility = {
@@ -96,6 +97,7 @@ type SubItemVisibility = {
   quantities: { [key: string]: boolean }; // key is itemNumber
   deliveries: { [key: string]: boolean }; // key is itemNumber
   inspections: { [key: string]: boolean }; // key is itemNumber
+  visitors: { [key: string]: boolean }; // key is itemNumber
 };
 
 type SectionConfig = {
@@ -126,6 +128,7 @@ type SectionRef = {
   quantities?: HTMLDivElement | null;
   deliveries?: HTMLDivElement | null;
   inspections?: HTMLDivElement | null;
+  visitors?: HTMLDivElement | null;
 };
 
 export default function EditorPage() {
@@ -144,6 +147,7 @@ export default function EditorPage() {
       quantities: true,
       deliveries: true,
       inspections: true,
+      visitors: true,
     }
   );
 
@@ -218,6 +222,14 @@ export default function EditorPage() {
             },
             {} as { [key: string]: boolean }
           ) || {},
+        visitors:
+          selectedProject.visitors?.details.reduce(
+            (acc, item) => {
+              acc[item.itemNumber] = true;
+              return acc;
+            },
+            {} as { [key: string]: boolean }
+          ) || {},
       };
     }
   );
@@ -271,6 +283,11 @@ export default function EditorPage() {
       label: 'Inspections',
       icon: <FileText size={12} className='text-gray-500' />,
     },
+    (selectedProject.visitors?.details?.length ?? 0) > 0 && {
+      id: 'visitors',
+      label: 'Visitors',
+      icon: <FileText size={12} className='text-gray-500' />,
+    },
   ].filter(Boolean) as SectionConfig[];
 
   // Keep section order in sync with available sections
@@ -287,6 +304,7 @@ export default function EditorPage() {
       'quantities',
       'deliveries',
       'inspections',
+      'visitors',
     ];
     return defaultOrder.filter((id) =>
       availableSections.some((section) => section.id === id)
@@ -323,6 +341,8 @@ export default function EditorPage() {
         selectedProject.deliveries?.details.map((d) => d.itemNumber) || [],
       inspections:
         selectedProject.inspections?.details.map((i) => i.itemNumber) || [],
+      visitors:
+        selectedProject.visitors?.details.map((v) => v.itemNumber) || [],
     };
   });
 
@@ -1476,6 +1496,81 @@ export default function EditorPage() {
                                             </div>
                                           </div>
                                         )}
+                                    </div>
+                                  </div>
+                                )
+                              );
+                            case 'visitors':
+                              return (
+                                selectedProject.visitors && (
+                                  <div className='overflow-hidden rounded-lg border border-gray-200 bg-white/50'>
+                                    <div className='border-b border-gray-200 bg-gray-50/50 px-4 py-3'>
+                                      <h2 className='text-center text-xs font-semibold uppercase text-gray-700'>
+                                        Visitors
+                                      </h2>
+                                    </div>
+                                    <div className='p-4'>
+                                      <table className='w-full'>
+                                        <thead>
+                                          <tr className='border-b border-gray-200'>
+                                            <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+                                              Item #
+                                            </th>
+                                            <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+                                              Visitor Name
+                                            </th>
+                                            <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+                                              Start Time
+                                            </th>
+                                            <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+                                              End Time
+                                            </th>
+                                            <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+                                              Notes
+                                            </th>
+                                          </tr>
+                                        </thead>
+                                        <tbody className='divide-y divide-gray-200'>
+                                          {sortByOrder(
+                                            selectedProject.visitors.details,
+                                            subItemOrder.visitors,
+                                            (v) => v.itemNumber
+                                          ).map(
+                                            (visitor, idx) =>
+                                              subItemVisibility.visitors[
+                                                visitor.itemNumber
+                                              ] && (
+                                                <tr
+                                                  key={visitor.itemNumber}
+                                                  className={cn(
+                                                    idx % 2 === 0
+                                                      ? 'bg-gray-50/50'
+                                                      : ''
+                                                  )}>
+                                                  <td className='py-3 text-xs text-gray-900'>
+                                                    {visitor.itemNumber}
+                                                  </td>
+                                                  <td className='py-3 text-xs text-gray-900'>
+                                                    {visitor.visitorName}
+                                                  </td>
+                                                  <td className='py-3 text-xs text-gray-900'>
+                                                    {
+                                                      visitor.startTimeLocalString
+                                                    }
+                                                  </td>
+                                                  <td className='py-3 text-xs text-gray-900'>
+                                                    {visitor.endTimeLocalString ||
+                                                      '-'}
+                                                  </td>
+                                                  <td className='py-3 text-xs text-gray-900'>
+                                                    {visitor.visitorNotes ||
+                                                      '-'}
+                                                  </td>
+                                                </tr>
+                                              )
+                                          )}
+                                        </tbody>
+                                      </table>
                                     </div>
                                   </div>
                                 )

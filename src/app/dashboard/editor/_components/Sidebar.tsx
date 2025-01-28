@@ -26,6 +26,7 @@ type SectionVisibility = {
   quantities: boolean;
   deliveries: boolean;
   inspections: boolean;
+  visitors: boolean;
 };
 
 type SubItemVisibility = {
@@ -37,6 +38,7 @@ type SubItemVisibility = {
   quantities: { [key: string]: boolean }; // key is itemNumber
   deliveries: { [key: string]: boolean }; // key is itemNumber
   inspections: { [key: string]: boolean }; // key is itemNumber
+  visitors: { [key: string]: boolean }; // key is itemNumber
 };
 
 type SectionConfig = {
@@ -158,6 +160,13 @@ export function Sidebar({
             selectedProject.inspections?.details.map((i: any) => ({
               id: i.itemNumber,
               label: `${i.inspectionType} - ${i.inspectorName}`,
+            })) || []
+          );
+        case 'visitors':
+          return (
+            selectedProject.visitors?.details.map((v: any) => ({
+              id: v.itemNumber,
+              label: `${v.visitorName} - ${v.startTimeLocalString}`,
             })) || []
           );
         default:
