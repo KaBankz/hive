@@ -6,9 +6,9 @@ import '@/app/globals.css';
 import { ChatButton } from '@/components/ChatButton';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
+import { ThemeProvider } from '@/components/providers/theme-provider';
 import { PdfProvider } from '@/context/PdfContext';
 import { createClient } from '@/utils/supabase/server';
-import { ThemeProvider } from '@/components/providers/theme-provider';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',

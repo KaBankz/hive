@@ -15,6 +15,34 @@ export default {
         'spin-reverse-slower': 'spin-reverse 6s linear infinite',
         'ping-slow': 'ping 3s cubic-bezier(0, 0, 0.2, 1) infinite',
       },
+      typography: {
+        DEFAULT: {
+          css: {
+            maxWidth: 'none',
+            color: 'inherit',
+            a: {
+              color: 'inherit',
+              textDecoration: 'none',
+            },
+            '--tw-prose-body': 'inherit',
+            '--tw-prose-headings': 'inherit',
+            '--tw-prose-lead': 'inherit',
+            '--tw-prose-links': 'inherit',
+            '--tw-prose-bold': 'inherit',
+            '--tw-prose-counters': 'inherit',
+            '--tw-prose-bullets': 'inherit',
+            '--tw-prose-hr': 'inherit',
+            '--tw-prose-quotes': 'inherit',
+            '--tw-prose-quote-borders': 'inherit',
+            '--tw-prose-captions': 'inherit',
+            '--tw-prose-code': 'inherit',
+            '--tw-prose-pre-code': 'inherit',
+            '--tw-prose-pre-bg': 'inherit',
+            '--tw-prose-th-borders': 'inherit',
+            '--tw-prose-td-borders': 'inherit',
+          },
+        },
+      },
       keyframes: {
         'border-beam': {
           '100%': {
@@ -48,5 +76,5 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [require('@tailwindcss/typography')],
 } satisfies Config;

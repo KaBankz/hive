@@ -3,8 +3,30 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { Brain, MessageCircle, Sparkles, Wand2, X } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
 
 import { usePdf } from '@/context/PdfContext';
+
+// Add HTML stripping function
+function stripHtmlAndFormatMarkdown(html: string): string {
+  // Remove HTML tags but preserve line breaks for lists
+  const withoutTags = html
+    .replace(/<div[^>]*>|<\/div>/g, '\n')
+    .replace(/<ul[^>]*>|<\/ul>/g, '\n')
+    .replace(/<li[^>]*>\s*•\s*|<li[^>]*>/g, '- ')
+    .replace(/<\/li>/g, '\n')
+    .replace(/class="[^"]*"/g, '')
+    .replace(/<[^>]+>/g, '')
+    .trim();
+
+  // Clean up multiple newlines
+  const cleanText = withoutTags
+    .replace(/\n\s*\n\s*\n/g, '\n\n')
+    .replace(/\n\s*\n/g, '\n\n');
+
+  // Ensure headers are properly formatted
+  return cleanText.replace(/###\s*([^\n]+)/g, '### $1\n');
+}
 
 type Message = {
   id: string;
@@ -69,7 +91,7 @@ export function ChatButton() {
           });
 
           const data = await response.json();
-          const cleanResponse = data.answer.replace(/[*_`#\[\]]/g, '');
+          const cleanResponse = stripHtmlAndFormatMarkdown(data.answer);
 
           const responseMessage: Message = {
             id: Date.now().toString(),
@@ -125,7 +147,7 @@ export function ChatButton() {
       });
 
       const data = await response.json();
-      const cleanResponse = data.answer.replace(/[*_`#\[\]]/g, '');
+      const cleanResponse = stripHtmlAndFormatMarkdown(data.answer);
 
       const responseMessage: Message = {
         id: Date.now().toString(),
@@ -244,7 +266,13 @@ export function ChatButton() {
                             ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white'
                             : 'bg-white dark:bg-zinc-800'
                         }`}>
-                        {message.text}
+                        {message.sender === 'system' ? (
+                          <div className='prose prose-sm dark:prose-invert max-w-none'>
+                            <ReactMarkdown>{message.text}</ReactMarkdown>
+                          </div>
+                        ) : (
+                          message.text
+                        )}
                       </div>
                     </div>
                   ))}
