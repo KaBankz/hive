@@ -1,6 +1,9 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
 
+import { motion } from 'framer-motion';
 import {
   ChevronRight,
   Download,
@@ -13,19 +16,20 @@ import {
 
 import { Testimonials } from '@/components/Testimonials';
 import { BorderBeam } from '@/components/ui/border-beam';
+import { NumberTicker } from '@/components/ui/number-ticker';
 
 export default function Home() {
   return (
-    <div className='relative min-h-screen bg-gradient-to-b from-gray-50 via-white to-gray-50 dark:from-zinc-950 dark:via-zinc-950 dark:to-black'>
-      <div className='absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-blue-100 via-transparent to-transparent dark:from-blue-800/20 dark:via-transparent dark:to-transparent'></div>
+    <div className='relative min-h-screen bg-zinc-950'>
+      <div className='absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-blue-800/20 via-transparent to-transparent'></div>
       <div className='relative mx-auto max-w-7xl px-4 pt-32 sm:px-6 lg:pt-40'>
         <div className='text-center'>
-          <h1 className='bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text pb-4 text-5xl font-bold tracking-tight text-transparent sm:text-7xl dark:from-white dark:to-zinc-400'>
+          <h1 className='from-white to-zinc-400 bg-gradient-to-r bg-clip-text pb-4 text-5xl font-bold tracking-tight text-transparent sm:text-7xl'>
             Construction Reporting
             <br />
             Redefined
           </h1>
-          <p className='mx-auto mt-6 max-w-2xl text-lg text-gray-600 dark:text-zinc-400'>
+          <p className='mx-auto mt-6 max-w-2xl text-lg text-zinc-400'>
             Create professional construction reports in minutes with our
             intuitive drag-and-drop editor and customizable templates.
           </p>
@@ -62,10 +66,8 @@ export default function Home() {
                 Why Construction Teams Love Hive
               </h2>
               <p className='mt-4 text-lg text-gray-600 dark:text-zinc-400'>
-                Construction reporting shouldn't be a burden. Hive transforms
-                your daily reporting workflow with intelligent automation and a
-                user-friendly interface designed specifically for construction
-                professionals.
+                Construction reporting shouldn't be a burden. Hive makes your
+                daily reporting workflow into a breeze.
               </p>
               <div className='mt-8 space-y-4'>
                 {[
@@ -91,17 +93,18 @@ export default function Home() {
                 </h3>
                 <dl className='mt-8 grid grid-cols-2 gap-6'>
                   {[
-                    ['Time Saved', '83%'],
-                    ['Error Reduction', '92%'],
-                    ['Team Adoption', '97%'],
-                    ['ROI', '5.3x'],
-                  ].map(([label, value]) => (
+                    ['Time Saved', 16, ' hrs/week'],
+                    ['Report Quality', 94, ' %'],
+                    ['Project Compliance', 100, ' %'],
+                    ['Cost Reduction', 45, ' %'],
+                  ].map(([label, value, suffix]) => (
                     <div key={label}>
                       <dt className='text-sm text-gray-500 dark:text-zinc-400'>
                         {label}
                       </dt>
                       <dd className='mt-1 text-3xl font-semibold text-blue-500'>
-                        {value}
+                        <NumberTicker value={Number(value)} />
+                        {suffix}
                       </dd>
                     </div>
                   ))}

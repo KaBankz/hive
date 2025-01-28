@@ -26,11 +26,71 @@ const testimonials = [
     role: "Operations Director",
     company: "Wilson & Associates",
     image: "https://api.dicebear.com/7.x/notionists/png?scale=200&seed=James"
+  },
+  {
+    quote: "Safety compliance tracking has never been easier. The automated alerts are a lifesaver.",
+    author: "Emma Thompson",
+    role: "Safety Coordinator",
+    company: "Thompson Safety Solutions",
+    image: "https://api.dicebear.com/7.x/notionists/png?scale=200&seed=Emma"
+  },
+  {
+    quote: "The real-time collaboration features have improved our team communication significantly.",
+    author: "David Park",
+    role: "Construction Manager",
+    company: "Park Builders Inc",
+    image: "https://api.dicebear.com/7.x/notionists/png?scale=200&seed=David"
+  },
+  {
+    quote: "Being able to access all project documentation from my phone has been revolutionary.",
+    author: "Lisa Martinez",
+    role: "Field Supervisor",
+    company: "Martinez Construction",
+    image: "https://api.dicebear.com/7.x/notionists/png?scale=200&seed=Lisa"
+  },
+  {
+    quote: "The weather integration helps us plan our work more effectively. Great feature!",
+    author: "Robert Johnson",
+    role: "Project Coordinator",
+    company: "Johnson & Sons",
+    image: "https://api.dicebear.com/7.x/notionists/png?scale=200&seed=Robert"
+  },
+  {
+    quote: "Document version control is seamless. No more confusion about the latest plans.",
+    author: "Anna Kim",
+    role: "Document Controller",
+    company: "Kim Construction Group",
+    image: "https://api.dicebear.com/7.x/notionists/png?scale=200&seed=Anna"
+  },
+  {
+    quote: "The cost tracking features have helped us stay within budget on every project.",
+    author: "Thomas Brown",
+    role: "Financial Manager",
+    company: "Brown Contractors",
+    image: "https://api.dicebear.com/7.x/notionists/png?scale=200&seed=Thomas"
+  },
+  {
+    quote: "Quality control checklists are comprehensive and easy to customize.",
+    author: "Maria Garcia",
+    role: "Quality Manager",
+    company: "Garcia Quality Control",
+    image: "https://api.dicebear.com/7.x/notionists/png?scale=200&seed=Maria"
+  },
+  {
+    quote: "The equipment tracking system has reduced our downtime significantly.",
+    author: "Steve Anderson",
+    role: "Equipment Manager",
+    company: "Anderson Equipment",
+    image: "https://api.dicebear.com/7.x/notionists/png?scale=200&seed=Steve"
+  },
+  {
+    quote: "Subcontractor management is streamlined. Communication has never been better.",
+    author: "Rachel Lee",
+    role: "Procurement Manager",
+    company: "Lee Enterprises",
+    image: "https://api.dicebear.com/7.x/notionists/png?scale=200&seed=Rachel"
   }
 ];
-
-const firstRow = testimonials.slice(0, Math.ceil(testimonials.length / 2));
-const secondRow = testimonials.slice(Math.ceil(testimonials.length / 2));
 
 const TestimonialCard = ({ testimonial }: { testimonial: typeof testimonials[0] }) => {
   return (
@@ -87,18 +147,15 @@ export function Testimonials() {
         </div>
 
         <div className="relative mt-16">
-          <Marquee className="[--duration:40s]">
-            {firstRow.map((testimonial) => (
+          <Marquee className="[--duration:60s]">
+            {testimonials.map((testimonial) => (
               <TestimonialCard key={testimonial.author} testimonial={testimonial} />
             ))}
           </Marquee>
-          <Marquee reverse className="mt-8 [--duration:40s]">
-            {secondRow.map((testimonial) => (
-              <TestimonialCard key={testimonial.author} testimonial={testimonial} />
-            ))}
-          </Marquee>
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-gray-50 dark:from-zinc-900"></div>
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-gray-50 dark:from-zinc-900"></div>
+          
+          {/* Gradient overlays */}
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-[15%] bg-gradient-to-r from-gray-50/50 via-gray-50/30 to-transparent dark:from-zinc-900/50 dark:via-zinc-900/30" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-[15%] bg-gradient-to-l from-gray-50/50 via-gray-50/30 to-transparent dark:from-zinc-900/50 dark:via-zinc-900/30" />
         </div>
       </div>
     </section>
