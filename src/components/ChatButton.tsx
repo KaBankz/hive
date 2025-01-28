@@ -26,6 +26,19 @@ export function ChatButton() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  // Handle body scroll lock
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [isOpen]);
+
   // Scroll to bottom when messages change or chat opens
   useEffect(() => {
     scrollToBottom();
@@ -39,6 +52,49 @@ export function ChatButton() {
       textarea.style.height = `${textarea.scrollHeight}px`;
     }
   }, [inputMessage]);
+
+  // Add effect for initial analysis
+  useEffect(() => {
+    const sendInitialAnalysis = async () => {
+      if (isOpen && messages.length === 0 && pdfBlob) {
+        setIsLoading(true);
+        try {
+          const formData = new FormData();
+          // formData.append('question', '');
+          formData.append('file', pdfBlob, 'current-document.pdf');
+
+          const response = await fetch('/chat', {
+            method: 'POST',
+            body: formData,
+          });
+
+          const data = await response.json();
+          const cleanResponse = data.answer.replace(/[*_`#\[\]]/g, '');
+
+          const responseMessage: Message = {
+            id: Date.now().toString(),
+            text: cleanResponse,
+            sender: 'system',
+            timestamp: new Date(),
+          };
+          setMessages((prev) => [...prev, responseMessage]);
+        } catch (error) {
+          console.error('Error sending initial analysis:', error);
+          const errorMessage: Message = {
+            id: Date.now().toString(),
+            text: 'Sorry, there was an error analyzing the document.',
+            sender: 'system',
+            timestamp: new Date(),
+          };
+          setMessages((prev) => [...prev, errorMessage]);
+        } finally {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    sendInitialAnalysis();
+  }, [isOpen, messages.length, pdfBlob]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -106,10 +162,10 @@ export function ChatButton() {
       {isOpen && (
         <div className='fixed inset-0 z-50 flex items-end justify-end p-4 sm:items-center sm:justify-center'>
           <div
-            className='absolute inset-0 bg-black/30 backdrop-blur-sm transition-opacity'
+            className='fixed inset-0 bg-black/30 backdrop-blur-sm transition-opacity'
             onClick={() => setIsOpen(false)}
           />
-          <div className='relative flex h-[600px] w-full max-w-[400px] flex-col overflow-hidden rounded-2xl bg-white shadow-2xl transition-all duration-300 sm:h-[650px] dark:bg-zinc-900'>
+          <div className='relative flex h-[80vh] w-full max-w-[600px] flex-col overflow-hidden rounded-2xl bg-white shadow-2xl transition-all duration-300 dark:bg-zinc-900'>
             {/* Header */}
             <div className='flex items-center justify-between border-b bg-white/50 p-4 pb-2 backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-900/50'>
               <h2 className='text-lg font-semibold text-gray-800 dark:text-white'>
