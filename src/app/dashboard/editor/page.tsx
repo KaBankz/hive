@@ -6,8 +6,6 @@ import { useSearchParams } from 'next/navigation';
 
 import { DragEndEvent } from '@dnd-kit/core';
 import { arrayMove } from '@dnd-kit/sortable';
-// @ts-expect-error - html2pdf.js doesn't have type definitions
-import html2pdf from 'html2pdf.js';
 import { Cloud, FileText, ImageIcon, Tag, Truck, Users } from 'lucide-react';
 
 import { usePdf } from '@/context/PdfContext';
@@ -289,6 +287,7 @@ export default function EditorPage() {
   const handleExportPDF = async () => {
     setIsGenerating(true);
     try {
+      const html2pdf = (await import('html2pdf.js')).default;
       const element = document.getElementById('document-container');
       if (!element) return;
 
@@ -336,6 +335,7 @@ export default function EditorPage() {
   // Auto-generate PDF for chat context when content changes
   useEffect(() => {
     const generatePdfForChat = async () => {
+      const html2pdf = (await import('html2pdf.js')).default;
       const element = document.getElementById('document-container');
       if (!element) return;
 
@@ -416,7 +416,7 @@ export default function EditorPage() {
                       {dailyReportData.companyName}
                     </h1>
                     <Image
-                      src={dailyReportData.companyLogo}
+                      src='/images/riskcast.png'
                       alt='Company Logo'
                       width={100}
                       height={24}
