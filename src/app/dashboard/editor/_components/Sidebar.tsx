@@ -23,6 +23,7 @@ type SectionVisibility = {
   equipment: boolean;
   photos: boolean;
   questions: boolean;
+  quantities: boolean;
 };
 
 type SubItemVisibility = {
@@ -31,6 +32,7 @@ type SubItemVisibility = {
   equipment: { [key: string]: boolean }; // key is equipName
   photos: { [key: string]: boolean }; // key is photo url
   questions: { [key: string]: boolean }; // key is fullName
+  quantities: { [key: string]: boolean }; // key is itemNumber
 };
 
 type SectionConfig = {
@@ -133,6 +135,13 @@ export function Sidebar({
               label: q.fullName,
             })) || []
           );
+        case 'quantities':
+          return (
+            selectedProject.quantities?.details.map((q: any) => ({
+              id: q.itemNumber,
+              label: `Item ${q.itemNumber} - ${q._costCodeAndDescription || 'No Description'}`,
+            })) || []
+          );
         default:
           return [];
       }
@@ -141,7 +150,9 @@ export function Sidebar({
     // Sort items based on subItemOrder if available
     if (subItemOrder[section.id as keyof SubItemVisibility]) {
       const order = subItemOrder[section.id as keyof SubItemVisibility];
-      return items.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
+      return items.sort(
+        (a: any, b: any) => order.indexOf(a.id) - order.indexOf(b.id)
+      );
     }
 
     return items;

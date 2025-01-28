@@ -82,6 +82,7 @@ type SectionVisibility = {
   equipment: boolean;
   photos: boolean;
   questions: boolean;
+  quantities: boolean;
 };
 
 type SubItemVisibility = {
@@ -90,6 +91,7 @@ type SubItemVisibility = {
   equipment: { [key: string]: boolean }; // key is equipName
   photos: { [key: string]: boolean }; // key is photo url
   questions: { [key: string]: boolean }; // key is fullName
+  quantities: { [key: string]: boolean }; // key is itemNumber
 };
 
 type SectionConfig = {
@@ -117,6 +119,7 @@ type SectionRef = {
   equipment?: HTMLDivElement | null;
   photos?: HTMLDivElement | null;
   questions?: HTMLDivElement | null;
+  quantities?: HTMLDivElement | null;
 };
 
 export default function EditorPage() {
@@ -132,6 +135,7 @@ export default function EditorPage() {
       equipment: true,
       photos: true,
       questions: true,
+      quantities: true,
     }
   );
 
@@ -182,6 +186,14 @@ export default function EditorPage() {
             },
             {} as { [key: string]: boolean }
           ) || {},
+        quantities:
+          selectedProject.quantities?.details.reduce(
+            (acc, item) => {
+              acc[item.itemNumber] = true;
+              return acc;
+            },
+            {} as { [key: string]: boolean }
+          ) || {},
       };
     }
   );
@@ -220,6 +232,11 @@ export default function EditorPage() {
       label: 'Questions',
       icon: <FileText size={12} className='text-gray-500' />,
     },
+    (selectedProject.quantities?.details?.length ?? 0) > 0 && {
+      id: 'quantities',
+      label: 'Quantities',
+      icon: <FileText size={12} className='text-gray-500' />,
+    },
   ].filter(Boolean) as SectionConfig[];
 
   // Keep section order in sync with available sections
@@ -233,6 +250,7 @@ export default function EditorPage() {
       'equipment',
       'photos',
       'questions',
+      'quantities',
     ];
     return defaultOrder.filter((id) =>
       availableSections.some((section) => section.id === id)
@@ -263,6 +281,8 @@ export default function EditorPage() {
         ) || [],
       questions:
         selectedProject.questions?.details.map((q) => q.fullName) || [],
+      quantities:
+        selectedProject.quantities?.details.map((q) => q.itemNumber) || [],
     };
   });
 
@@ -1047,6 +1067,99 @@ export default function EditorPage() {
                                             </div>
                                           )
                                       )}
+                                    </div>
+                                  </div>
+                                )
+                              );
+                            case 'quantities':
+                              return (
+                                selectedProject.quantities && (
+                                  <div className='overflow-hidden rounded-lg border border-gray-200 bg-white/50'>
+                                    <div className='border-b border-gray-200 bg-gray-50/50 px-4 py-3'>
+                                      <h2 className='text-center text-xs font-semibold uppercase text-gray-700'>
+                                        Quantities
+                                      </h2>
+                                    </div>
+                                    <div className='p-4'>
+                                      <table className='w-full'>
+                                        <thead>
+                                          <tr className='border-b border-gray-200'>
+                                            <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+                                              Item #
+                                            </th>
+                                            <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+                                              Project
+                                            </th>
+                                            <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+                                              Cost Code
+                                            </th>
+                                            <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+                                              UOM
+                                            </th>
+                                            <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+                                              Location
+                                            </th>
+                                            <th className='pb-2 text-right text-xs font-medium text-gray-600'>
+                                              Period Qty
+                                            </th>
+                                            <th className='pb-2 text-right text-xs font-medium text-gray-600'>
+                                              To Date Qty
+                                            </th>
+                                            <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+                                              Notes
+                                            </th>
+                                          </tr>
+                                        </thead>
+                                        <tbody className='divide-y divide-gray-200'>
+                                          {sortByOrder(
+                                            selectedProject.quantities.details,
+                                            subItemOrder.quantities,
+                                            (q) => q.itemNumber
+                                          ).map(
+                                            (quantity, idx) =>
+                                              subItemVisibility.quantities[
+                                                quantity.itemNumber
+                                              ] && (
+                                                <tr
+                                                  key={quantity.itemNumber}
+                                                  className={cn(
+                                                    idx % 2 === 0
+                                                      ? 'bg-gray-50/50'
+                                                      : ''
+                                                  )}>
+                                                  <td className='py-3 text-xs text-gray-900'>
+                                                    {quantity.itemNumber}
+                                                  </td>
+                                                  <td className='py-3 text-xs text-gray-900'>
+                                                    {quantity._projectNumber}
+                                                  </td>
+                                                  <td className='py-3 text-xs text-gray-900'>
+                                                    {
+                                                      quantity._costCodeAndDescription
+                                                    }
+                                                  </td>
+                                                  <td className='py-3 text-xs text-gray-900'>
+                                                    {quantity._UOM}
+                                                  </td>
+                                                  <td className='py-3 text-xs text-gray-900'>
+                                                    {
+                                                      quantity._projectLocationCode
+                                                    }
+                                                  </td>
+                                                  <td className='py-3 text-right text-xs text-gray-900'>
+                                                    {quantity._periodQty}
+                                                  </td>
+                                                  <td className='py-3 text-right text-xs text-gray-900'>
+                                                    {quantity._toDateQty}
+                                                  </td>
+                                                  <td className='py-3 text-xs text-gray-900'>
+                                                    {quantity._note}
+                                                  </td>
+                                                </tr>
+                                              )
+                                          )}
+                                        </tbody>
+                                      </table>
                                     </div>
                                   </div>
                                 )
