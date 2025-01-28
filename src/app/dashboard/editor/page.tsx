@@ -86,6 +86,7 @@ type SectionVisibility = {
   deliveries: boolean;
   inspections: boolean;
   visitors: boolean;
+  notes: boolean;
 };
 
 type SubItemVisibility = {
@@ -98,6 +99,7 @@ type SubItemVisibility = {
   deliveries: { [key: string]: boolean }; // key is itemNumber
   inspections: { [key: string]: boolean }; // key is itemNumber
   visitors: { [key: string]: boolean }; // key is itemNumber
+  notes: { [key: string]: boolean }; // key is itemNumber
 };
 
 type SectionConfig = {
@@ -129,6 +131,7 @@ type SectionRef = {
   deliveries?: HTMLDivElement | null;
   inspections?: HTMLDivElement | null;
   visitors?: HTMLDivElement | null;
+  notes?: HTMLDivElement | null;
 };
 
 export default function EditorPage() {
@@ -148,6 +151,7 @@ export default function EditorPage() {
       deliveries: true,
       inspections: true,
       visitors: true,
+      notes: true,
     }
   );
 
@@ -230,6 +234,14 @@ export default function EditorPage() {
             },
             {} as { [key: string]: boolean }
           ) || {},
+        notes:
+          selectedProject.notes?.details.reduce(
+            (acc, item) => {
+              acc[item.itemNumber] = true;
+              return acc;
+            },
+            {} as { [key: string]: boolean }
+          ) || {},
       };
     }
   );
@@ -288,6 +300,11 @@ export default function EditorPage() {
       label: 'Visitors',
       icon: <FileText size={12} className='text-gray-500' />,
     },
+    (selectedProject.notes?.details?.length ?? 0) > 0 && {
+      id: 'notes',
+      label: 'Notes',
+      icon: <FileText size={12} className='text-gray-500' />,
+    },
   ].filter(Boolean) as SectionConfig[];
 
   // Keep section order in sync with available sections
@@ -305,6 +322,7 @@ export default function EditorPage() {
       'deliveries',
       'inspections',
       'visitors',
+      'notes',
     ];
     return defaultOrder.filter((id) =>
       availableSections.some((section) => section.id === id)
@@ -343,6 +361,7 @@ export default function EditorPage() {
         selectedProject.inspections?.details.map((i) => i.itemNumber) || [],
       visitors:
         selectedProject.visitors?.details.map((v) => v.itemNumber) || [],
+      notes: selectedProject.notes?.details.map((n) => n.itemNumber) || [],
     };
   });
 
@@ -1565,6 +1584,71 @@ export default function EditorPage() {
                                                   <td className='py-3 text-xs text-gray-900'>
                                                     {visitor.visitorNotes ||
                                                       '-'}
+                                                  </td>
+                                                </tr>
+                                              )
+                                          )}
+                                        </tbody>
+                                      </table>
+                                    </div>
+                                  </div>
+                                )
+                              );
+                            case 'notes':
+                              return (
+                                selectedProject.notes && (
+                                  <div className='overflow-hidden rounded-lg border border-gray-200 bg-white/50'>
+                                    <div className='border-b border-gray-200 bg-gray-50/50 px-4 py-3'>
+                                      <h2 className='text-center text-xs font-semibold uppercase text-gray-700'>
+                                        Notes
+                                      </h2>
+                                    </div>
+                                    <div className='p-4'>
+                                      <table className='w-full'>
+                                        <thead>
+                                          <tr className='border-b border-gray-200'>
+                                            <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+                                              Item #
+                                            </th>
+                                            <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+                                              Location
+                                            </th>
+                                            <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+                                              Notes
+                                            </th>
+                                            <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+                                              User
+                                            </th>
+                                          </tr>
+                                        </thead>
+                                        <tbody className='divide-y divide-gray-200'>
+                                          {sortByOrder(
+                                            selectedProject.notes.details,
+                                            subItemOrder.notes,
+                                            (n) => n.itemNumber
+                                          ).map(
+                                            (note, idx) =>
+                                              subItemVisibility.notes[
+                                                note.itemNumber
+                                              ] && (
+                                                <tr
+                                                  key={note.itemNumber}
+                                                  className={cn(
+                                                    idx % 2 === 0
+                                                      ? 'bg-gray-50/50'
+                                                      : ''
+                                                  )}>
+                                                  <td className='py-3 text-xs text-gray-900'>
+                                                    {note.itemNumber}
+                                                  </td>
+                                                  <td className='py-3 text-xs text-gray-900'>
+                                                    {note.noteLocation}
+                                                  </td>
+                                                  <td className='py-3 text-xs text-gray-900'>
+                                                    {note.notes}
+                                                  </td>
+                                                  <td className='py-3 text-xs text-gray-900'>
+                                                    {note._userFullName || '-'}
                                                   </td>
                                                 </tr>
                                               )

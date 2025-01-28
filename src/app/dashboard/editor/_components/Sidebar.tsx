@@ -27,6 +27,7 @@ type SectionVisibility = {
   deliveries: boolean;
   inspections: boolean;
   visitors: boolean;
+  notes: boolean;
 };
 
 type SubItemVisibility = {
@@ -39,6 +40,7 @@ type SubItemVisibility = {
   deliveries: { [key: string]: boolean }; // key is itemNumber
   inspections: { [key: string]: boolean }; // key is itemNumber
   visitors: { [key: string]: boolean }; // key is itemNumber
+  notes: { [key: string]: boolean }; // key is itemNumber
 };
 
 type SectionConfig = {
@@ -167,6 +169,13 @@ export function Sidebar({
             selectedProject.visitors?.details.map((v: any) => ({
               id: v.itemNumber,
               label: `${v.visitorName} - ${v.startTimeLocalString}`,
+            })) || []
+          );
+        case 'notes':
+          return (
+            selectedProject.notes?.details.map((n: any) => ({
+              id: n.itemNumber,
+              label: `${n.noteLocation} - ${n.notes.substring(0, 30)}${n.notes.length > 30 ? '...' : ''}`,
             })) || []
           );
         default:
