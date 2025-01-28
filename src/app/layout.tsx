@@ -8,6 +8,7 @@ import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { PdfProvider } from '@/context/PdfContext';
 import { createClient } from '@/utils/supabase/server';
+import { ThemeProvider } from '@/components/providers/theme-provider';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -37,20 +38,22 @@ export default async function RootLayout({
   } = await supabase.auth.getUser();
 
   return (
-    <html lang='en'>
+    <html lang='en' className='dark'>
       <head>
         <link rel='icon' href='/icon.png' />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} bg-white antialiased dark:bg-black`}>
-        <PdfProvider>
-          <div className='flex min-h-screen flex-col bg-white text-gray-900 dark:bg-gradient-to-b dark:from-black dark:to-zinc-900 dark:text-white'>
-            <Header />
-            <main className='flex-1'>{children}</main>
-            <Footer />
-            {user && <ChatButton />}
-          </div>
-        </PdfProvider>
+        <ThemeProvider>
+          <PdfProvider>
+            <div className='flex min-h-screen flex-col bg-white text-gray-900 dark:bg-gradient-to-b dark:from-black dark:to-zinc-900 dark:text-white'>
+              <Header />
+              <main className='flex-1'>{children}</main>
+              <Footer />
+              {user && <ChatButton />}
+            </div>
+          </PdfProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

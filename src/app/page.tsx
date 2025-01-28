@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
 import {
@@ -9,6 +10,8 @@ import {
   PenLine,
   Settings2,
 } from 'lucide-react';
+
+import { BorderBeam } from '@/components/ui/border-beam';
 
 export default function Home() {
   return (
@@ -40,7 +43,16 @@ export default function Home() {
             </Link>
           </div>
         </div>
-
+        <div className='bg-background relative mx-auto mt-[17vh] flex w-fit flex-col items-center justify-center overflow-hidden rounded-lg border md:shadow-xl dark:border-white/10'>
+          <Image
+            src='/images/dash.jpg'
+            alt='Dashboard'
+            className='rounded-lg'
+            width={1500}
+            height={1500}
+          />
+          <BorderBeam size={250} duration={12} delay={9} />
+        </div>
         {/* Features Grid */}
         <div className='grid gap-8 py-32 sm:grid-cols-2 lg:grid-cols-3'>
           {[

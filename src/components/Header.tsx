@@ -1,7 +1,8 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
-import { Building2, ChevronRight, LogOut, User } from 'lucide-react';
+import { ChevronRight, LogOut, User } from 'lucide-react';
 
 import { createClient } from '@/utils/supabase/server';
 
@@ -25,7 +26,13 @@ export async function Header() {
         <Link
           href='/'
           className='flex items-center space-x-2 transition-opacity hover:opacity-80'>
-          <Building2 className='size-6 text-blue-500' />
+          <Image
+            src='/icon.png'
+            alt='Hive'
+            width={100}
+            height={100}
+            className='size-6'
+          />
           <span className='text-lg font-bold text-gray-900 dark:text-white'>
             Hive
           </span>
