@@ -86,10 +86,10 @@ export default function DashboardPage() {
   );
 
   return (
-    <div className='min-h-screen bg-white pt-16 dark:bg-zinc-950'>
+    <div className='min-h-screen bg-zinc-950 pt-16'>
       <div className='mx-auto max-w-7xl px-4 py-8'>
         <div className='mb-8 flex items-center justify-between'>
-          <h1 className='text-2xl font-semibold text-gray-900 dark:text-white'>
+          <h1 className='text-2xl font-semibold text-white'>
             Construction Projects
           </h1>
           <button className='inline-flex items-center gap-2 rounded-full bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700'>
@@ -106,14 +106,14 @@ export default function DashboardPage() {
               placeholder='Search projects'
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className='w-full rounded-lg border border-gray-200 bg-white py-2 pl-10 pr-4 text-gray-900 placeholder:text-gray-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-zinc-800 dark:bg-zinc-900 dark:text-white dark:placeholder:text-zinc-400'
+              className='w-full rounded-lg border border-zinc-800 bg-zinc-900 py-2 pl-10 pr-4 text-white placeholder:text-zinc-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500'
             />
           </div>
         </div>
 
         {starredProjects.length > 0 && (
           <div className='mb-8'>
-            <h2 className='mb-4 text-sm font-medium text-gray-700 dark:text-zinc-300'>
+            <h2 className='mb-4 text-sm font-medium text-zinc-300'>
               Starred Projects
             </h2>
             <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3'>
@@ -178,7 +178,7 @@ export default function DashboardPage() {
         )}
 
         <div>
-          <h2 className='mb-4 text-sm font-medium text-gray-700 dark:text-zinc-300'>
+          <h2 className='mb-4 text-sm font-medium text-zinc-300'>
             All Projects
           </h2>
           <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3'>

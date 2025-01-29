@@ -1,8 +1,13 @@
 import type { Config } from 'tailwindcss';
+import typography from '@tailwindcss/typography';
 
-export default {
-  darkMode: ['class'],
-  content: ['./src/{app,components}/**/*.{js,ts,jsx,tsx,mdx}'],
+const config: Config = {
+  darkMode: 'class',
+  content: [
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
   theme: {
     extend: {
       animation: {
@@ -76,5 +81,7 @@ export default {
       },
     },
   },
-  plugins: [require('@tailwindcss/typography')],
-} satisfies Config;
+  plugins: [typography],
+};
+
+export default config;
