@@ -674,15 +674,15 @@
         "images": [
           {
             "label": "ZX12DD-FE123",
-            "url": "images/photo-1.jpg"
+            "url": "/images/photo-1.jpg"
           },
           {
             "label": "F822DAX-FS",
-            "url": "images/photo-1.jpg"
+            "url": "/images/photo-1.jpg"
           },
           {
             "label": "F822DAX-FX",
-            "url": "images/photo-1.jpg"
+            "url": "/images/photo-1.jpg"
           }
         ]
       },

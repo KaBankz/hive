@@ -2,6 +2,7 @@ import Image from 'next/image';
 
 import type { DailyReport } from '@/types/dailyReport';
 
+import { DeliveriesSection } from './sections/DeliveriesSection';
 import { EquipmentSection } from './sections/EquipmentSection';
 import { LaborSection } from './sections/LaborSection';
 import { QuantitiesSection } from './sections/QuantitiesSection';
@@ -61,6 +62,9 @@ export function DocumentPreview({ report, projectIndex }: Props) {
         )}
         {project.quantities && (
           <QuantitiesSection quantities={project.quantities} />
+        )}
+        {project.deliveries && (
+          <DeliveriesSection deliveries={project.deliveries} />
         )}
       </div>
     </div>
