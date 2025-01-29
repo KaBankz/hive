@@ -13,6 +13,8 @@ import {
   Star,
 } from 'lucide-react';
 
+import { cn } from '@/lib/utils';
+
 import dailyReportData from '../../../public/dailyReportData.json';
 
 type DailyLog = {
@@ -86,7 +88,6 @@ export default function DashboardPage() {
   return (
     <div className='min-h-screen bg-white pt-16 dark:bg-zinc-950'>
       <div className='mx-auto max-w-7xl px-4 py-8'>
-        {/* Header */}
         <div className='mb-8 flex items-center justify-between'>
           <h1 className='text-2xl font-semibold text-gray-900 dark:text-white'>
             Construction Projects
@@ -97,7 +98,6 @@ export default function DashboardPage() {
           </button>
         </div>
 
-        {/* Search Bar */}
         <div className='mb-8'>
           <div className='relative'>
             <Search className='absolute left-3 top-1/2 size-5 -translate-y-1/2 text-gray-400' />
@@ -111,7 +111,6 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Starred Projects */}
         {starredProjects.length > 0 && (
           <div className='mb-8'>
             <h2 className='mb-4 text-sm font-medium text-gray-700 dark:text-zinc-300'>
@@ -142,11 +141,10 @@ export default function DashboardPage() {
                       }}
                       className='rounded-full p-1 hover:bg-gray-100 dark:hover:bg-zinc-800'>
                       <Star
-                        className={`size-5 ${
-                          project.starred
-                            ? 'fill-yellow-400 text-yellow-400'
-                            : 'text-gray-400'
-                        }`}
+                        className={cn('size-5', {
+                          'fill-yellow-400 text-yellow-400': project.starred,
+                          'text-gray-400': !project.starred,
+                        })}
                       />
                     </button>
                   </div>
@@ -179,7 +177,6 @@ export default function DashboardPage() {
           </div>
         )}
 
-        {/* All Projects */}
         <div>
           <h2 className='mb-4 text-sm font-medium text-gray-700 dark:text-zinc-300'>
             All Projects
@@ -209,11 +206,10 @@ export default function DashboardPage() {
                     }}
                     className='rounded-full p-1 hover:bg-gray-100 dark:hover:bg-zinc-800'>
                     <Star
-                      className={`size-5 ${
-                        project.starred
-                          ? 'fill-yellow-400 text-yellow-400'
-                          : 'text-gray-400'
-                      }`}
+                      className={cn('size-5', {
+                        'fill-yellow-400 text-yellow-400': project.starred,
+                        'text-gray-400': !project.starred,
+                      })}
                     />
                   </button>
                 </div>
