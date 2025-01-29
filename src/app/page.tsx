@@ -3,7 +3,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { motion } from 'framer-motion';
 import {
   ChevronRight,
   Download,
@@ -24,7 +23,7 @@ export default function Home() {
       <div className='absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-blue-800/20 via-transparent to-transparent'></div>
       <div className='relative mx-auto max-w-7xl px-4 pt-32 sm:px-6 lg:pt-40'>
         <div className='text-center'>
-          <h1 className='from-white to-zinc-400 bg-gradient-to-r bg-clip-text pb-4 text-5xl font-bold tracking-tight text-transparent sm:text-7xl'>
+          <h1 className='bg-gradient-to-r from-white to-zinc-400 bg-clip-text pb-4 text-5xl font-bold tracking-tight text-transparent sm:text-7xl'>
             Construction Reporting
             <br />
             Redefined
@@ -40,15 +39,9 @@ export default function Home() {
               Get Started
               <ChevronRight className='size-4 transition-transform duration-200 group-hover:translate-x-0.5' />
             </Link>
-            <Link
-              href='#'
-              className='group inline-flex items-center justify-center gap-2 rounded-full border border-gray-200 bg-white px-6 py-3 text-sm font-medium text-gray-900 transition-all duration-200 hover:border-gray-300 hover:bg-gray-50 hover:shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10 dark:hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]'>
-              Watch demo
-              <ChevronRight className='size-4 transition-transform duration-200 group-hover:translate-x-0.5' />
-            </Link>
           </div>
         </div>
-        <div className='bg-background relative mx-auto mt-[17vh] flex w-fit flex-col items-center justify-center overflow-hidden rounded-lg border md:shadow-xl dark:border-white/10'>
+        <div className='bg-background relative mx-auto mt-[17vh] flex w-fit flex-col items-center justify-center overflow-hidden rounded-lg border dark:border-white/10 md:shadow-xl'>
           <Image
             src='/images/dash.jpg'
             alt='Dashboard'
@@ -58,11 +51,11 @@ export default function Home() {
           />
           <BorderBeam size={250} duration={12} delay={9} />
         </div>
-        {/* Add a story section before features */}
+
         <section className='relative mx-auto max-w-7xl px-4 py-24 sm:px-6'>
           <div className='grid gap-12 lg:grid-cols-2 lg:gap-8'>
             <div>
-              <h2 className='text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl dark:text-white'>
+              <h2 className='text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl'>
                 Why Construction Teams Love Hive
               </h2>
               <p className='mt-4 text-lg text-gray-600 dark:text-zinc-400'>
@@ -113,7 +106,7 @@ export default function Home() {
             </div>
           </div>
         </section>
-        {/* Features Grid */}
+
         <div className='grid gap-8 py-32 sm:grid-cols-2 lg:grid-cols-3'>
           {[
             {
