@@ -17,10 +17,3 @@ const eslintConfig = [
 ];
 
 export default eslintConfig;
-
-module.exports = {
-  rules: {
-    '@typescript-eslint/no-unsafe-assignment': 'off',
-    'tailwindcss/classnames-order': 'off'
-  }
-};
