@@ -71,7 +71,7 @@ export default function Home() {
                 ].map((point) => (
                   <div key={point} className='flex items-center gap-3'>
                     <div className='flex-none rounded-full bg-blue-500/10 p-1'>
-                      <div className='h-2 w-2 rounded-full bg-blue-500' />
+                      <div className='size-2 rounded-full bg-blue-500' />
                     </div>
                     <p className='text-gray-700 dark:text-zinc-300'>{point}</p>
                   </div>

@@ -1,7 +1,9 @@
 'use client';
 
-import { ThemeProvider as NextThemesProvider } from 'next-themes';
-import type { ThemeProviderProps } from 'next-themes';
+import {
+  ThemeProvider as NextThemesProvider,
+  type ThemeProviderProps,
+} from 'next-themes';
 
 export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
   return (
@@ -10,8 +12,7 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
       defaultTheme='dark'
       forcedTheme='dark'
       enableSystem={false}
-      disableTransitionOnChange
-    >
+      disableTransitionOnChange>
       <style jsx global>{`
         :root {
           color-scheme: dark;
@@ -20,4 +21,4 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
       {children}
     </NextThemesProvider>
   );
-} 
+}
