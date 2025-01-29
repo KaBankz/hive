@@ -65,13 +65,13 @@ export function QuestionsSection({ questions }: Props) {
         <table className='w-full'>
           <thead>
             <tr className='border-b border-gray-200'>
-              <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+              <th className='pb-2 text-center text-xs font-medium text-gray-600'>
                 Question
               </th>
-              <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+              <th className='pb-2 text-center text-xs font-medium text-gray-600'>
                 Response
               </th>
-              <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+              <th className='pb-2 text-center text-xs font-medium text-gray-600'>
                 Time
               </th>
             </tr>

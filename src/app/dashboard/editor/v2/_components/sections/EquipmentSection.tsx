@@ -8,11 +8,21 @@ type Props = {
   hoursLabels: string;
 };
 
-function EquipmentTags({ tags }: { tags: Tag[] }) {
+function EquipmentTags({
+  tags,
+  align = 'left',
+}: {
+  tags: Tag[];
+  align?: 'left' | 'right';
+}) {
   if (!tags?.length) return null;
 
   return (
-    <div className='mt-1 flex flex-wrap gap-1'>
+    <div
+      className={cn(
+        'mt-1 flex flex-wrap gap-1',
+        align === 'right' && 'justify-end'
+      )}>
       {tags.map((tag, idx) => (
         <span
           key={`${tag.label}-${idx}`}
@@ -26,20 +36,23 @@ function EquipmentTags({ tags }: { tags: Tag[] }) {
   );
 }
 
-type RowProps = {
+function EquipmentRow({
+  detail,
+  hasNotes,
+  isEven,
+}: {
   detail: NonNullable<DailyLog['equipment']>['details'][number];
   hasNotes: NonNullable<DailyLog['equipment']>['hasNotes'];
   isEven: boolean;
-};
-
-function EquipmentRow({ detail, hasNotes, isEven }: RowProps) {
+}) {
   const { nameRow, additionalCostCodeRows } = detail;
   const { nameCell, costCodeCell, hoursCell, notesCell } = nameRow;
+  const totalRows = additionalCostCodeRows.length + 1;
 
   return (
     <>
       <tr className={cn(isEven && 'bg-gray-50/50')}>
-        <td className='py-3 pl-3'>
+        <td className='py-3 pl-3' rowSpan={totalRows}>
           <div className='text-xs font-medium text-gray-900'>
             {nameCell.equipName}
           </div>
@@ -58,7 +71,7 @@ function EquipmentRow({ detail, hasNotes, isEven }: RowProps) {
         </td>
         <td className='p-3 text-right'>
           <div className='text-xs text-gray-900'>{hoursCell.hours}</div>
-          <EquipmentTags tags={hoursCell.hoursTags} />
+          <EquipmentTags tags={hoursCell.hoursTags} align='right' />
         </td>
         {hasNotes && (
           <td className='p-3 text-[10px] text-gray-500'>{notesCell}</td>
@@ -76,8 +89,9 @@ function EquipmentRow({ detail, hasNotes, isEven }: RowProps) {
               {row.costCodeCell.budgetCodeDescription}
             </div>
           </td>
-          <td className='p-3 text-right text-xs text-gray-900'>
-            {row.hoursCell.hours}
+          <td className='p-3 text-right'>
+            <div className='text-xs text-gray-900'>{row.hoursCell.hours}</div>
+            <EquipmentTags tags={row.hoursCell.hoursTags} align='right' />
           </td>
           {hasNotes && (
             <td className='p-3 text-[10px] text-gray-500'>{row.notesCell}</td>
@@ -100,17 +114,17 @@ export function EquipmentSection({ equipment, hoursLabels }: Props) {
         <table className='w-full'>
           <thead>
             <tr className='border-b border-gray-200'>
-              <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+              <th className='pb-2 text-center text-xs font-medium text-gray-600'>
                 Equipment
               </th>
-              <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+              <th className='pb-2 text-center text-xs font-medium text-gray-600'>
                 Cost Code
               </th>
-              <th className='pb-2 text-right text-xs font-medium text-gray-600'>
+              <th className='pb-2 text-center text-xs font-medium text-gray-600'>
                 {hoursLabels}
               </th>
               {equipment.hasNotes && (
-                <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+                <th className='pb-2 text-center text-xs font-medium text-gray-600'>
                   Notes
                 </th>
               )}

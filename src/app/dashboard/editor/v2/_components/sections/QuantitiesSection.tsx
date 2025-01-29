@@ -75,25 +75,25 @@ export function QuantitiesSection({ quantities }: Props) {
         <table className='w-full'>
           <thead>
             <tr className='border-b border-gray-200'>
-              <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+              <th className='pb-2 text-center text-xs font-medium text-gray-600'>
                 Item #
               </th>
-              <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+              <th className='pb-2 text-center text-xs font-medium text-gray-600'>
                 Cost Code
               </th>
-              <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+              <th className='pb-2 text-center text-xs font-medium text-gray-600'>
                 UOM
               </th>
-              <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+              <th className='pb-2 text-center text-xs font-medium text-gray-600'>
                 Location
               </th>
-              <th className='pb-2 text-right text-xs font-medium text-gray-600'>
+              <th className='pb-2 text-center text-xs font-medium text-gray-600'>
                 Period Qty
               </th>
-              <th className='pb-2 text-right text-xs font-medium text-gray-600'>
+              <th className='pb-2 text-center text-xs font-medium text-gray-600'>
                 To Date Qty
               </th>
-              <th className='pb-2 text-left text-xs font-medium text-gray-600'>
+              <th className='pb-2 text-center text-xs font-medium text-gray-600'>
                 Notes
               </th>
             </tr>
