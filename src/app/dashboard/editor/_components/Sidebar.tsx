@@ -241,6 +241,7 @@ export function Sidebar({
                 setSectionVisibility((prev) => {
                   const allVisible = Object.values(prev).every(Boolean);
                   return {
+                    ...prev,
                     reportInfo: !allVisible,
                     weather: !allVisible,
                     labor: !allVisible,

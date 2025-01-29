@@ -106,6 +106,10 @@ type SectionConfig = {
   id: keyof SectionVisibility;
   label: string;
   icon: React.ReactNode;
+  subItems?: {
+    id: string;
+    label: string;
+  }[];
 };
 
 // Helper function to sort items based on order
