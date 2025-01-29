@@ -9,7 +9,7 @@ import { arrayMove } from '@dnd-kit/sortable';
 import { Cloud, FileText, ImageIcon, Tag, Truck, Users } from 'lucide-react';
 
 import { usePdf } from '@/context/PdfContext';
-import { cn } from '@/utils/cn';
+import { cn } from '@/lib/utils';
 
 import dailyReportData from '../../../../public/dailyReportData.json';
 import { Sidebar } from './_components/Sidebar';

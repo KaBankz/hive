@@ -4,7 +4,7 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Check, ChevronDown, ChevronRight, GripVertical } from 'lucide-react';
 
-import { cn } from '@/utils/cn';
+import { cn } from '@/lib/utils';
 
 type SectionVisibility = {
   reportInfo: boolean;
