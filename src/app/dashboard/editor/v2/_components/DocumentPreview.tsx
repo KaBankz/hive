@@ -9,6 +9,7 @@ import { LaborSection } from './sections/LaborSection';
 import { QuantitiesSection } from './sections/QuantitiesSection';
 import { QuestionsSection } from './sections/QuestionsSection';
 import { ReportInfo } from './sections/ReportInfo';
+import { VisitorsSection } from './sections/VisitorsSection';
 import { WeatherSection } from './sections/WeatherSection';
 
 type Props = {
@@ -70,6 +71,7 @@ export function DocumentPreview({ report, projectIndex }: Props) {
         {project.inspections && (
           <InspectionsSection inspections={project.inspections} />
         )}
+        {project.visitors && <VisitorsSection visitors={project.visitors} />}
       </div>
     </div>
   );
