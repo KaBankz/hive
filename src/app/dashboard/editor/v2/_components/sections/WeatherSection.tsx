@@ -1,12 +1,10 @@
-import type { WeatherSummary } from '@/types/dailyReport';
+import type { DailyLog } from '@/types/dailyReport';
 
-type WeatherSectionProps = {
-  weather: {
-    summary: WeatherSummary[];
-  };
+type Props = {
+  weather: DailyLog['weather'];
 };
 
-export function WeatherSection({ weather }: WeatherSectionProps) {
+export function WeatherSection({ weather }: Props) {
   return (
     <div className='overflow-hidden rounded-lg border border-gray-200 bg-white/50'>
       <div className='border-b border-gray-200 bg-gray-50/50 px-4 py-3'>

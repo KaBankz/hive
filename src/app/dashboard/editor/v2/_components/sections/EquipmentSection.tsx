@@ -1,17 +1,15 @@
-import Image from 'next/image';
-
 import { Tag as TagIcon } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import type { DailyLog, Tag } from '@/types/dailyReport';
 
 type Props = {
-  labor: DailyLog['labor'];
+  equipment: NonNullable<DailyLog['equipment']>;
   hoursLabels: string;
 };
 
-function LaborTags({ tags }: { tags: Tag[] }) {
-  if (!tags.length) return null;
+function EquipmentTags({ tags }: { tags: Tag[] }) {
+  if (!tags?.length) return null;
 
   return (
     <div className='mt-1 flex flex-wrap gap-1'>
@@ -29,12 +27,12 @@ function LaborTags({ tags }: { tags: Tag[] }) {
 }
 
 type RowProps = {
-  detail: DailyLog['labor']['details'][number];
-  hasNotes: DailyLog['labor']['hasNotes'];
+  detail: NonNullable<DailyLog['equipment']>['details'][number];
+  hasNotes: NonNullable<DailyLog['equipment']>['hasNotes'];
   isEven: boolean;
 };
 
-function LaborRow({ detail, hasNotes, isEven }: RowProps) {
+function EquipmentRow({ detail, hasNotes, isEven }: RowProps) {
   const { nameRow, additionalCostCodeRows } = detail;
   const { nameCell, costCodeCell, hoursCell, notesCell } = nameRow;
 
@@ -43,27 +41,12 @@ function LaborRow({ detail, hasNotes, isEven }: RowProps) {
       <tr className={cn(isEven && 'bg-gray-50/50')}>
         <td className='py-3 pl-3'>
           <div className='text-xs font-medium text-gray-900'>
-            {nameCell.crewName}
+            {nameCell.equipName}
           </div>
           <div className='mt-1 text-[10px] text-gray-500'>
-            {nameCell.crewHours}
+            {nameCell.equipHours}
           </div>
-          {nameCell.signatureFileUrl && (
-            <div className='mt-2'>
-              <Image
-                src={nameCell.signatureFileUrl}
-                alt='Signature'
-                width={100}
-                height={32}
-                className='object-contain'
-                unoptimized
-              />
-              <div className='mt-1 text-[8px] text-gray-500'>
-                Signed {nameCell.signatureTimeStamp}
-              </div>
-            </div>
-          )}
-          <LaborTags tags={nameCell.crewTags} />
+          <EquipmentTags tags={nameCell.equipTags} />
         </td>
         <td className='p-3'>
           <div className='text-xs font-medium text-gray-900'>
@@ -75,13 +58,13 @@ function LaborRow({ detail, hasNotes, isEven }: RowProps) {
         </td>
         <td className='p-3 text-right'>
           <div className='text-xs text-gray-900'>{hoursCell.hours}</div>
-          <LaborTags tags={hoursCell.hoursTags} />
+          <EquipmentTags tags={hoursCell.hoursTags} />
         </td>
         {hasNotes && (
           <td className='p-3 text-[10px] text-gray-500'>{notesCell}</td>
         )}
       </tr>
-      {additionalCostCodeRows.map((row, idx) => (
+      {additionalCostCodeRows?.map((row, idx) => (
         <tr
           key={`${costCodeCell.costCode}-${idx}`}
           className={cn(isEven && 'bg-gray-50/50')}>
@@ -105,12 +88,12 @@ function LaborRow({ detail, hasNotes, isEven }: RowProps) {
   );
 }
 
-export function LaborSection({ labor, hoursLabels }: Props) {
+export function EquipmentSection({ equipment, hoursLabels }: Props) {
   return (
     <div className='overflow-hidden rounded-lg border border-gray-200 bg-white/50'>
       <div className='border-b border-gray-200 bg-gray-50/50 px-4 py-3'>
         <h2 className='text-center text-xs font-semibold uppercase text-gray-700'>
-          Labor
+          Equipment
         </h2>
       </div>
       <div className='p-4'>
@@ -118,7 +101,7 @@ export function LaborSection({ labor, hoursLabels }: Props) {
           <thead>
             <tr className='border-b border-gray-200'>
               <th className='pb-2 text-left text-xs font-medium text-gray-600'>
-                Name
+                Equipment
               </th>
               <th className='pb-2 text-left text-xs font-medium text-gray-600'>
                 Cost Code
@@ -126,7 +109,7 @@ export function LaborSection({ labor, hoursLabels }: Props) {
               <th className='pb-2 text-right text-xs font-medium text-gray-600'>
                 {hoursLabels}
               </th>
-              {labor.hasNotes && (
+              {equipment.hasNotes && (
                 <th className='pb-2 text-left text-xs font-medium text-gray-600'>
                   Notes
                 </th>
@@ -134,11 +117,11 @@ export function LaborSection({ labor, hoursLabels }: Props) {
             </tr>
           </thead>
           <tbody className='divide-y divide-gray-200'>
-            {labor.details.map((detail, idx) => (
-              <LaborRow
-                key={`${detail.nameRow.nameCell.crewName}-${idx}`}
+            {equipment.details.map((detail, idx) => (
+              <EquipmentRow
+                key={`${detail.nameRow.nameCell.equipName}-${idx}`}
                 detail={detail}
-                hasNotes={labor.hasNotes}
+                hasNotes={equipment.hasNotes}
                 isEven={idx % 2 === 0}
               />
             ))}
@@ -149,9 +132,9 @@ export function LaborSection({ labor, hoursLabels }: Props) {
                 TOTAL
               </td>
               <td className='p-3 text-right text-xs font-medium text-gray-900'>
-                {labor.totalHours}
+                {equipment.totalHours}
               </td>
-              {labor.hasNotes && <td />}
+              {equipment.hasNotes && <td />}
             </tr>
           </tbody>
         </table>

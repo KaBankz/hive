@@ -1,10 +1,10 @@
-import { DailyLog } from '@/types/dailyReport';
+import type { DailyLog } from '@/types/dailyReport';
 
-type ReportInfoProps = {
+type Props = {
   project: DailyLog;
 };
 
-export function ReportInfo({ project }: ReportInfoProps) {
+export function ReportInfo({ project }: Props) {
   return (
     <div className='overflow-hidden rounded-lg border border-gray-200 bg-white/50'>
       <table className='w-full'>

@@ -67,7 +67,7 @@ type EquipmentNameRow = BaseRow & {
   nameCell: EquipmentNameCell;
 };
 
-type EquipmentDetail = {
+export type EquipmentDetail = {
   nameRow: EquipmentNameRow;
   additionalCostCodeRows: BaseRow[];
 };

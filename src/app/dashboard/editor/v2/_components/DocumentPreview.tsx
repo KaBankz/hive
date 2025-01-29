@@ -2,19 +2,17 @@ import Image from 'next/image';
 
 import type { DailyReport } from '@/types/dailyReport';
 
+import { EquipmentSection } from './sections/EquipmentSection';
 import { LaborSection } from './sections/LaborSection';
 import { ReportInfo } from './sections/ReportInfo';
 import { WeatherSection } from './sections/WeatherSection';
 
-type DocumentPreviewProps = {
+type Props = {
   report: DailyReport;
   projectIndex: number;
 };
 
-export function DocumentPreview({
-  report,
-  projectIndex,
-}: DocumentPreviewProps) {
+export function DocumentPreview({ report, projectIndex }: Props) {
   const project = report.dailyLogs[projectIndex];
 
   return (
@@ -47,6 +45,12 @@ export function DocumentPreview({
         {project.labor && (
           <LaborSection
             labor={project.labor}
+            hoursLabels={report.hoursLabels}
+          />
+        )}
+        {project.equipment && (
+          <EquipmentSection
+            equipment={project.equipment}
             hoursLabels={report.hoursLabels}
           />
         )}
