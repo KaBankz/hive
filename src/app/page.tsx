@@ -21,7 +21,7 @@ export default function Home() {
   return (
     <div className='relative min-h-screen bg-zinc-950'>
       <div className='absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-blue-800/20 via-transparent to-transparent'></div>
-      <div className='relative mx-auto max-w-7xl px-4 pt-32 sm:px-6 lg:pt-40'>
+      <div className='relative mx-auto max-w-7xl px-4 pt-32 sm:px-6 lg:pt-[28vh]'>
         <div className='text-center'>
           <h1 className='bg-gradient-to-r from-white to-zinc-400 bg-clip-text pb-4 text-5xl font-bold tracking-tight text-transparent sm:text-7xl'>
             Construction Reporting
@@ -41,7 +41,7 @@ export default function Home() {
             </Link>
           </div>
         </div>
-        <div className='bg-background relative mx-auto mt-[17vh] flex w-fit flex-col items-center justify-center overflow-hidden rounded-lg border dark:border-white/10 md:shadow-xl'>
+        <div className='relative mx-auto mt-[15vh] flex w-fit flex-col items-center justify-center overflow-hidden rounded-lg border dark:border-white/10 md:shadow-xl'>
           <Image
             src='/images/dash.jpg'
             alt='Dashboard'
@@ -59,8 +59,8 @@ export default function Home() {
                 Why Construction Teams Love Hive
               </h2>
               <p className='mt-4 text-lg text-gray-600 dark:text-zinc-400'>
-                Construction reporting shouldn't be a burden. Hive makes your
-                daily reporting workflow into a breeze.
+                Construction reporting shouldn&apos;t be a burden. Hive makes
+                your daily reporting workflow into a breeze.
               </p>
               <div className='mt-8 space-y-4'>
                 {[
