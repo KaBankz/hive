@@ -7,7 +7,6 @@ export function Footer() {
     <footer className='relative border-t border-gray-200 bg-white/70 backdrop-blur-xl backdrop-saturate-150 dark:border-white/[0.1] dark:bg-black/30'>
       <div className='mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8'>
         <div className='grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4'>
-          {/* Brand Column */}
           <div className='flex flex-col gap-6'>
             <div className='flex items-center gap-2'>
               <Building2 className='size-6 text-blue-500' />
@@ -43,7 +42,6 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Product Column */}
           <div>
             <h3 className='mb-4 text-sm font-semibold uppercase tracking-wider text-gray-900 dark:text-zinc-400'>
               Product
@@ -68,7 +66,6 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Company Column */}
           <div>
             <h3 className='mb-4 text-sm font-semibold uppercase tracking-wider text-gray-900 dark:text-zinc-400'>
               Company
@@ -88,7 +85,6 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Resources Column */}
           <div>
             <h3 className='mb-4 text-sm font-semibold uppercase tracking-wider text-gray-900 dark:text-zinc-400'>
               Resources
