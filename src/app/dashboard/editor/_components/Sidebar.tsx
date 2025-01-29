@@ -53,6 +53,80 @@ type SectionConfig = {
   }[];
 };
 
+// First, let's define proper types for the weather, labor, equipment etc. items
+type WeatherItem = {
+  forecastTimeTzFormatted: string;
+  tempF: number;
+};
+
+type LaborItem = {
+  nameRow: {
+    nameCell: {
+      crewName: string;
+    };
+  };
+};
+
+type EquipmentItem = {
+  nameRow: {
+    nameCell: {
+      equipName: string;
+    };
+  };
+};
+
+type PhotoItem = {
+  url: string;
+  note: string;
+};
+
+type QuestionItem = {
+  fullName: string;
+};
+
+type QuantityItem = {
+  itemNumber: string;
+  _costCodeAndDescription: string;
+};
+
+type DeliveryItem = {
+  itemNumber: string;
+  deliveryFrom: string;
+  deliveryContents: string;
+};
+
+type InspectionItem = {
+  itemNumber: string;
+  inspectionType: string;
+  inspectorName: string;
+};
+
+type VisitorItem = {
+  itemNumber: string;
+  visitorName: string;
+  startTimeLocalString: string;
+};
+
+type NoteItem = {
+  itemNumber: string;
+  noteLocation: string;
+  notes: string;
+};
+
+// Update the selectedProject type
+type Project = {
+  weather?: { summary: WeatherItem[] };
+  labor?: { details: LaborItem[] };
+  equipment?: { details: EquipmentItem[] };
+  images?: { details: PhotoItem[] };
+  questions?: { details: QuestionItem[] };
+  quantities?: { details: QuantityItem[] };
+  deliveries?: { details: DeliveryItem[] };
+  inspections?: { details: InspectionItem[] };
+  visitors?: { details: VisitorItem[] };
+  notes?: { details: NoteItem[] };
+};
+
 type SidebarProps = {
   isGenerating: boolean;
   onExport: () => void;
@@ -69,7 +143,7 @@ type SidebarProps = {
   onDragEnd: (event: DragEndEvent) => void;
   showPageBreaks?: boolean;
   onTogglePageBreaks?: (show: boolean) => void;
-  selectedProject: any; // We should type this properly but using any for now
+  selectedProject: Project;
   subItemOrder: { [K in keyof SubItemVisibility]: string[] };
 };
 
@@ -110,7 +184,7 @@ export function Sidebar({
       switch (section.id) {
         case 'weather':
           return (
-            selectedProject.weather?.summary.map((w: any) => ({
+            selectedProject.weather?.summary.map((w: WeatherItem) => ({
               id: w.forecastTimeTzFormatted,
               label: `${w.forecastTimeTzFormatted} - ${w.tempF}°F`,
             })) || []
@@ -183,12 +257,10 @@ export function Sidebar({
       }
     })();
 
-    // Sort items based on subItemOrder if available
+    // Update the sorting to use proper types
     if (subItemOrder[section.id as keyof SubItemVisibility]) {
       const order = subItemOrder[section.id as keyof SubItemVisibility];
-      return items.sort(
-        (a: any, b: any) => order.indexOf(a.id) - order.indexOf(b.id)
-      );
+      return items.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
     }
 
     return items;
@@ -273,35 +345,27 @@ export function Sidebar({
             sensors={sensors}
             collisionDetection={closestCenter}
             onDragEnd={onDragEnd}>
-            <SortableContext
-              items={sectionOrder}
-              strategy={verticalListSortingStrategy}>
+            <SortableContext items={sectionOrder} strategy={verticalListSortingStrategy}>
               <div className='space-y-4'>
                 {orderedSections.map((section) => {
                   const sectionSubItems = getSubItems(section);
                   return (
                     <div key={section.id}>
-                      <SortableContext
-                        items={sectionSubItems.map((item) => item.id)}
-                        strategy={verticalListSortingStrategy}>
-                        <SortableSection
-                          section={section}
-                          isVisible={sectionVisibility[section.id]}
-                          onToggle={() => toggleSection(section.id)}
-                          subItems={sectionSubItems}
-                          subItemVisibility={
-                            subItemVisibility[
-                              section.id as keyof SubItemVisibility
-                            ]
-                          }
-                          onToggleSubItem={(itemId) =>
-                            onToggleSubItem(
-                              section.id as keyof SubItemVisibility,
-                              itemId
-                            )
-                          }
-                        />
-                      </SortableContext>
+                      <SortableSection
+                        section={section}
+                        isVisible={sectionVisibility[section.id]}
+                        onToggle={() => toggleSection(section.id)}
+                        subItems={sectionSubItems}
+                        subItemVisibility={
+                          subItemVisibility[section.id as keyof SubItemVisibility]
+                        }
+                        onToggleSubItem={(itemId) =>
+                          onToggleSubItem(
+                            section.id as keyof SubItemVisibility,
+                            itemId
+                          )
+                        }
+                      />
                     </div>
                   );
                 })}
