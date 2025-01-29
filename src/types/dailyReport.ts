@@ -10,7 +10,7 @@ type ImageDetail = {
 };
 
 // Weather types
-type WeatherSummary = {
+export type WeatherSummary = {
   forecastTimeTzFormatted: string;
   tempF: string;
   wind?: string;
@@ -154,7 +154,7 @@ type SectionWithTotalHours<T> = SectionWithDetails<T> & {
 };
 
 // Daily Log type
-type DailyLog = {
+export type DailyLog = {
   dailyLogDate: string;
   projectNumber: string;
   projectName: string;
