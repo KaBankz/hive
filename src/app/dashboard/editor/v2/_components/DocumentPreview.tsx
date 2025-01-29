@@ -4,6 +4,7 @@ import type { DailyReport } from '@/types/dailyReport';
 
 import { DeliveriesSection } from './sections/DeliveriesSection';
 import { EquipmentSection } from './sections/EquipmentSection';
+import { InspectionsSection } from './sections/InspectionsSection';
 import { LaborSection } from './sections/LaborSection';
 import { QuantitiesSection } from './sections/QuantitiesSection';
 import { QuestionsSection } from './sections/QuestionsSection';
@@ -65,6 +66,9 @@ export function DocumentPreview({ report, projectIndex }: Props) {
         )}
         {project.deliveries && (
           <DeliveriesSection deliveries={project.deliveries} />
+        )}
+        {project.inspections && (
+          <InspectionsSection inspections={project.inspections} />
         )}
       </div>
     </div>

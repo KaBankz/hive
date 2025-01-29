@@ -714,11 +714,11 @@
         "images": [
           {
             "label": "Item 1",
-            "url": "images/photo-1.jpg"
+            "url": "/images/photo-1.jpg"
           },
           {
             "label": "Item 2",
-            "url": "images/photo-1.jpg"
+            "url": "/images/photo-1.jpg"
           }
         ]
       },
