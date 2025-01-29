@@ -625,19 +625,19 @@
         "images": [
           {
             "label": "123456-FIX",
-            "url": "images/photo-1.jpg"
+            "url": "/images/photo-1.jpg"
           },
           {
             "label": "123456-FIX",
-            "url": "images/photo-1.jpg"
+            "url": "/images/photo-1.jpg"
           },
           {
             "label": "123456-FIX",
-            "url": "images/photo-1.jpg"
+            "url": "/images/photo-1.jpg"
           },
           {
             "label": "123456-FIX",
-            "url": "images/photo-1.jpg"
+            "url": "/images/photo-1.jpg"
           }
         ]
       },

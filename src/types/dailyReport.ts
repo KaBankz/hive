@@ -5,7 +5,7 @@ export type Tag = {
 };
 
 type ImageDetail = {
-  note: string;
+  label: string;
   url: string;
 };
 
@@ -88,13 +88,13 @@ type QuestionDetail = {
 // Quantities types
 type QuantityDetail = {
   itemNumber: string;
-  projectNumber?: string;
-  costCodeAndDescription?: string;
-  UOM?: string;
-  projectLocationCode?: string;
-  periodQty?: string;
-  toDateQty?: string;
-  note?: string;
+  _projectNumber?: string;
+  _costCodeAndDescription?: string;
+  _UOM?: string;
+  _projectLocationCode?: string;
+  _periodQty?: string;
+  _toDateQty?: string;
+  _note?: string;
 };
 
 // Deliveries types

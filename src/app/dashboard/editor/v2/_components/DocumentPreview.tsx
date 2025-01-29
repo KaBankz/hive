@@ -4,6 +4,7 @@ import type { DailyReport } from '@/types/dailyReport';
 
 import { EquipmentSection } from './sections/EquipmentSection';
 import { LaborSection } from './sections/LaborSection';
+import { QuantitiesSection } from './sections/QuantitiesSection';
 import { QuestionsSection } from './sections/QuestionsSection';
 import { ReportInfo } from './sections/ReportInfo';
 import { WeatherSection } from './sections/WeatherSection';
@@ -57,6 +58,9 @@ export function DocumentPreview({ report, projectIndex }: Props) {
         )}
         {project.questions && (
           <QuestionsSection questions={project.questions} />
+        )}
+        {project.quantities && (
+          <QuantitiesSection quantities={project.quantities} />
         )}
       </div>
     </div>
