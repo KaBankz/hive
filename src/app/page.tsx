@@ -21,8 +21,8 @@ export default function Home() {
             Redefined
           </h1>
           <p className='mx-auto mt-6 max-w-2xl text-lg text-zinc-400'>
-            Create professional construction reports in minutes with our
-            intuitive drag-and-drop editor and customizable templates.
+            Stop skipping your daily reports! Create professional construction reports in minutes with our
+            intuitive drag-and-drop editor.
           </p>
           <div className='mt-10 flex items-center justify-center gap-4'>
             <Link
@@ -45,8 +45,6 @@ export default function Home() {
         </div>
         <Features />
         <Impact />
-
-        
       </div>
       <Testimonials />
     </div>
