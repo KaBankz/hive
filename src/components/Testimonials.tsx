@@ -152,12 +152,10 @@ export function Testimonials() {
               <TestimonialCard key={testimonial.author} testimonial={testimonial} />
             ))}
           </Marquee>
-          
-          {/* Gradient overlays */}
           <div className="pointer-events-none absolute inset-y-0 left-0 w-[15%] bg-gradient-to-r from-gray-50/50 via-gray-50/30 to-transparent dark:from-zinc-900/50 dark:via-zinc-900/30" />
           <div className="pointer-events-none absolute inset-y-0 right-0 w-[15%] bg-gradient-to-l from-gray-50/50 via-gray-50/30 to-transparent dark:from-zinc-900/50 dark:via-zinc-900/30" />
         </div>
       </div>
     </section>
   );
-} 
+}
