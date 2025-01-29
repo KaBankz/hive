@@ -6,10 +6,11 @@ import { Brain, MessageCircle, Sparkles, Wand2, X } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 
 import { usePdf } from '@/context/PdfContext';
+import { cn } from '@/lib/utils';
 
-// Add HTML stripping function
+// AI response cleanup
+// it responds with soo much html 😭
 function stripHtmlAndFormatMarkdown(html: string): string {
-  // Remove HTML tags but preserve line breaks for lists
   const withoutTags = html
     .replace(/<div[^>]*>|<\/div>/g, '\n')
     .replace(/<ul[^>]*>|<\/ul>/g, '\n')
@@ -19,12 +20,10 @@ function stripHtmlAndFormatMarkdown(html: string): string {
     .replace(/<[^>]+>/g, '')
     .trim();
 
-  // Clean up multiple newlines
   const cleanText = withoutTags
     .replace(/\n\s*\n\s*\n/g, '\n\n')
     .replace(/\n\s*\n/g, '\n\n');
 
-  // Ensure headers are properly formatted
   return cleanText.replace(/###\s*([^\n]+)/g, '### $1\n');
 }
 
@@ -75,7 +74,7 @@ export function ChatButton() {
     }
   }, [inputMessage]);
 
-  // Add effect for initial analysis
+  // magical effect ✨
   useEffect(() => {
     const sendInitialAnalysis = async () => {
       if (isOpen && messages.length === 0 && pdfBlob) {
@@ -172,7 +171,6 @@ export function ChatButton() {
 
   return (
     <>
-      {/* Floating Button */}
       <button
         onClick={() => setIsOpen(true)}
         className='fixed bottom-6 right-6 flex size-14 items-center justify-center rounded-full bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-blue-500/25'
@@ -180,7 +178,6 @@ export function ChatButton() {
         <MessageCircle className='size-6' />
       </button>
 
-      {/* Chat Modal */}
       {isOpen && (
         <div className='fixed inset-0 z-50 flex items-end justify-end p-4 sm:items-center sm:justify-center'>
           <div
@@ -188,7 +185,6 @@ export function ChatButton() {
             onClick={() => setIsOpen(false)}
           />
           <div className='relative flex h-[80vh] w-full max-w-[600px] flex-col overflow-hidden rounded-2xl bg-white shadow-2xl transition-all duration-300 dark:bg-zinc-900'>
-            {/* Header */}
             <div className='flex items-center justify-between border-b bg-white/50 p-4 pb-2 backdrop-blur-sm dark:border-zinc-800 dark:bg-zinc-900/50'>
               <h2 className='text-lg font-semibold text-gray-800 dark:text-white'>
                 HiveMind
@@ -201,20 +197,19 @@ export function ChatButton() {
               </button>
             </div>
 
-            {/* Chat Messages Area */}
             <div className='flex-1 overflow-y-auto bg-gray-50/50 p-4 dark:bg-zinc-900/50'>
               {messages.length === 0 ? (
                 <div className='flex h-full flex-col items-center justify-center space-y-4 text-center'>
                   {isLoading ? (
                     <div className='flex flex-col items-center space-y-6'>
                       <div className='relative flex size-20 items-center justify-center'>
-                        <div className='animate-ping-slow absolute inset-0 opacity-20'>
+                        <div className='absolute inset-0 animate-ping-slow opacity-20'>
                           <div className='size-full rounded-full bg-blue-500/50' />
                         </div>
-                        <div className='animate-spin-slow absolute size-full'>
+                        <div className='absolute size-full animate-spin-slow'>
                           <div className='absolute inset-1 rounded-full border-2 border-blue-500/30' />
                         </div>
-                        <div className='animate-spin-reverse-slower absolute size-full'>
+                        <div className='absolute size-full animate-spin-reverse-slower'>
                           <div className='absolute inset-2 rounded-full border-2 border-dashed border-blue-500/20' />
                         </div>
                         <Brain className='relative size-8 animate-pulse text-blue-500' />
@@ -255,19 +250,21 @@ export function ChatButton() {
                   {messages.map((message) => (
                     <div
                       key={message.id}
-                      className={`flex ${
+                      className={cn(
+                        'flex',
                         message.sender === 'user'
                           ? 'justify-end'
                           : 'justify-start'
-                      }`}>
+                      )}>
                       <div
-                        className={`max-w-[85%] rounded-2xl px-4 py-2.5 shadow-sm ${
+                        className={cn(
+                          'max-w-[85%] rounded-2xl px-4 py-2.5 shadow-sm',
                           message.sender === 'user'
                             ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white'
                             : 'bg-white dark:bg-zinc-800'
-                        }`}>
+                        )}>
                         {message.sender === 'system' ? (
-                          <div className='prose prose-sm dark:prose-invert max-w-none'>
+                          <div className='prose prose-sm max-w-none dark:prose-invert'>
                             <ReactMarkdown>{message.text}</ReactMarkdown>
                           </div>
                         ) : (
@@ -290,7 +287,6 @@ export function ChatButton() {
               )}
             </div>
 
-            {/* Input Area */}
             <div className='border-t bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900'>
               <form className='flex gap-2' onSubmit={handleSubmit}>
                 <textarea
