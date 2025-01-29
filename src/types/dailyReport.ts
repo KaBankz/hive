@@ -1,5 +1,5 @@
 // Basic shared types
-type Tag = {
+export type Tag = {
   color: string;
   label: string;
 };
@@ -50,7 +50,7 @@ type LaborNameRow = BaseRow & {
   nameCell: LaborNameCell;
 };
 
-type LaborDetail = {
+export type LaborDetail = {
   nameRow: LaborNameRow;
   additionalCostCodeRows: BaseRow[];
 };

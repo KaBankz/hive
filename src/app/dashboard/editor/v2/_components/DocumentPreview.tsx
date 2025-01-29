@@ -2,6 +2,7 @@ import Image from 'next/image';
 
 import type { DailyReport } from '@/types/dailyReport';
 
+import { LaborSection } from './sections/LaborSection';
 import { ReportInfo } from './sections/ReportInfo';
 import { WeatherSection } from './sections/WeatherSection';
 
@@ -43,6 +44,12 @@ export function DocumentPreview({
       <div className='space-y-6'>
         <ReportInfo project={project} />
         {project.weather && <WeatherSection weather={project.weather} />}
+        {project.labor && (
+          <LaborSection
+            labor={project.labor}
+            hoursLabels={report.hoursLabels}
+          />
+        )}
       </div>
     </div>
   );
