@@ -17,14 +17,14 @@ function InspectionRow({
     <tr className={isEven ? 'bg-gray-50/50' : undefined}>
       <td className='p-3 text-xs text-gray-900'>{detail.itemNumber}</td>
       <td className='p-3 text-xs text-gray-900'>
-        {detail.startTimeLocalString} - {detail.endTimeLocalString}
+        {detail.startTimeLocalString}
       </td>
+      <td className='p-3 text-xs text-gray-900'>{detail.endTimeLocalString}</td>
       <td className='p-3 text-xs text-gray-900'>{detail.inspectionType}</td>
       <td className='p-3 text-xs text-gray-900'>{detail.inspectionEntity}</td>
       <td className='p-3 text-xs text-gray-900'>{detail.inspectorName}</td>
-      <td className='p-3 text-xs text-gray-900'>
-        {detail.inspectionLocation} - {detail.inspectionArea}
-      </td>
+      <td className='p-3 text-xs text-gray-900'>{detail.inspectionLocation}</td>
+      <td className='p-3 text-xs text-gray-900'>{detail.inspectionArea}</td>
       <td className='p-3 text-xs text-gray-500'>{detail.inspectionNotes}</td>
     </tr>
   );
@@ -75,19 +75,25 @@ export function InspectionsSection({ inspections }: Props) {
                 Item #
               </th>
               <th className='pb-2 text-center text-xs font-medium text-gray-600'>
-                Time
+                Start Time
               </th>
               <th className='pb-2 text-center text-xs font-medium text-gray-600'>
-                Type
+                End Time
               </th>
               <th className='pb-2 text-center text-xs font-medium text-gray-600'>
-                Entity
+                Inspection Type
+              </th>
+              <th className='pb-2 text-center text-xs font-medium text-gray-600'>
+                Inspection Entity
               </th>
               <th className='pb-2 text-center text-xs font-medium text-gray-600'>
                 Inspector
               </th>
               <th className='pb-2 text-center text-xs font-medium text-gray-600'>
                 Location
+              </th>
+              <th className='pb-2 text-center text-xs font-medium text-gray-600'>
+                Area
               </th>
               <th className='pb-2 text-center text-xs font-medium text-gray-600'>
                 Notes

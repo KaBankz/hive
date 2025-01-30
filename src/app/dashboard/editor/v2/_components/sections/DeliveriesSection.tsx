@@ -78,7 +78,7 @@ export function DeliveriesSection({ deliveries }: Props) {
                 Time
               </th>
               <th className='pb-2 text-center text-xs font-medium text-gray-600'>
-                From
+                Delivery From
               </th>
               <th className='pb-2 text-center text-xs font-medium text-gray-600'>
                 Tracking #

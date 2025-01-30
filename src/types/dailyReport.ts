@@ -129,7 +129,7 @@ type VisitorDetail = {
   startTimeLocalString: string;
   endTimeLocalString: string;
   visitorNotes: string;
-  userFullName?: string;
+  _userFullName?: string;
 };
 
 // Notes types

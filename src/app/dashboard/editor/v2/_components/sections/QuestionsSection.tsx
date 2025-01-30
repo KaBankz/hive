@@ -16,9 +16,11 @@ function QuestionRow({
   return (
     <tr className={isEven ? 'bg-gray-50/50' : undefined}>
       <td className='p-3 text-xs text-gray-900'>{response.questionText}</td>
-      <td className='p-3 text-xs text-gray-900'>{response.responseValue}</td>
-      <td className='p-3 text-[10px] text-gray-500'>
-        {response.localTzResponseTimeStamp}
+      <td className='p-3'>
+        <div className='text-xs text-gray-900'>{response.responseValue}</div>
+        <div className='mt-1 text-[10px] text-gray-500'>
+          {response.localTzResponseTimeStamp}
+        </div>
       </td>
     </tr>
   );
@@ -35,7 +37,7 @@ function PersonResponses({
     <>
       <tr>
         <td
-          colSpan={3}
+          colSpan={2}
           className='border-t border-gray-200 bg-gray-100/50 p-3 text-xs font-medium text-gray-900'>
           {detail.fullName}
         </td>
@@ -70,9 +72,6 @@ export function QuestionsSection({ questions }: Props) {
               </th>
               <th className='pb-2 text-center text-xs font-medium text-gray-600'>
                 Response
-              </th>
-              <th className='pb-2 text-center text-xs font-medium text-gray-600'>
-                Time
               </th>
             </tr>
           </thead>

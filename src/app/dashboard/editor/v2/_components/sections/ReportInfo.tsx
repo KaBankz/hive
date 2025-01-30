@@ -1,10 +1,11 @@
-import type { DailyLog } from '@/types/dailyReport';
+import type { DailyLog, DailyReport } from '@/types/dailyReport';
 
 type Props = {
   project: DailyLog;
+  report: DailyReport;
 };
 
-export function ReportInfo({ project }: Props) {
+export function ReportInfo({ project, report }: Props) {
   return (
     <div className='overflow-hidden rounded-lg border border-gray-200 bg-white/50'>
       <table className='w-full'>
@@ -20,7 +21,7 @@ export function ReportInfo({ project }: Props) {
               Project Name
             </th>
             <th className='p-3 text-center text-xs font-medium text-gray-600'>
-              Address
+              Printed By
             </th>
           </tr>
         </thead>
@@ -36,7 +37,7 @@ export function ReportInfo({ project }: Props) {
               {project.projectName}
             </td>
             <td className='p-3 text-xs font-medium text-gray-900'>
-              {project.address}
+              {report.printedBy}
             </td>
           </tr>
         </tbody>

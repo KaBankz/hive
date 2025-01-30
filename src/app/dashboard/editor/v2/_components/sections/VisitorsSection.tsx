@@ -17,19 +17,15 @@ function VisitorRow({
       <td className='p-3 text-xs text-gray-900'>{detail.visitorName}</td>
       <td className='p-3 text-xs text-gray-900'>
         {detail.startTimeLocalString}
-        {detail.endTimeLocalString && ` - ${detail.endTimeLocalString}`}
       </td>
+      <td className='p-3 text-xs text-gray-900'>{detail.endTimeLocalString}</td>
       <td className='p-3 text-xs text-gray-500'>{detail.visitorNotes}</td>
-      {detail.userFullName && (
-        <td className='p-3 text-xs text-gray-500'>{detail.userFullName}</td>
-      )}
+      <td className='p-3 text-xs text-gray-500'>{detail._userFullName}</td>
     </tr>
   );
 }
 
 export function VisitorsSection({ visitors }: Props) {
-  const hasUser = visitors.details.some((detail) => detail.userFullName);
-
   return (
     <div className='overflow-hidden rounded-lg border border-gray-200 bg-white/50'>
       <div className='border-b border-gray-200 bg-gray-50/50 px-4 py-3'>
@@ -45,19 +41,20 @@ export function VisitorsSection({ visitors }: Props) {
                 Item #
               </th>
               <th className='pb-2 text-center text-xs font-medium text-gray-600'>
-                Name
+                Visitors
               </th>
               <th className='pb-2 text-center text-xs font-medium text-gray-600'>
-                Time
+                Start Time
+              </th>
+              <th className='pb-2 text-center text-xs font-medium text-gray-600'>
+                End Time
               </th>
               <th className='pb-2 text-center text-xs font-medium text-gray-600'>
                 Notes
               </th>
-              {hasUser && (
-                <th className='pb-2 text-center text-xs font-medium text-gray-600'>
-                  User
-                </th>
-              )}
+              <th className='pb-2 text-center text-xs font-medium text-gray-600'>
+                Entered By
+              </th>
             </tr>
           </thead>
           <tbody className='divide-y divide-gray-200'>

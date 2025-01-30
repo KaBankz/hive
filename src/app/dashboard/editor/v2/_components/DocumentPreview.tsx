@@ -4,10 +4,10 @@ import type { DailyReport } from '@/types/dailyReport';
 
 import { DeliveriesSection } from './sections/DeliveriesSection';
 import { EquipmentSection } from './sections/EquipmentSection';
-import { ImagesSection } from './sections/ImagesSection';
 import { InspectionsSection } from './sections/InspectionsSection';
 import { LaborSection } from './sections/LaborSection';
 import { NotesSection } from './sections/NotesSection';
+import { PhotosSection } from './sections/PhotosSection';
 import { QuantitiesSection } from './sections/QuantitiesSection';
 import { QuestionsSection } from './sections/QuestionsSection';
 import { ReportInfo } from './sections/ReportInfo';
@@ -47,7 +47,7 @@ export function DocumentPreview({ report, projectIndex }: Props) {
       </div>
 
       <div className='space-y-6'>
-        <ReportInfo project={project} />
+        <ReportInfo project={project} report={report} />
         {project.weather && <WeatherSection weather={project.weather} />}
         {project.labor && (
           <LaborSection
@@ -75,7 +75,7 @@ export function DocumentPreview({ report, projectIndex }: Props) {
         )}
         {project.visitors && <VisitorsSection visitors={project.visitors} />}
         {project.notes && <NotesSection notes={project.notes} />}
-        {project.images && <ImagesSection images={project.images} />}
+        {project.images && <PhotosSection images={project.images} />}
       </div>
     </div>
   );
