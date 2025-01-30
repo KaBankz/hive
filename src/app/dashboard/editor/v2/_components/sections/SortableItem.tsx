@@ -2,14 +2,8 @@
 
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import {
-  Check,
-  ChevronDown,
-  ChevronRight,
-  Eye,
-  GripVertical,
-  Minus,
-} from 'lucide-react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Check, ChevronRight, GripVertical, Minus, X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 
@@ -58,37 +52,38 @@ export function SortableItem({
       <div
         className={cn('space-y-2', isDragging && 'bg-white dark:bg-black/30')}>
         <div
+          {...listeners}
           className={cn(
-            'group flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm transition',
+            'group flex w-full cursor-grab items-center gap-3 rounded-lg px-3 py-2 text-sm transition active:cursor-grabbing',
             isVisible
               ? 'bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300'
-              : 'text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-900'
+              : 'bg-gray-50/50 text-gray-600 hover:bg-gray-100/50 dark:bg-gray-900/50 dark:text-gray-400 dark:hover:bg-gray-800/50'
           )}>
-          <button onClick={onToggle} className='flex flex-1 items-center gap-3'>
-            <div {...listeners} className='cursor-grab active:cursor-grabbing'>
-              <GripVertical className='size-4 text-gray-400 transition group-hover:text-gray-500 dark:text-gray-600 dark:group-hover:text-gray-500' />
-            </div>
-            <div
-              className={cn(
-                'flex size-5 items-center justify-center rounded-md border transition',
-                isVisible
-                  ? hasPartialVisibility
-                    ? 'border-blue-300 bg-blue-300 text-white dark:border-blue-300/80 dark:bg-blue-300/80'
-                    : 'border-blue-500 bg-blue-500 text-white dark:border-blue-400 dark:bg-blue-400'
-                  : 'border-gray-300 group-hover:border-gray-400 dark:border-gray-700 dark:group-hover:border-gray-600'
-              )}>
-              {isVisible ? (
-                hasPartialVisibility ? (
-                  <Minus className='size-3' />
-                ) : (
-                  <Check className='size-3' />
-                )
+          <GripVertical className='size-4 text-gray-400 transition group-hover:text-gray-500 dark:text-gray-600 dark:group-hover:text-gray-500' />
+
+          <button
+            onClick={onToggle}
+            className={cn(
+              'flex size-5 items-center justify-center rounded-md border transition',
+              isVisible
+                ? hasPartialVisibility
+                  ? 'border-blue-300 bg-blue-300 text-white dark:border-blue-300/80 dark:bg-blue-300/80'
+                  : 'border-blue-500 bg-blue-500 text-white dark:border-blue-400 dark:bg-blue-400'
+                : 'border-red-300 bg-red-50 text-red-500 hover:bg-red-100 dark:border-red-700 dark:bg-red-950 dark:text-red-400 dark:hover:bg-red-900'
+            )}>
+            {isVisible ? (
+              hasPartialVisibility ? (
+                <Minus className='size-3' />
               ) : (
-                <Eye className='size-3' />
-              )}
-            </div>
-            {title}
+                <Check className='size-3' />
+              )
+            ) : (
+              <X className='size-3' />
+            )}
           </button>
+
+          <span className='flex-1'>{title}</span>
+
           {onToggleExpand && (
             <button
               onClick={onToggleExpand}
@@ -98,31 +93,35 @@ export function SortableItem({
                   ? 'hover:bg-blue-100 dark:hover:bg-blue-900'
                   : 'hover:bg-gray-100 dark:hover:bg-gray-800'
               )}>
-              {isExpanded ? (
-                <ChevronDown
-                  className={cn(
-                    'size-4 transition-transform duration-200',
-                    isVisible
-                      ? 'text-blue-500 dark:text-blue-400'
-                      : 'text-gray-400 dark:text-gray-600'
-                  )}
-                />
-              ) : (
+              <motion.div
+                initial={false}
+                animate={{ rotate: isExpanded ? 90 : 0 }}
+                transition={{ duration: 0.2, ease: 'easeInOut' }}>
                 <ChevronRight
                   className={cn(
-                    'size-4 transition-transform duration-200',
+                    'size-4',
                     isVisible
                       ? 'text-blue-500 dark:text-blue-400'
                       : 'text-gray-400 dark:text-gray-600'
                   )}
                 />
-              )}
+              </motion.div>
             </button>
           )}
         </div>
 
-        {/* Sub-items */}
-        {isExpanded && <div className='ml-11 space-y-1'>{children}</div>}
+        <AnimatePresence initial={false}>
+          {isExpanded && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.2, ease: 'easeInOut' }}
+              className='overflow-hidden'>
+              <div className='ml-11 space-y-1'>{children}</div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

@@ -7,6 +7,7 @@ import {
   Eye,
   GripVertical,
   Minus,
+  X,
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -109,7 +110,7 @@ export function SidebarSection({
 type SidebarSubItemProps = {
   label: string;
   isVisible: boolean;
-  onToggle?: () => void;
+  onToggle: () => void;
 };
 
 export function SidebarSubItem({
@@ -118,29 +119,26 @@ export function SidebarSubItem({
   onToggle,
 }: SidebarSubItemProps) {
   return (
-    <button
-      onClick={onToggle}
+    <div
       className={cn(
-        'flex w-full items-center justify-between rounded-md px-3 py-1.5 text-xs transition',
+        'group flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition',
         isVisible
-          ? 'bg-blue-50/50 text-blue-700 dark:bg-blue-950/50 dark:text-blue-300'
-          : 'text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-900'
+          ? 'bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300'
+          : 'bg-gray-50/50 text-gray-600 hover:bg-gray-100/50 dark:bg-gray-900/50 dark:text-gray-400 dark:hover:bg-gray-800/50'
       )}>
-      <div className='flex items-center gap-2'>
-        <div className='cursor-grab active:cursor-grabbing'>
-          <GripVertical className='size-3 text-gray-400 transition group-hover:text-gray-500 dark:text-gray-600 dark:group-hover:text-gray-500' />
-        </div>
-        <span className='break-words text-left'>{label}</span>
-      </div>
-      <div
+      <GripVertical className='size-4 text-gray-400 transition group-hover:text-gray-500 dark:text-gray-600 dark:group-hover:text-gray-500' />
+
+      <button
+        onClick={onToggle}
         className={cn(
-          'flex size-4 flex-none items-center justify-center rounded-md border transition',
+          'flex size-5 items-center justify-center rounded-md border transition',
           isVisible
             ? 'border-blue-500 bg-blue-500 text-white dark:border-blue-400 dark:bg-blue-400'
-            : 'border-gray-300 group-hover:border-gray-400 dark:border-gray-700 dark:group-hover:border-gray-600'
+            : 'border-red-300 bg-red-50 text-red-500 hover:bg-red-100 dark:border-red-700 dark:bg-red-950 dark:text-red-400 dark:hover:bg-red-900'
         )}>
-        {isVisible && <Check className='size-2.5' />}
-      </div>
-    </button>
+        {isVisible ? <Check className='size-3' /> : <X className='size-3' />}
+      </button>
+      <span className='flex-1'>{label}</span>
+    </div>
   );
 }
