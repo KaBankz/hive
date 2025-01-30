@@ -10,7 +10,7 @@ import { DocumentPreview } from './_components/DocumentPreview';
 export default function EditorV2Page() {
   const searchParams = useSearchParams();
   const projectIndex = parseInt(searchParams.get('project') || '0');
-  const report = dailyReportData as DailyReport;
+  const report = dailyReportData as unknown as DailyReport;
 
   return (
     <div className='min-h-screen pt-16'>
