@@ -136,7 +136,7 @@ type NoteDetail = {
   itemNumber: string;
   noteLocation: string;
   notes: string;
-  userFullName?: string;
+  _userFullName?: string;
 };
 
 // Section types with common patterns

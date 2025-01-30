@@ -6,6 +6,7 @@ import { DeliveriesSection } from './sections/DeliveriesSection';
 import { EquipmentSection } from './sections/EquipmentSection';
 import { InspectionsSection } from './sections/InspectionsSection';
 import { LaborSection } from './sections/LaborSection';
+import { NotesSection } from './sections/NotesSection';
 import { QuantitiesSection } from './sections/QuantitiesSection';
 import { QuestionsSection } from './sections/QuestionsSection';
 import { ReportInfo } from './sections/ReportInfo';
@@ -72,6 +73,7 @@ export function DocumentPreview({ report, projectIndex }: Props) {
           <InspectionsSection inspections={project.inspections} />
         )}
         {project.visitors && <VisitorsSection visitors={project.visitors} />}
+        {project.notes && <NotesSection notes={project.notes} />}
       </div>
     </div>
   );
