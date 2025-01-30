@@ -6,6 +6,7 @@ import type { DailyReport } from '@/types/dailyReport';
 
 import dailyReportData from '../../../../../public/dailyReportData.json';
 import { DocumentPreview } from './_components/DocumentPreview';
+import { Sidebar } from './_components/Sidebar';
 
 export default function EditorV2Page() {
   const searchParams = useSearchParams();
@@ -15,7 +16,6 @@ export default function EditorV2Page() {
   return (
     <div className='min-h-screen pt-16'>
       <div className='flex h-full'>
-        {/* Document Preview */}
         <div className='flex-1'>
           <div className='h-[calc(100vh-4rem)] overflow-auto'>
             <div className='mx-auto py-8'>
@@ -23,6 +23,8 @@ export default function EditorV2Page() {
             </div>
           </div>
         </div>
+
+        <Sidebar />
       </div>
     </div>
   );
