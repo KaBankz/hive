@@ -6,6 +6,7 @@ import {
   ChevronRight,
   Eye,
   GripVertical,
+  Minus,
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -18,6 +19,7 @@ type SidebarSectionProps = {
   onToggleExpand?: () => void;
   icon?: React.ReactNode;
   children?: React.ReactNode;
+  hasPartialVisibility?: boolean;
 };
 
 export function SidebarSection({
@@ -28,19 +30,19 @@ export function SidebarSection({
   onToggleExpand,
   icon,
   children,
+  hasPartialVisibility = false,
 }: SidebarSectionProps) {
   return (
     <div className='touch-none'>
       <div className='space-y-2'>
-        <button
-          onClick={onToggle}
+        <div
           className={cn(
             'group flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm transition',
             isVisible
               ? 'bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300'
               : 'text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-900'
           )}>
-          <div className='flex items-center gap-3'>
+          <button onClick={onToggle} className='flex flex-1 items-center gap-3'>
             <div className='cursor-grab active:cursor-grabbing'>
               <GripVertical className='size-4 text-gray-400 transition group-hover:text-gray-500 dark:text-gray-600 dark:group-hover:text-gray-500' />
             </div>
@@ -48,28 +50,36 @@ export function SidebarSection({
               className={cn(
                 'flex size-5 items-center justify-center rounded-md border transition',
                 isVisible
-                  ? 'border-blue-500 bg-blue-500 text-white dark:border-blue-400 dark:bg-blue-400'
+                  ? hasPartialVisibility
+                    ? 'border-blue-300 bg-blue-300 text-white dark:border-blue-300/80 dark:bg-blue-300/80'
+                    : 'border-blue-500 bg-blue-500 text-white dark:border-blue-400 dark:bg-blue-400'
                   : 'border-gray-300 group-hover:border-gray-400 dark:border-gray-700 dark:group-hover:border-gray-600'
               )}>
               {isVisible ? (
-                <Check className='size-3' />
+                hasPartialVisibility ? (
+                  <Minus className='size-3' />
+                ) : (
+                  <Check className='size-3' />
+                )
               ) : (
                 icon || <Eye className='size-3' />
               )}
             </div>
             {title}
-          </div>
+          </button>
           {onToggleExpand && (
-            <div
-              onClick={(e) => {
-                e.stopPropagation();
-                onToggleExpand();
-              }}
-              className='cursor-pointer rounded-md p-1 hover:bg-gray-100 dark:hover:bg-gray-800'>
+            <button
+              onClick={onToggleExpand}
+              className={cn(
+                'rounded-md p-1 transition-colors',
+                isVisible
+                  ? 'hover:bg-blue-100 dark:hover:bg-blue-900'
+                  : 'hover:bg-gray-100 dark:hover:bg-gray-800'
+              )}>
               {isExpanded ? (
                 <ChevronDown
                   className={cn(
-                    'size-4 transition',
+                    'size-4 transition-transform duration-200',
                     isVisible
                       ? 'text-blue-500 dark:text-blue-400'
                       : 'text-gray-400 dark:text-gray-600'
@@ -78,21 +88,19 @@ export function SidebarSection({
               ) : (
                 <ChevronRight
                   className={cn(
-                    'size-4 transition',
+                    'size-4 transition-transform duration-200',
                     isVisible
                       ? 'text-blue-500 dark:text-blue-400'
                       : 'text-gray-400 dark:text-gray-600'
                   )}
                 />
               )}
-            </div>
+            </button>
           )}
-        </button>
+        </div>
 
         {/* Sub-items */}
-        {isExpanded && isVisible && (
-          <div className='ml-11 space-y-1'>{children}</div>
-        )}
+        {isExpanded && <div className='ml-11 space-y-1'>{children}</div>}
       </div>
     </div>
   );
