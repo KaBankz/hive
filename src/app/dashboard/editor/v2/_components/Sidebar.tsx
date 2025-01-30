@@ -136,7 +136,16 @@ export function Sidebar({ isGenerating = false, onExport }: SidebarProps) {
   // Track expanded state for each section
   const [expandedSections, setExpandedSections] = useState<
     Record<string, boolean>
-  >({});
+  >(() => {
+    // Initialize all sections as expanded
+    return Object.values(SECTION_CONFIG).reduce(
+      (acc, section) => ({
+        ...acc,
+        [section.id]: true,
+      }),
+      {}
+    );
+  });
 
   // Get available sections based on data
   const availableSections = Object.values(SECTION_CONFIG).filter((section) => {

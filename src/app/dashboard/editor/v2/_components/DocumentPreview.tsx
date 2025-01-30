@@ -15,7 +15,22 @@ import { VisitorsSection } from './sections/VisitorsSection';
 import { WeatherSection } from './sections/WeatherSection';
 
 export function DocumentPreview() {
-  const { report, selectedProject, showPageBreaks } = useEditor();
+  const {
+    report,
+    selectedProject,
+    showPageBreaks,
+    sectionVisibility,
+    subItemVisibility,
+  } = useEditor();
+
+  // Helper to filter visible items
+  const filterVisibleItems = <T extends { id: string }>(
+    items: T[] | undefined,
+    sectionId: string
+  ): T[] => {
+    if (!items) return [];
+    return items.filter((item) => subItemVisibility[sectionId]?.[item.id]);
+  };
 
   return (
     <div className='relative'>
@@ -54,42 +69,160 @@ export function DocumentPreview() {
         </div>
 
         <div className='space-y-6'>
-          <ReportInfo project={selectedProject} report={report} />
-          {selectedProject.weather && (
-            <WeatherSection weather={selectedProject.weather} />
+          {sectionVisibility.reportInfo && (
+            <ReportInfo project={selectedProject} report={report} />
           )}
-          {selectedProject.labor && (
+
+          {sectionVisibility.weather && selectedProject.weather && (
+            <WeatherSection
+              weather={{
+                ...selectedProject.weather,
+                summary: filterVisibleItems(
+                  selectedProject.weather.summary.map((w) => ({
+                    ...w,
+                    id: w.forecastTimeTzFormatted,
+                  })),
+                  'weather'
+                ),
+              }}
+            />
+          )}
+
+          {sectionVisibility.labor && selectedProject.labor && (
             <LaborSection
-              labor={selectedProject.labor}
+              labor={{
+                ...selectedProject.labor,
+                details: filterVisibleItems(
+                  selectedProject.labor.details.map((l) => ({
+                    ...l,
+                    id: l.nameRow.nameCell.crewName,
+                  })),
+                  'labor'
+                ),
+              }}
               hoursLabels={report.hoursLabels}
             />
           )}
-          {selectedProject.equipment && (
+
+          {sectionVisibility.equipment && selectedProject.equipment && (
             <EquipmentSection
-              equipment={selectedProject.equipment}
+              equipment={{
+                ...selectedProject.equipment,
+                details: filterVisibleItems(
+                  selectedProject.equipment.details.map((e) => ({
+                    ...e,
+                    id: e.nameRow.nameCell.equipName,
+                  })),
+                  'equipment'
+                ),
+              }}
               hoursLabels={report.hoursLabels}
             />
           )}
-          {selectedProject.questions && (
-            <QuestionsSection questions={selectedProject.questions} />
+
+          {sectionVisibility.questions && selectedProject.questions && (
+            <QuestionsSection
+              questions={{
+                ...selectedProject.questions,
+                details: filterVisibleItems(
+                  selectedProject.questions.details.map((q) => ({
+                    ...q,
+                    id: q.fullName,
+                  })),
+                  'questions'
+                ),
+              }}
+            />
           )}
-          {selectedProject.quantities && (
-            <QuantitiesSection quantities={selectedProject.quantities} />
+
+          {sectionVisibility.quantities && selectedProject.quantities && (
+            <QuantitiesSection
+              quantities={{
+                ...selectedProject.quantities,
+                details: filterVisibleItems(
+                  selectedProject.quantities.details.map((q) => ({
+                    ...q,
+                    id: q.itemNumber,
+                  })),
+                  'quantities'
+                ),
+              }}
+            />
           )}
-          {selectedProject.deliveries && (
-            <DeliveriesSection deliveries={selectedProject.deliveries} />
+
+          {sectionVisibility.deliveries && selectedProject.deliveries && (
+            <DeliveriesSection
+              deliveries={{
+                ...selectedProject.deliveries,
+                details: filterVisibleItems(
+                  selectedProject.deliveries.details.map((d) => ({
+                    ...d,
+                    id: d.itemNumber,
+                  })),
+                  'deliveries'
+                ),
+              }}
+            />
           )}
-          {selectedProject.inspections && (
-            <InspectionsSection inspections={selectedProject.inspections} />
+
+          {sectionVisibility.inspections && selectedProject.inspections && (
+            <InspectionsSection
+              inspections={{
+                ...selectedProject.inspections,
+                details: filterVisibleItems(
+                  selectedProject.inspections.details.map((i) => ({
+                    ...i,
+                    id: i.itemNumber,
+                  })),
+                  'inspections'
+                ),
+              }}
+            />
           )}
-          {selectedProject.visitors && (
-            <VisitorsSection visitors={selectedProject.visitors} />
+
+          {sectionVisibility.visitors && selectedProject.visitors && (
+            <VisitorsSection
+              visitors={{
+                ...selectedProject.visitors,
+                details: filterVisibleItems(
+                  selectedProject.visitors.details.map((v) => ({
+                    ...v,
+                    id: v.itemNumber,
+                  })),
+                  'visitors'
+                ),
+              }}
+            />
           )}
-          {selectedProject.notes && (
-            <NotesSection notes={selectedProject.notes} />
+
+          {sectionVisibility.notes && selectedProject.notes && (
+            <NotesSection
+              notes={{
+                ...selectedProject.notes,
+                details: filterVisibleItems(
+                  selectedProject.notes.details.map((n) => ({
+                    ...n,
+                    id: n.itemNumber,
+                  })),
+                  'notes'
+                ),
+              }}
+            />
           )}
-          {selectedProject.images && (
-            <PhotosSection images={selectedProject.images} />
+
+          {sectionVisibility.photos && selectedProject.images && (
+            <PhotosSection
+              images={{
+                ...selectedProject.images,
+                details: filterVisibleItems(
+                  selectedProject.images.details.map((p, i) => ({
+                    ...p,
+                    id: p.url || `photo-${i}`,
+                  })),
+                  'photos'
+                ),
+              }}
+            />
           )}
         </div>
       </div>
