@@ -1,5 +1,7 @@
 import Image from 'next/image';
 
+import { AnimatePresence, motion } from 'motion/react';
+
 import { useEditor } from '@/context/EditorContext';
 
 import { DeliveriesSection } from './sections/DeliveriesSection';
@@ -13,6 +15,28 @@ import { QuestionsSection } from './sections/QuestionsSection';
 import { ReportInfo } from './sections/ReportInfo';
 import { VisitorsSection } from './sections/VisitorsSection';
 import { WeatherSection } from './sections/WeatherSection';
+
+const MotionWrapper = ({
+  children,
+  layoutId,
+}: {
+  children: React.ReactNode;
+  layoutId: string;
+}) => (
+  <motion.div
+    layout
+    layoutId={layoutId}
+    initial={{ opacity: 0, x: -20 }}
+    animate={{ opacity: 1, x: 0 }}
+    exit={{ opacity: 0, x: 20 }}
+    transition={{
+      type: 'spring',
+      stiffness: 400,
+      damping: 30,
+    }}>
+    {children}
+  </motion.div>
+);
 
 export function DocumentPreview() {
   const {
@@ -69,161 +93,185 @@ export function DocumentPreview() {
         </div>
 
         <div className='space-y-6'>
-          {sectionVisibility.reportInfo && (
-            <ReportInfo project={selectedProject} report={report} />
-          )}
+          <AnimatePresence mode='popLayout'>
+            {sectionVisibility.reportInfo && (
+              <MotionWrapper key='report-info' layoutId='report-info'>
+                <ReportInfo project={selectedProject} report={report} />
+              </MotionWrapper>
+            )}
 
-          {sectionVisibility.weather && selectedProject.weather && (
-            <WeatherSection
-              weather={{
-                ...selectedProject.weather,
-                summary: filterVisibleItems(
-                  selectedProject.weather.summary.map((w) => ({
-                    ...w,
-                    id: w.forecastTimeTzFormatted,
-                  })),
-                  'weather'
-                ),
-              }}
-            />
-          )}
+            {sectionVisibility.weather && selectedProject.weather && (
+              <MotionWrapper key='weather' layoutId='weather'>
+                <WeatherSection
+                  weather={{
+                    ...selectedProject.weather,
+                    summary: filterVisibleItems(
+                      selectedProject.weather.summary.map((w) => ({
+                        ...w,
+                        id: w.forecastTimeTzFormatted,
+                      })),
+                      'weather'
+                    ),
+                  }}
+                />
+              </MotionWrapper>
+            )}
 
-          {sectionVisibility.labor && selectedProject.labor && (
-            <LaborSection
-              labor={{
-                ...selectedProject.labor,
-                details: filterVisibleItems(
-                  selectedProject.labor.details.map((l) => ({
-                    ...l,
-                    id: l.nameRow.nameCell.crewName,
-                  })),
-                  'labor'
-                ),
-              }}
-              hoursLabels={report.hoursLabels}
-            />
-          )}
+            {sectionVisibility.labor && selectedProject.labor && (
+              <MotionWrapper key='labor' layoutId='labor'>
+                <LaborSection
+                  labor={{
+                    ...selectedProject.labor,
+                    details: filterVisibleItems(
+                      selectedProject.labor.details.map((l) => ({
+                        ...l,
+                        id: l.nameRow.nameCell.crewName,
+                      })),
+                      'labor'
+                    ),
+                  }}
+                  hoursLabels={report.hoursLabels}
+                />
+              </MotionWrapper>
+            )}
 
-          {sectionVisibility.equipment && selectedProject.equipment && (
-            <EquipmentSection
-              equipment={{
-                ...selectedProject.equipment,
-                details: filterVisibleItems(
-                  selectedProject.equipment.details.map((e) => ({
-                    ...e,
-                    id: e.nameRow.nameCell.equipName,
-                  })),
-                  'equipment'
-                ),
-              }}
-              hoursLabels={report.hoursLabels}
-            />
-          )}
+            {sectionVisibility.equipment && selectedProject.equipment && (
+              <MotionWrapper key='equipment' layoutId='equipment'>
+                <EquipmentSection
+                  equipment={{
+                    ...selectedProject.equipment,
+                    details: filterVisibleItems(
+                      selectedProject.equipment.details.map((e) => ({
+                        ...e,
+                        id: e.nameRow.nameCell.equipName,
+                      })),
+                      'equipment'
+                    ),
+                  }}
+                  hoursLabels={report.hoursLabels}
+                />
+              </MotionWrapper>
+            )}
 
-          {sectionVisibility.questions && selectedProject.questions && (
-            <QuestionsSection
-              questions={{
-                ...selectedProject.questions,
-                details: filterVisibleItems(
-                  selectedProject.questions.details.map((q) => ({
-                    ...q,
-                    id: q.fullName,
-                  })),
-                  'questions'
-                ),
-              }}
-            />
-          )}
+            {sectionVisibility.questions && selectedProject.questions && (
+              <MotionWrapper key='questions' layoutId='questions'>
+                <QuestionsSection
+                  questions={{
+                    ...selectedProject.questions,
+                    details: filterVisibleItems(
+                      selectedProject.questions.details.map((q) => ({
+                        ...q,
+                        id: q.fullName,
+                      })),
+                      'questions'
+                    ),
+                  }}
+                />
+              </MotionWrapper>
+            )}
 
-          {sectionVisibility.quantities && selectedProject.quantities && (
-            <QuantitiesSection
-              quantities={{
-                ...selectedProject.quantities,
-                details: filterVisibleItems(
-                  selectedProject.quantities.details.map((q) => ({
-                    ...q,
-                    id: q.itemNumber,
-                  })),
-                  'quantities'
-                ),
-              }}
-            />
-          )}
+            {sectionVisibility.quantities && selectedProject.quantities && (
+              <MotionWrapper key='quantities' layoutId='quantities'>
+                <QuantitiesSection
+                  quantities={{
+                    ...selectedProject.quantities,
+                    details: filterVisibleItems(
+                      selectedProject.quantities.details.map((q) => ({
+                        ...q,
+                        id: q.itemNumber,
+                      })),
+                      'quantities'
+                    ),
+                  }}
+                />
+              </MotionWrapper>
+            )}
 
-          {sectionVisibility.deliveries && selectedProject.deliveries && (
-            <DeliveriesSection
-              deliveries={{
-                ...selectedProject.deliveries,
-                details: filterVisibleItems(
-                  selectedProject.deliveries.details.map((d) => ({
-                    ...d,
-                    id: d.itemNumber,
-                  })),
-                  'deliveries'
-                ),
-              }}
-            />
-          )}
+            {sectionVisibility.deliveries && selectedProject.deliveries && (
+              <MotionWrapper key='deliveries' layoutId='deliveries'>
+                <DeliveriesSection
+                  deliveries={{
+                    ...selectedProject.deliveries,
+                    details: filterVisibleItems(
+                      selectedProject.deliveries.details.map((d) => ({
+                        ...d,
+                        id: d.itemNumber,
+                      })),
+                      'deliveries'
+                    ),
+                  }}
+                />
+              </MotionWrapper>
+            )}
 
-          {sectionVisibility.inspections && selectedProject.inspections && (
-            <InspectionsSection
-              inspections={{
-                ...selectedProject.inspections,
-                details: filterVisibleItems(
-                  selectedProject.inspections.details.map((i) => ({
-                    ...i,
-                    id: i.itemNumber,
-                  })),
-                  'inspections'
-                ),
-              }}
-            />
-          )}
+            {sectionVisibility.inspections && selectedProject.inspections && (
+              <MotionWrapper key='inspections' layoutId='inspections'>
+                <InspectionsSection
+                  inspections={{
+                    ...selectedProject.inspections,
+                    details: filterVisibleItems(
+                      selectedProject.inspections.details.map((i) => ({
+                        ...i,
+                        id: i.itemNumber,
+                      })),
+                      'inspections'
+                    ),
+                  }}
+                />
+              </MotionWrapper>
+            )}
 
-          {sectionVisibility.visitors && selectedProject.visitors && (
-            <VisitorsSection
-              visitors={{
-                ...selectedProject.visitors,
-                details: filterVisibleItems(
-                  selectedProject.visitors.details.map((v) => ({
-                    ...v,
-                    id: v.itemNumber,
-                  })),
-                  'visitors'
-                ),
-              }}
-            />
-          )}
+            {sectionVisibility.visitors && selectedProject.visitors && (
+              <MotionWrapper key='visitors' layoutId='visitors'>
+                <VisitorsSection
+                  visitors={{
+                    ...selectedProject.visitors,
+                    details: filterVisibleItems(
+                      selectedProject.visitors.details.map((v) => ({
+                        ...v,
+                        id: v.itemNumber,
+                      })),
+                      'visitors'
+                    ),
+                  }}
+                />
+              </MotionWrapper>
+            )}
 
-          {sectionVisibility.notes && selectedProject.notes && (
-            <NotesSection
-              notes={{
-                ...selectedProject.notes,
-                details: filterVisibleItems(
-                  selectedProject.notes.details.map((n) => ({
-                    ...n,
-                    id: n.itemNumber,
-                  })),
-                  'notes'
-                ),
-              }}
-            />
-          )}
+            {sectionVisibility.notes && selectedProject.notes && (
+              <MotionWrapper key='notes' layoutId='notes'>
+                <NotesSection
+                  notes={{
+                    ...selectedProject.notes,
+                    details: filterVisibleItems(
+                      selectedProject.notes.details.map((n) => ({
+                        ...n,
+                        id: n.itemNumber,
+                      })),
+                      'notes'
+                    ),
+                  }}
+                />
+              </MotionWrapper>
+            )}
 
-          {sectionVisibility.photos && selectedProject.images && (
-            <PhotosSection
-              images={{
-                ...selectedProject.images,
-                details: filterVisibleItems(
-                  selectedProject.images.details.map((p, i) => ({
-                    ...p,
-                    id: p.url || `photo-${i}`,
-                  })),
-                  'photos'
-                ),
-              }}
-            />
-          )}
+            {sectionVisibility.photos && selectedProject.images && (
+              <MotionWrapper key='photos' layoutId='photos'>
+                <PhotosSection
+                  images={{
+                    ...selectedProject.images,
+                    details: filterVisibleItems(
+                      selectedProject.images.details.map((p, i) => ({
+                        ...p,
+                        id: p.url || `photo-${i}`,
+                      })),
+                      'photos'
+                    ),
+                  }}
+                />
+              </MotionWrapper>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </div>
