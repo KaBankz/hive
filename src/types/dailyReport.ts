@@ -5,6 +5,7 @@ export type Tag = {
 };
 
 type ImageDetail = {
+  note?: string;
   label: string;
   url: string;
 };
