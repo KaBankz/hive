@@ -17,12 +17,28 @@ type EditorContextType = {
   showPageBreaks: boolean;
   sectionVisibility: Record<string, boolean>;
   subItemVisibility: Record<string, Record<string, boolean>>;
+  sectionOrder: string[];
   setShowPageBreaks: (show: boolean) => void;
   toggleSection: (section: string) => void;
   toggleSubItem: (section: string, itemId: string) => void;
+  reorderSections: (startIndex: number, endIndex: number) => void;
 };
 
 const EditorContext = createContext<EditorContextType | null>(null);
+
+const DEFAULT_SECTION_ORDER = [
+  'reportInfo',
+  'weather',
+  'labor',
+  'equipment',
+  'photos',
+  'questions',
+  'quantities',
+  'deliveries',
+  'inspections',
+  'visitors',
+  'notes',
+];
 
 export function EditorProvider({
   report,
@@ -52,6 +68,11 @@ export function EditorProvider({
     visitors: !!selectedProject.visitors,
     notes: !!selectedProject.notes,
   }));
+
+  // Initialize section order
+  const [sectionOrder, setSectionOrder] = useState<string[]>(
+    () => DEFAULT_SECTION_ORDER
+  );
 
   // Initialize sub-item visibility
   const [subItemVisibility, setSubItemVisibility] = useState<
@@ -184,6 +205,18 @@ export function EditorProvider({
     }));
   }, []);
 
+  const reorderSections = useCallback(
+    (startIndex: number, endIndex: number) => {
+      setSectionOrder((prev) => {
+        const result = Array.from(prev);
+        const [removed] = result.splice(startIndex, 1);
+        result.splice(endIndex, 0, removed);
+        return result;
+      });
+    },
+    []
+  );
+
   const value = useMemo(
     () => ({
       report,
@@ -191,9 +224,11 @@ export function EditorProvider({
       showPageBreaks,
       sectionVisibility,
       subItemVisibility,
+      sectionOrder,
       setShowPageBreaks,
       toggleSection,
       toggleSubItem,
+      reorderSections,
     }),
     [
       report,
@@ -201,8 +236,10 @@ export function EditorProvider({
       showPageBreaks,
       sectionVisibility,
       subItemVisibility,
+      sectionOrder,
       toggleSection,
       toggleSubItem,
+      reorderSections,
     ]
   );
 

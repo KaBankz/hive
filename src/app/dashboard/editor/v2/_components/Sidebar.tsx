@@ -1,13 +1,28 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
+import {
+  closestCenter,
+  DndContext,
+  DragEndEvent,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
+import {
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
 import { Eye, EyeOff, FileDown, Layers, Scissors } from 'lucide-react';
 
 import { Button } from '@/components/Button';
 import { useEditor } from '@/context/EditorContext';
 
-import { SidebarSection, SidebarSubItem } from './sections/SidebarSection';
+import { SidebarSubItem } from './sections/SidebarSection';
+import { SortableItem } from './sections/SortableItem';
 
 type SectionConfig = {
   id: string;
@@ -131,6 +146,8 @@ export function Sidebar({ isGenerating = false, onExport }: SidebarProps) {
     subItemVisibility,
     toggleSection,
     toggleSubItem,
+    reorderSections,
+    sectionOrder,
   } = editorContext;
 
   // Track expanded state for each section
@@ -147,12 +164,19 @@ export function Sidebar({ isGenerating = false, onExport }: SidebarProps) {
     );
   });
 
-  // Get available sections based on data
-  const availableSections = Object.values(SECTION_CONFIG).filter((section) => {
-    if (section.id === 'reportInfo') return true;
-    const subItems = section.getSubItems?.(editorContext);
-    return subItems && subItems.length > 0;
-  });
+  // Get available sections based on data and order them according to sectionOrder
+  const availableSections = useMemo(() => {
+    const sections = Object.values(SECTION_CONFIG).filter((section) => {
+      if (section.id === 'reportInfo') return true;
+      const subItems = section.getSubItems?.(editorContext);
+      return subItems && subItems.length > 0;
+    });
+
+    // Sort sections based on sectionOrder
+    return [...sections].sort(
+      (a, b) => sectionOrder.indexOf(a.id) - sectionOrder.indexOf(b.id)
+    );
+  }, [editorContext, sectionOrder]);
 
   const handleSubItemToggle = (sectionId: string, itemId: string) => {
     // Get all sub-items for this section
@@ -209,6 +233,30 @@ export function Sidebar({ isGenerating = false, onExport }: SidebarProps) {
     }));
   };
 
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  const handleDragOver = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (active.id !== over?.id) {
+      const oldIndex = sectionOrder.indexOf(active.id as string);
+      const newIndex = sectionOrder.indexOf(over?.id as string);
+
+      if (oldIndex !== -1 && newIndex !== -1) {
+        reorderSections(oldIndex, newIndex);
+      }
+    }
+  };
+
   return (
     <aside className='h-[calc(100vh-4rem)] w-[400px] border-l border-gray-200 dark:border-gray-800'>
       <div className='flex h-full flex-col bg-white dark:bg-black/30'>
@@ -253,11 +301,11 @@ export function Sidebar({ isGenerating = false, onExport }: SidebarProps) {
 
             <div className='h-px bg-gray-200 dark:bg-gray-800' />
 
-            {/* Sections Control */}
+            {/* Section Controls */}
             <div className='flex items-center justify-between'>
               <h2 className='flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-gray-100'>
                 <Layers className='size-4 text-blue-500' />
-                Document Sections
+                Sections
               </h2>
               <Button
                 variant='toggle'
@@ -286,47 +334,60 @@ export function Sidebar({ isGenerating = false, onExport }: SidebarProps) {
 
         {/* Scrollable Content */}
         <div className='flex-1 overflow-y-auto p-6'>
-          <div className='space-y-4'>
-            {availableSections.map((section) => {
-              const subItems = section.getSubItems?.(editorContext);
-              const hasSubItems = subItems && subItems.length > 0;
-              const isExpanded = expandedSections[section.id] ?? true;
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragOver={handleDragOver}>
+            <SortableContext
+              items={availableSections.map((s) => s.id)}
+              strategy={verticalListSortingStrategy}>
+              <div className='space-y-2'>
+                {availableSections.map((section) => {
+                  const subItems = section.getSubItems?.(editorContext);
+                  const isExpanded = expandedSections[section.id];
 
-              // Calculate if any sub-items are visible but not all
-              const hasPartialVisibility = hasSubItems
-                ? subItems.some(
-                    (item) => subItemVisibility[section.id]?.[item.id]
-                  ) &&
-                  !subItems.every(
-                    (item) => subItemVisibility[section.id]?.[item.id]
-                  )
-                : false;
-
-              return (
-                <SidebarSection
-                  key={section.id}
-                  title={section.label}
-                  isVisible={sectionVisibility[section.id] ?? false}
-                  isExpanded={isExpanded}
-                  onToggle={() => handleSectionToggle(section.id)}
-                  onToggleExpand={
-                    hasSubItems ? () => toggleExpand(section.id) : undefined
-                  }
-                  hasPartialVisibility={hasPartialVisibility}>
-                  {subItems?.map((item) => (
-                    <SidebarSubItem
-                      key={item.id}
-                      label={item.label}
-                      isVisible={
-                        subItemVisibility[section.id]?.[item.id] ?? false
+                  return (
+                    <SortableItem
+                      key={section.id}
+                      id={section.id}
+                      title={section.label}
+                      isVisible={sectionVisibility[section.id]}
+                      isExpanded={isExpanded}
+                      onToggle={() => handleSectionToggle(section.id)}
+                      onToggleExpand={
+                        subItems ? () => toggleExpand(section.id) : undefined
                       }
-                      onToggle={() => handleSubItemToggle(section.id, item.id)}
-                    />
-                  ))}
-                </SidebarSection>
-              );
-            })}
-          </div>
+                      hasPartialVisibility={
+                        subItems
+                          ? subItems.some(
+                              (item) =>
+                                !subItemVisibility[section.id]?.[item.id]
+                            ) &&
+                            subItems.some(
+                              (item) => subItemVisibility[section.id]?.[item.id]
+                            )
+                          : false
+                      }>
+                      {subItems &&
+                        isExpanded &&
+                        subItems.map((item) => (
+                          <SidebarSubItem
+                            key={item.id}
+                            label={item.label}
+                            isVisible={
+                              !!subItemVisibility[section.id]?.[item.id]
+                            }
+                            onToggle={() =>
+                              handleSubItemToggle(section.id, item.id)
+                            }
+                          />
+                        ))}
+                    </SortableItem>
+                  );
+                })}
+              </div>
+            </SortableContext>
+          </DndContext>
         </div>
       </div>
     </aside>
