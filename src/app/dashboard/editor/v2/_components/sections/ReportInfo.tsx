@@ -27,16 +27,16 @@ export function ReportInfo({ project, report }: Props) {
         </thead>
         <tbody>
           <tr>
-            <td className='p-3 text-xs font-medium text-gray-900'>
+            <td className='p-3 text-center text-xs font-medium text-gray-900'>
               {project.dailyLogDate}
             </td>
-            <td className='p-3 text-xs font-medium text-gray-900'>
+            <td className='p-3 text-center text-xs font-medium text-gray-900'>
               {project.projectNumber}
             </td>
-            <td className='p-3 text-xs font-medium text-gray-900'>
+            <td className='p-3 text-center text-xs font-medium text-gray-900'>
               {project.projectName}
             </td>
-            <td className='p-3 text-xs font-medium text-gray-900'>
+            <td className='p-3 text-center text-xs font-medium text-gray-900'>
               {report.printedBy}
             </td>
           </tr>
