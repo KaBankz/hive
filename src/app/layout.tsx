@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 
+import { PostHogProvider } from '@/analytics/PostHogProvider';
 import { ChatButton } from '@/components/ChatButton';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { PdfProvider } from '@/context/PdfContext';
-import { CSPostHogProvider } from '@/context/PosthogProvider';
 import { createClient } from '@/utils/supabase/server';
 
 import '@/app/globals.css';
@@ -42,7 +42,7 @@ export default async function RootLayout({
       <head>
         <link rel='icon' href='/icon.png' />
       </head>
-      <CSPostHogProvider>
+      <PostHogProvider>
         <PdfProvider>
           <body
             className={`${geistSans.variable} ${geistMono.variable} bg-black antialiased`}>
@@ -54,7 +54,7 @@ export default async function RootLayout({
             </div>
           </body>
         </PdfProvider>
-      </CSPostHogProvider>
+      </PostHogProvider>
     </html>
   );
 }
