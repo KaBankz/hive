@@ -3,9 +3,8 @@
 import { useActionState } from 'react';
 import Link from 'next/link';
 
-import { ChevronRight } from 'lucide-react';
-
 import { login } from '@/app/(auth)/login/actions';
+import { Button } from '@/components/Button';
 
 const initialState = {
   error: '',
@@ -39,7 +38,7 @@ export default function LoginPage() {
               name='email'
               required
               className='mt-1 block w-full rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-gray-900 transition-colors placeholder:text-gray-400 hover:border-gray-300 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-white/10 dark:bg-white/5 dark:text-white dark:placeholder:text-zinc-500 dark:hover:border-white/20'
-              placeholder='Enter your email'
+              placeholder='you@company.com'
             />
           </div>
 
@@ -80,13 +79,14 @@ export default function LoginPage() {
             </Link>
           </div>
 
-          <button
+          <Button
+            cta
+            size='full'
+            className='py-2.5'
             type='submit'
-            disabled={pending}
-            className='group mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-b from-blue-500 to-blue-600 px-4 py-2.5 text-sm font-medium text-white transition-all duration-200 hover:from-blue-400 hover:to-blue-500 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]'>
+            disabled={pending}>
             Sign in
-            <ChevronRight className='size-4 transition-transform duration-200 group-hover:translate-x-0.5' />
-          </button>
+          </Button>
         </form>
 
         {state.error && (

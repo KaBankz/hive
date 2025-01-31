@@ -2,8 +2,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
-import { ChevronRight, LogOut, User } from 'lucide-react';
+import { LogOut, User } from 'lucide-react';
 
+import { Button } from '@/components/Button';
 import { createClient } from '@/utils/supabase/server';
 
 export async function Header() {
@@ -59,11 +60,8 @@ export async function Header() {
         <div className='flex basis-[200px] items-center justify-end space-x-4'>
           {user ? (
             <>
-              <Link
-                href='/dashboard'
-                className='group inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-b from-blue-500 to-blue-600 px-4 py-2 text-sm font-medium text-white transition-all duration-200 hover:from-blue-400 hover:to-blue-500 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]'>
-                Dashboard
-                <ChevronRight className='size-4 transition-transform duration-200 group-hover:translate-x-0.5' />
+              <Link href='/dashboard'>
+                <Button cta>Dashboard</Button>
               </Link>
               <form action={handleLogout}>
                 <button className='group flex size-9 items-center justify-center rounded-full border border-white/10 bg-white/5 transition-all duration-200 hover:border-red-500/20 hover:bg-red-500/10'>
@@ -79,11 +77,8 @@ export async function Header() {
                 className='text-sm text-zinc-400 transition-colors duration-200 hover:text-white'>
                 Log in
               </Link>
-              <Link
-                href='/signup'
-                className='group inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-b from-blue-500 to-blue-600 px-4 py-2 text-sm font-medium text-white transition-all duration-200 hover:from-blue-400 hover:to-blue-500 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]'>
-                Get Started
-                <ChevronRight className='size-4 transition-transform duration-200 group-hover:translate-x-0.5' />
+              <Link href='/signup'>
+                <Button cta>Get Started</Button>
               </Link>
             </>
           )}

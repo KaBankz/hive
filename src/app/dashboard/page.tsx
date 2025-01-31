@@ -13,6 +13,7 @@ import {
   Star,
 } from 'lucide-react';
 
+import { Button } from '@/components/Button';
 import { cn } from '@/lib/utils';
 
 import dailyReportData from '../../../public/dailyReportData.json';
@@ -92,10 +93,10 @@ export default function DashboardPage() {
           <h1 className='text-2xl font-semibold text-white'>
             Construction Projects
           </h1>
-          <button className='inline-flex items-center gap-2 rounded-full bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700'>
+          <Button disabled>
             <Plus className='size-4' />
             New Project
-          </button>
+          </Button>
         </div>
 
         <div className='mb-8'>

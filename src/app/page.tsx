@@ -3,9 +3,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { ChevronRight } from 'lucide-react';
 import { motion } from 'motion/react';
 
+import { Button } from '@/components/Button';
 import { Features } from '@/components/Features';
 import { Impact } from '@/components/Impact';
 import { Testimonials } from '@/components/Testimonials';
@@ -41,11 +41,10 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
             className='mt-10 flex items-center justify-center gap-4'>
-            <Link
-              href='/signup'
-              className='group inline-flex items-center justify-center gap-2 rounded-full bg-gradient-to-b from-blue-500 to-blue-600 px-6 py-3 text-sm font-medium text-white transition-all duration-200 hover:from-blue-400 hover:to-blue-500 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]'>
-              Get Started
-              <ChevronRight className='size-4 transition-transform duration-200 group-hover:translate-x-0.5' />
+            <Link href='/signup'>
+              <Button cta size='lg'>
+                Get Started
+              </Button>
             </Link>
           </motion.div>
         </div>

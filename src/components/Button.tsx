@@ -1,17 +1,19 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 import { ChevronRight } from 'lucide-react';
 
+import { cn } from '@/lib/utils';
+
 const buttonVariants = cva(
   'group inline-flex items-center justify-center gap-2 text-sm font-medium transition-all duration-200',
   {
     variants: {
       variant: {
         default:
-          'rounded-full bg-gradient-to-b from-blue-500 to-blue-600 text-white hover:opacity-90 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]',
+          'rounded-full bg-gradient-to-b from-blue-500 to-blue-600 text-white enabled:hover:opacity-90 enabled:hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]',
         outline:
-          'rounded-full border border-gray-200 bg-white text-gray-700 shadow-[0_2px_4px_rgba(0,0,0,0.02)] hover:border-gray-300 hover:shadow-[0_4px_8px_rgba(0,0,0,0.05)] dark:bg-white/[0.05] dark:text-gray-200 dark:hover:bg-white/[0.1]',
+          'rounded-full border border-gray-200 bg-white text-gray-900 enabled:hover:border-gray-300 enabled:hover:bg-gray-50 enabled:hover:shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-white dark:enabled:hover:bg-white/10 dark:enabled:hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]',
         toggle:
-          'inline-flex items-center gap-1.5 rounded-lg border border-gray-200 px-2.5 py-1.5 text-xs font-medium text-gray-700 transition-colors duration-200 hover:border-gray-300 hover:bg-gray-50 dark:border-white/[0.1] dark:text-zinc-400 dark:hover:border-white/[0.2] dark:hover:bg-white/[0.02]',
+          'inline-flex items-center gap-1.5 rounded-lg border border-gray-200 px-2.5 py-1.5 text-xs font-medium text-gray-700 transition-colors duration-200 enabled:hover:border-gray-300 enabled:hover:bg-gray-50 dark:border-white/[0.1] dark:text-zinc-400 dark:enabled:hover:border-white/[0.2] dark:enabled:hover:bg-white/[0.02]',
       },
       size: {
         default: 'px-4 py-2',
@@ -21,7 +23,10 @@ const buttonVariants = cva(
         icon: 'size-14 rounded-full p-2',
       },
       scale: {
-        true: 'hover:scale-110',
+        true: 'enabled:hover:scale-110',
+      },
+      disabled: {
+        true: 'cursor-not-allowed opacity-50',
       },
     },
     defaultVariants: {
@@ -43,16 +48,22 @@ export function Button({
   size,
   scale,
   cta,
+  disabled,
   children,
   ...props
 }: ButtonProps) {
   return (
     <button
       {...props}
-      className={buttonVariants({ variant, size, scale, className })}>
+      disabled={disabled}
+      className={buttonVariants({ variant, size, scale, className, disabled })}>
       {children}
       {cta && (
-        <ChevronRight className='size-4 transition-transform duration-200 group-hover:translate-x-0.5' />
+        <ChevronRight
+          className={cn('size-4 transition-transform duration-200', {
+            'group-hover:translate-x-0.5': !disabled,
+          })}
+        />
       )}
     </button>
   );

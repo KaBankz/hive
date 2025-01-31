@@ -3,9 +3,10 @@
 import { useActionState } from 'react';
 import Link from 'next/link';
 
-import { ChevronRight, Mail } from 'lucide-react';
+import { Mail } from 'lucide-react';
 
 import { signup } from '@/app/(auth)/signup/actions';
+import { Button } from '@/components/Button';
 
 const initialState = {
   confirmationSent: false,
@@ -90,13 +91,14 @@ export default function SignUpPage() {
             </label>
           </div>
 
-          <button
+          <Button
+            cta
+            size='full'
+            className='py-2.5'
             type='submit'
-            disabled={pending}
-            className='group mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-b from-blue-500 to-blue-600 px-4 py-2.5 text-sm font-medium text-white transition-all duration-200 hover:from-blue-400 hover:to-blue-500 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]'>
+            disabled={pending}>
             Create Account
-            <ChevronRight className='size-4 transition-transform duration-200 group-hover:translate-x-0.5' />
-          </button>
+          </Button>
         </form>
 
         {state.error && (
@@ -137,11 +139,10 @@ const ConfirmationMessage = () => {
         </p>
 
         <div className='mt-10 flex justify-center'>
-          <Link
-            href='/'
-            className='group inline-flex items-center justify-center gap-2 rounded-full border border-gray-200 bg-white px-6 py-3 text-sm font-medium text-gray-900 transition-all duration-200 hover:border-gray-300 hover:bg-gray-50 hover:shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-white dark:hover:bg-white/10 dark:hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]'>
-            Return to Home
-            <ChevronRight className='size-4 transition-transform duration-200 group-hover:translate-x-0.5' />
+          <Link href='/'>
+            <Button cta variant='outline' size='lg' className='py-2.5'>
+              Return to Home
+            </Button>
           </Link>
         </div>
       </div>
