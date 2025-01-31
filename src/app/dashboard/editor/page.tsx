@@ -1,6 +1,6 @@
 'use client';
 
-import { useSearchParams } from 'next/navigation';
+import { notFound, useSearchParams } from 'next/navigation';
 
 import { EditorProvider } from '@/context/EditorContext';
 import type { DailyReport } from '@/types/dailyReport';
@@ -9,10 +9,12 @@ import dailyReportData from '../../../../public/dailyReportData.json';
 import { DocumentPreview } from './_components/DocumentPreview';
 import { Sidebar } from './_components/Sidebar';
 
-export default function EditorV2Page() {
+export default function EditorPage() {
   const searchParams = useSearchParams();
-  const projectIndex = parseInt(searchParams.get('project') || '0');
+  const projectIndex = parseInt(searchParams.get('project') || '');
   const report = dailyReportData as unknown as DailyReport;
+
+  if (!report.dailyLogs[projectIndex]) notFound();
 
   return (
     <EditorProvider report={report} projectIndex={projectIndex}>

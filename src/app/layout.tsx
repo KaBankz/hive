@@ -1,13 +1,13 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 
-import '@/app/globals.css';
-
 import { ChatButton } from '@/components/ChatButton';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { PdfProvider } from '@/context/PdfContext';
 import { createClient } from '@/utils/supabase/server';
+
+import '@/app/globals.css';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
