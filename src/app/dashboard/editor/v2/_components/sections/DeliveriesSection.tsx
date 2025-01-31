@@ -46,6 +46,7 @@ function DeliveryImages({
               fill
               className='object-cover'
               unoptimized
+              crossOrigin='anonymous'
             />
           </div>
           {image.label && (

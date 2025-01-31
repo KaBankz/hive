@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 import { EditorProvider } from '@/context/EditorContext';
@@ -14,16 +13,6 @@ export default function EditorV2Page() {
   const searchParams = useSearchParams();
   const projectIndex = parseInt(searchParams.get('project') || '0');
   const report = dailyReportData as unknown as DailyReport;
-  const [isGenerating, setIsGenerating] = useState(false);
-
-  const handleExportPDF = async () => {
-    setIsGenerating(true);
-    try {
-      // PDF export logic will be added here
-    } finally {
-      setIsGenerating(false);
-    }
-  };
 
   return (
     <EditorProvider report={report} projectIndex={projectIndex}>
@@ -37,7 +26,7 @@ export default function EditorV2Page() {
             </div>
           </div>
 
-          <Sidebar isGenerating={isGenerating} onExport={handleExportPDF} />
+          <Sidebar />
         </div>
       </div>
     </EditorProvider>

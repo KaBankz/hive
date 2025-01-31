@@ -29,6 +29,7 @@ import {
 
 import { Button } from '@/components/Button';
 import { useEditor } from '@/context/EditorContext';
+import { usePdfExport } from '@/hooks/usePdfExport';
 
 import { SidebarSubItem } from './sections/SidebarSection';
 import { SortableItem } from './sections/SortableItem';
@@ -141,12 +142,8 @@ const SECTION_CONFIG: Record<string, SectionConfig> = {
   },
 };
 
-type SidebarProps = {
-  isGenerating?: boolean;
-  onExport?: () => void;
-};
-
-export function Sidebar({ isGenerating = false, onExport }: SidebarProps) {
+export function Sidebar() {
+  const [isGenerating, setIsGenerating] = useState(false);
   const editorContext = useEditor();
   const {
     showPageBreaks,
@@ -159,7 +156,9 @@ export function Sidebar({ isGenerating = false, onExport }: SidebarProps) {
     sectionOrder,
     reorderSubItems,
     subItemOrder,
+    selectedProject,
   } = editorContext;
+  const { exportToPdf } = usePdfExport();
 
   const dndId = useId();
   const subDndId = useId();
@@ -319,6 +318,23 @@ export function Sidebar({ isGenerating = false, onExport }: SidebarProps) {
     toggleSection(willShow ? 'showAll' : 'hideAll');
   };
 
+  const handleExportPDF = async () => {
+    setIsGenerating(true);
+    try {
+      const element = document.querySelector('[data-document-preview]');
+      if (!element) return;
+
+      await exportToPdf(element as HTMLElement, {
+        filename: `daily-report-${selectedProject.projectNumber}-${selectedProject.dailyLogDate}.pdf`,
+        margin: [6, 12, 6, 12],
+        imageQuality: 1,
+        scale: 3,
+      });
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
   return (
     <aside className='h-[calc(100vh-4rem)] w-[400px] border-l border-gray-200 dark:border-gray-800'>
       <div className='flex h-full flex-col bg-white dark:bg-black/30'>
@@ -331,10 +347,12 @@ export function Sidebar({ isGenerating = false, onExport }: SidebarProps) {
                 variant='default'
                 size='full'
                 disabled={isGenerating}
-                onClick={onExport}
+                onClick={handleExportPDF}
                 className='group'>
                 <FileDown className='size-4' />
-                <span>{isGenerating ? 'Generating PDF...' : 'Export PDF'}</span>
+                <span className='ml-2'>
+                  {isGenerating ? 'Generating PDF...' : 'Export PDF'}
+                </span>
               </Button>
               <Button
                 variant='outline'

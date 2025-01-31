@@ -27,6 +27,7 @@ export function PhotosSection({ images }: Props) {
                   fill
                   className='object-cover'
                   unoptimized
+                  crossOrigin='anonymous'
                 />
               </div>
               {image.note && (

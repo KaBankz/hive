@@ -256,7 +256,9 @@ export function DocumentPreview() {
           }}
         />
       )}
-      <div className='relative mx-auto w-[8.27in] rounded-lg bg-white px-8 py-4 shadow-lg ring-1 ring-black/[0.1]'>
+      <div
+        data-document-preview
+        className='relative mx-auto w-[8.27in] rounded-lg bg-white px-8 py-4 shadow-lg ring-1 ring-black/[0.1]'>
         {/* Company Header */}
         <div className='mb-8 border-b border-gray-200 pb-4'>
           <div className='flex items-center justify-between'>
@@ -270,6 +272,7 @@ export function DocumentPreview() {
               height={24}
               className='object-contain'
               unoptimized
+              crossOrigin='anonymous'
               onError={(e) => {
                 const img = e.target as HTMLImageElement;
                 img.src = '/next.svg';
