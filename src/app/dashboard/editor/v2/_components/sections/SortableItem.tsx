@@ -50,7 +50,10 @@ export function SortableItem({
       className={cn('touch-none', isDragging && 'relative z-10 opacity-50')}
       {...attributes}>
       <div
-        className={cn('space-y-2', isDragging && 'bg-white dark:bg-black/30')}>
+        className={cn(
+          children && 'space-y-2',
+          isDragging && 'bg-white dark:bg-black/30'
+        )}>
         <div
           {...listeners}
           className={cn(
