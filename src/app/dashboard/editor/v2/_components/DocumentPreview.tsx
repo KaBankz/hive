@@ -26,7 +26,7 @@ const MotionWrapper = ({
   <motion.div
     layout
     layoutId={layoutId}
-    initial={{ opacity: 0, x: -20 }}
+    initial={{ opacity: 1, x: 0 }}
     animate={{ opacity: 1, x: 0 }}
     exit={{ opacity: 0, x: 20 }}
     transition={{
@@ -280,7 +280,7 @@ export function DocumentPreview() {
         </div>
 
         <div className='space-y-6'>
-          <AnimatePresence mode='popLayout'>
+          <AnimatePresence mode='popLayout' presenceAffectsLayout>
             {sectionOrder.map((sectionId) => sectionComponents[sectionId])}
           </AnimatePresence>
         </div>

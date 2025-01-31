@@ -70,7 +70,7 @@ export function SortableItem({
               'flex size-5 items-center justify-center rounded-md border transition',
               isVisible
                 ? hasPartialVisibility
-                  ? 'border-blue-300 bg-blue-300 text-white dark:border-blue-300/80 dark:bg-blue-300/80'
+                  ? 'border-yellow-400 bg-yellow-50 text-yellow-600 hover:bg-yellow-100 dark:border-yellow-700 dark:bg-yellow-950 dark:text-yellow-400 dark:hover:bg-yellow-900'
                   : 'border-blue-500 bg-blue-500 text-white dark:border-blue-400 dark:bg-blue-400'
                 : 'border-red-300 bg-red-50 text-red-500 hover:bg-red-100 dark:border-red-700 dark:bg-red-950 dark:text-red-400 dark:hover:bg-red-900'
             )}>
