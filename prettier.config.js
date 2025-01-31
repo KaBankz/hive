@@ -19,7 +19,7 @@ const config = {
     '@ianvs/prettier-plugin-sort-imports',
     'prettier-plugin-tailwindcss',
   ],
-  tailwindFunctions: ['tv'],
+  tailwindFunctions: ['cva'],
   importOrderTypeScriptVersion: '5.0.0',
   importOrder: [
     '<BUILTIN_MODULES>',
