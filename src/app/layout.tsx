@@ -40,6 +40,12 @@ export default async function RootLayout({
     <html lang='en' className='dark'>
       <head>
         <link rel='icon' href='/icon.png' />
+        {/* Cloudflare Web Analytics */}
+        <script
+          defer
+          src='https://static.cloudflareinsights.com/beacon.min.js'
+          data-cf-beacon='{"token": "b2142fb66d8445ba8d1e61ec05e953ab"}'
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} bg-black antialiased`}>
