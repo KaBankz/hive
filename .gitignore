@@ -10,6 +10,9 @@
 !.yarn/releases
 !.yarn/versions
 
+# npm lockfile - use bun ;)
+package-lock.json
+
 # testing
 /coverage
 
