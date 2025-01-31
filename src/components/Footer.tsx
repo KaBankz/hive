@@ -5,24 +5,29 @@ import { Github, Linkedin, Mail, Twitter } from 'lucide-react';
 
 export function Footer() {
   return (
-    <footer className='relative border-t border-gray-200 bg-white/70 backdrop-blur-xl backdrop-saturate-150 dark:border-white/[0.1] dark:bg-black/30'>
+    <footer className='relative border-t border-zinc-800/50 bg-zinc-900/30 backdrop-blur-xl backdrop-saturate-150'>
       <div className='mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8'>
         <div className='grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4'>
           <div className='flex flex-col gap-6'>
             <div className='flex items-center gap-2'>
-              <Image src='/hive.png' alt='Hive Logo' width={50} height={50} />
-              <span className='text-lg font-bold text-gray-900 dark:text-white'>
+              <Image
+                src='/hive.png'
+                alt='Hive Logo'
+                width={50}
+                height={50}
+              />
+              <span className='text-lg font-bold text-white'>
                 Hive
               </span>
             </div>
-            <p className='text-sm text-gray-600 dark:text-zinc-400'>
+            <p className='text-sm text-zinc-400'>
               Empowering construction managers with next-generation project
               management tools.
             </p>
             <div className='flex gap-4'>
               <a
                 href='https://twitter.com'
-                className='text-gray-400 transition-colors hover:text-gray-900 dark:text-zinc-400 dark:hover:text-white'>
+                className='text-zinc-400 transition-colors hover:text-white'>
                 <Twitter className='size-5' />
               </a>
               <a
@@ -44,7 +49,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className='mb-4 text-sm font-semibold uppercase tracking-wider text-gray-900 dark:text-zinc-400'>
+            <h3 className='mb-4 text-sm font-semibold uppercase tracking-wider text-zinc-400'>
               Product
             </h3>
             <ul className='space-y-3'>
@@ -59,7 +64,7 @@ export function Footer() {
                 <li key={item}>
                   <Link
                     href='#'
-                    className='text-sm text-gray-600 transition-colors hover:text-gray-900 dark:text-zinc-400 dark:hover:text-white'>
+                    className='text-sm text-zinc-400 transition-colors hover:text-white'>
                     {item}
                   </Link>
                 </li>
@@ -77,7 +82,7 @@ export function Footer() {
                   <li key={item}>
                     <Link
                       href='#'
-                      className='text-sm text-gray-600 transition-colors hover:text-gray-900 dark:text-zinc-400 dark:hover:text-white'>
+                      className='text-sm text-zinc-400 transition-colors hover:text-white'>
                       {item}
                     </Link>
                   </li>
@@ -102,7 +107,7 @@ export function Footer() {
                 <li key={item}>
                   <Link
                     href='#'
-                    className='text-sm text-gray-600 transition-colors hover:text-gray-900 dark:text-zinc-400 dark:hover:text-white'>
+                    className='text-sm text-zinc-400 transition-colors hover:text-white'>
                     {item}
                   </Link>
                 </li>

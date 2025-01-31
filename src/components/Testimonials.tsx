@@ -115,7 +115,7 @@ const TestimonialCard = ({
     <div
       className={cn(
         'relative mx-4 w-[400px] rounded-2xl border p-8',
-        'border-gray-200 bg-white dark:border-white/10 dark:bg-white/5'
+        'border-zinc-800/50 bg-zinc-900/50'
       )}>
       <div className='flex items-center gap-4'>
         <Image
@@ -126,15 +126,15 @@ const TestimonialCard = ({
           className='rounded-full'
         />
         <div>
-          <div className='font-medium text-gray-900 dark:text-white'>
+          <div className='font-medium text-white'>
             {testimonial.author}
           </div>
-          <div className='text-sm text-gray-500 dark:text-zinc-400'>
+          <div className='text-sm text-zinc-400'>
             {testimonial.role} at {testimonial.company}
           </div>
         </div>
       </div>
-      <blockquote className='mt-6 text-gray-700 dark:text-zinc-300'>
+      <blockquote className='mt-6 text-zinc-300'>
         &ldquo;{testimonial.quote}&rdquo;
       </blockquote>
     </div>
@@ -143,14 +143,14 @@ const TestimonialCard = ({
 
 export function Testimonials() {
   return (
-    <section className='bg-gradient-to-b from-gray-50 to-white py-24 dark:from-zinc-900 dark:to-zinc-950'>
+    <section className='bg-gradient-to-b from-zinc-950 to-zinc-900 py-24'>
       <div className='mx-auto max-w-7xl px-4 sm:px-6'>
         <div className='text-center'>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className='text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl'>
+            className='text-3xl font-bold tracking-tight text-white sm:text-4xl'>
             Trusted by Construction Leaders
           </motion.h2>
           <motion.p
@@ -158,13 +158,13 @@ export function Testimonials() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className='mt-4 text-lg text-gray-600 dark:text-zinc-400'>
+            className='mt-4 text-lg text-zinc-400'>
             See how construction professionals are transforming their reporting
             workflow
           </motion.p>
         </div>
 
-        <div className='relative mt-16'>
+        <div className='relative mt-16 rounded-2xl'>
           <Marquee className='[--duration:60s]'>
             {testimonials.map((testimonial) => (
               <TestimonialCard
@@ -173,8 +173,8 @@ export function Testimonials() {
               />
             ))}
           </Marquee>
-          <div className='pointer-events-none absolute inset-y-0 left-0 w-[15%] bg-gradient-to-r from-gray-50/50 via-gray-50/30 to-transparent dark:from-zinc-900/50 dark:via-zinc-900/30' />
-          <div className='pointer-events-none absolute inset-y-0 right-0 w-[15%] bg-gradient-to-l from-gray-50/50 via-gray-50/30 to-transparent dark:from-zinc-900/50 dark:via-zinc-900/30' />
+          <div className='pointer-events-none absolute inset-y-0 left-0 w-[15%] bg-gradient-to-r from-zinc-950/90 via-zinc-950/10 to-transparent' />
+          <div className='pointer-events-none absolute inset-y-0 right-0 w-[15%] bg-gradient-to-l from-zinc-950/90 via-zinc-950/10 to-transparent' />
         </div>
       </div>
     </section>

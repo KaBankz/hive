@@ -21,7 +21,7 @@ export async function Header() {
   }
 
   return (
-    <header className='fixed top-0 z-50 w-full border-b border-gray-200 bg-white/70 backdrop-blur-xl backdrop-saturate-150 dark:border-white/[0.1] dark:bg-black/30'>
+    <header className='fixed top-0 z-50 w-full border-b border-white/[0.1] bg-zinc-950/30 backdrop-blur-xl backdrop-saturate-150'>
       <div className='mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6'>
         <Link
           href='/'
@@ -33,24 +33,24 @@ export async function Header() {
             height={100}
             className='size-6'
           />
-          <span className='text-lg font-bold text-gray-900 dark:text-white'>
+          <span className='text-lg font-bold text-white'>
             Hive
           </span>
         </Link>
         <nav className='hidden space-x-8 sm:flex'>
           <Link
             href='#'
-            className='text-sm text-gray-600 transition-colors duration-200 hover:text-gray-900 dark:text-zinc-400 dark:hover:text-white'>
+            className='text-sm text-zinc-400 transition-colors duration-200 hover:text-white'>
             Features
           </Link>
           <Link
             href='#'
-            className='text-sm text-gray-600 transition-colors duration-200 hover:text-gray-900 dark:text-zinc-400 dark:hover:text-white'>
+            className='text-sm text-zinc-400 transition-colors duration-200 hover:text-white'>
             Pricing
           </Link>
           <Link
             href='#'
-            className='text-sm text-gray-600 transition-colors duration-200 hover:text-gray-900 dark:text-zinc-400 dark:hover:text-white'>
+            className='text-sm text-zinc-400 transition-colors duration-200 hover:text-white'>
             About
           </Link>
         </nav>
@@ -64,9 +64,9 @@ export async function Header() {
                 <ChevronRight className='size-4 transition-transform duration-200 group-hover:translate-x-0.5' />
               </Link>
               <form action={handleLogout}>
-                <button className='group flex size-9 items-center justify-center rounded-full border border-gray-200 bg-white transition-all duration-200 hover:border-red-500/20 hover:bg-red-50 dark:border-white/10 dark:bg-white/5 dark:hover:bg-red-500/10'>
-                  <User className='size-5 text-gray-400 transition-all duration-200 group-hover:hidden dark:text-zinc-400' />
-                  <LogOut className='hidden size-5 text-red-600 transition-all duration-200 group-hover:block dark:text-red-400' />
+                <button className='group flex size-9 items-center justify-center rounded-full border border-white/10 bg-white/5 transition-all duration-200 hover:border-red-500/20 hover:bg-red-500/10'>
+                  <User className='size-5 text-zinc-400 transition-all duration-200 group-hover:hidden' />
+                  <LogOut className='hidden size-5 text-red-400 transition-all duration-200 group-hover:block' />
                 </button>
               </form>
             </>
@@ -74,7 +74,7 @@ export async function Header() {
             <>
               <Link
                 href='/login'
-                className='text-sm text-gray-600 transition-colors duration-200 hover:text-gray-900 dark:text-zinc-400 dark:hover:text-white'>
+                className='text-sm text-zinc-400 transition-colors duration-200 hover:text-white'>
                 Log in
               </Link>
               <Link
