@@ -26,6 +26,7 @@ import {
   Printer,
   Scissors,
 } from 'lucide-react';
+import { usePostHog } from 'posthog-js/react';
 
 import { Button } from '@/components/Button';
 import { useEditor } from '@/context/EditorContext';
@@ -369,6 +370,8 @@ export function Sidebar() {
     }
   };
 
+  const posthog = usePostHog();
+
   return (
     <aside className='h-[calc(100vh-4rem)] w-[400px] border-l border-gray-200 dark:border-gray-800'>
       <div className='flex h-full flex-col bg-white dark:bg-black/30'>
@@ -492,7 +495,12 @@ export function Sidebar() {
             id={dndId}
             sensors={sensors}
             collisionDetection={closestCenter}
-            onDragOver={handleDragOver}>
+            onDragOver={(event) => {
+              handleDragOver(event);
+              posthog.capture('dragged-section', {
+                projectId: selectedProject.projectNumber,
+              });
+            }}>
             <SortableContext
               items={availableSections.map((s) => s.id)}
               strategy={verticalListSortingStrategy}>

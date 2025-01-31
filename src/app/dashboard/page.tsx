@@ -12,6 +12,7 @@ import {
   Search,
   Star,
 } from 'lucide-react';
+import { usePostHog } from 'posthog-js/react';
 
 import { Button } from '@/components/Button';
 import { cn } from '@/lib/utils';
@@ -86,6 +87,8 @@ export default function DashboardPage() {
     (project) => !project.starred
   );
 
+  const posthog = usePostHog();
+
   return (
     <div className='min-h-screen bg-zinc-950 pt-16'>
       <div className='mx-auto max-w-7xl px-4 py-8'>
@@ -122,6 +125,11 @@ export default function DashboardPage() {
                 <Link
                   key={project.id}
                   href={`/dashboard/editor?project=${project.id}`}
+                  onClick={() =>
+                    posthog.capture('opened-starred-project', {
+                      projectId: project.id,
+                    })
+                  }
                   className='group relative rounded-lg border border-gray-200 bg-white p-4 transition-shadow hover:shadow-lg dark:border-zinc-800 dark:bg-zinc-900'>
                   <div className='mb-2 flex items-start justify-between'>
                     <div className='flex items-center gap-3'>
@@ -139,6 +147,15 @@ export default function DashboardPage() {
                       onClick={(e) => {
                         e.preventDefault();
                         toggleStar(project.id);
+                        if (project.starred) {
+                          posthog.capture('starred-project', {
+                            projectId: project.id,
+                          });
+                        } else {
+                          posthog.capture('unstarred-project', {
+                            projectId: project.id,
+                          });
+                        }
                       }}
                       className='rounded-full p-1 hover:bg-gray-100 dark:hover:bg-zinc-800'>
                       <Star
@@ -187,6 +204,11 @@ export default function DashboardPage() {
               <Link
                 key={project.id}
                 href={`/dashboard/editor?project=${project.id}`}
+                onClick={() =>
+                  posthog.capture('opened-unstarred-project', {
+                    projectId: project.id,
+                  })
+                }
                 className='group relative rounded-lg border border-gray-200 bg-white p-4 transition-shadow hover:shadow-lg dark:border-zinc-800 dark:bg-zinc-900'>
                 <div className='mb-2 flex items-start justify-between'>
                   <div className='flex items-center gap-3'>

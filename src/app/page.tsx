@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { motion } from 'motion/react';
+import { usePostHog } from 'posthog-js/react';
 
 import { Button } from '@/components/Button';
 import { Features } from '@/components/Features';
@@ -13,6 +14,8 @@ import { BorderBeam } from '@/components/ui/border-beam';
 import { Meteors } from '@/components/ui/meteors';
 
 export default function Home() {
+  const posthog = usePostHog();
+
   return (
     <div className='relative min-h-screen overflow-hidden bg-zinc-950'>
       <div className='absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-blue-800/20 via-transparent to-transparent'></div>
@@ -42,7 +45,10 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className='mt-10 flex items-center justify-center gap-4'>
             <Link href='/signup'>
-              <Button cta size='lg'>
+              <Button
+                cta
+                size='lg'
+                onClick={() => posthog.capture('landing-cta-clicked')}>
                 Get Started
               </Button>
             </Link>

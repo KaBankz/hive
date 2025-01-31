@@ -29,6 +29,7 @@ function PostHogAuthWrapper({ children }: { children: React.ReactNode }) {
       if (event === 'SIGNED_IN' && session?.user) {
         posthog.identify(session.user.id, { email: session.user.email });
       } else if (event === 'SIGNED_OUT') {
+        posthog.capture('loggedOut');
         posthog.reset();
       }
     });
