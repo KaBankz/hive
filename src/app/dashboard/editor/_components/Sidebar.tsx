@@ -1,3 +1,7 @@
+'use client';
+
+import { useId, useMemo, useState } from 'react';
+
 import {
   closestCenter,
   DndContext,
@@ -12,361 +16,561 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import { Download, Eye, EyeOff, Layers, Scissors } from 'lucide-react';
+import {
+  ChevronDown,
+  ChevronRight,
+  Eye,
+  EyeOff,
+  FileDown,
+  Layers,
+  Printer,
+  Scissors,
+} from 'lucide-react';
 
-import { SortableSection } from './SortableSection';
+import { Button } from '@/components/Button';
+import { useEditor } from '@/context/EditorContext';
+import { usePdf } from '@/context/PdfContext';
 
-type SectionVisibility = {
-  reportInfo: boolean;
-  weather: boolean;
-  labor: boolean;
-  equipment: boolean;
-  photos: boolean;
-  questions: boolean;
-  quantities: boolean;
-  deliveries: boolean;
-  inspections: boolean;
-  visitors: boolean;
-  notes: boolean;
-};
-
-type SubItemVisibility = {
-  weather: { [key: string]: boolean }; // key is forecastTimeTzFormatted
-  labor: { [key: string]: boolean }; // key is crewName
-  equipment: { [key: string]: boolean }; // key is equipName
-  photos: { [key: string]: boolean }; // key is photo url
-  questions: { [key: string]: boolean }; // key is fullName
-  quantities: { [key: string]: boolean }; // key is itemNumber
-  deliveries: { [key: string]: boolean }; // key is itemNumber
-  inspections: { [key: string]: boolean }; // key is itemNumber
-  visitors: { [key: string]: boolean }; // key is itemNumber
-  notes: { [key: string]: boolean }; // key is itemNumber
-};
+import { SidebarSubItem } from './sections/SidebarSection';
+import { SortableItem } from './sections/SortableItem';
 
 type SectionConfig = {
-  id: keyof SectionVisibility;
+  id: string;
   label: string;
-  icon: React.ReactNode;
-  subItems?: {
+  getSubItems?: (data: ReturnType<typeof useEditor>) => Array<{
     id: string;
     label: string;
-  }[];
+  }>;
 };
 
-// First, let's define proper types for the weather, labor, equipment etc. items
-type WeatherItem = {
-  forecastTimeTzFormatted: string;
-  tempF: number;
+const SECTION_CONFIG: Record<string, SectionConfig> = {
+  reportInfo: {
+    id: 'reportInfo',
+    label: 'Report Information',
+  },
+  weather: {
+    id: 'weather',
+    label: 'Weather',
+    getSubItems: ({ selectedProject }) =>
+      selectedProject.weather?.summary.map((w) => ({
+        id: w.forecastTimeTzFormatted,
+        label: `${w.forecastTimeTzFormatted} - ${w.tempF}°`,
+      })) || [],
+  },
+  labor: {
+    id: 'labor',
+    label: 'Labor',
+    getSubItems: ({ selectedProject }) =>
+      selectedProject.labor?.details.map((l) => ({
+        id: l.nameRow.nameCell.crewName,
+        label: l.nameRow.nameCell.crewName,
+      })) || [],
+  },
+  equipment: {
+    id: 'equipment',
+    label: 'Equipment',
+    getSubItems: ({ selectedProject }) =>
+      selectedProject.equipment?.details.map((e) => ({
+        id: e.nameRow.nameCell.equipName,
+        label: e.nameRow.nameCell.equipName,
+      })) || [],
+  },
+  photos: {
+    id: 'photos',
+    label: 'Photos',
+    getSubItems: ({ selectedProject }) =>
+      selectedProject.images?.details.map((p, i) => ({
+        id: p.url || `photo-${i}`,
+        label: p.note || `Photo ${i + 1}`,
+      })) || [],
+  },
+  questions: {
+    id: 'questions',
+    label: 'Questions',
+    getSubItems: ({ selectedProject }) =>
+      selectedProject.questions?.details.map((q) => ({
+        id: q.fullName,
+        label: q.fullName,
+      })) || [],
+  },
+  quantities: {
+    id: 'quantities',
+    label: 'Quantities',
+    getSubItems: ({ selectedProject }) =>
+      selectedProject.quantities?.details.map((q) => ({
+        id: q.itemNumber,
+        label: `Item ${q.itemNumber}`,
+      })) || [],
+  },
+  deliveries: {
+    id: 'deliveries',
+    label: 'Deliveries',
+    getSubItems: ({ selectedProject }) =>
+      selectedProject.deliveries?.details.map((d) => ({
+        id: d.itemNumber,
+        label: `${d.deliveryFrom} - ${d.deliveryContents}`,
+      })) || [],
+  },
+  inspections: {
+    id: 'inspections',
+    label: 'Inspections',
+    getSubItems: ({ selectedProject }) =>
+      selectedProject.inspections?.details.map((i) => ({
+        id: i.itemNumber,
+        label: `${i.inspectionType} - ${i.inspectorName}`,
+      })) || [],
+  },
+  visitors: {
+    id: 'visitors',
+    label: 'Visitors',
+    getSubItems: ({ selectedProject }) =>
+      selectedProject.visitors?.details.map((v) => ({
+        id: v.itemNumber,
+        label: `${v.visitorName} - ${v.startTimeLocalString}`,
+      })) || [],
+  },
+  notes: {
+    id: 'notes',
+    label: 'Notes',
+    getSubItems: ({ selectedProject }) =>
+      selectedProject.notes?.details.map((n) => ({
+        id: n.itemNumber,
+        label: `${n.noteLocation} - ${n.notes.substring(0, 30)}${
+          n.notes.length > 30 ? '...' : ''
+        }`,
+      })) || [],
+  },
 };
 
-type LaborItem = {
-  nameRow: {
-    nameCell: {
-      crewName: string;
-    };
+export function Sidebar() {
+  const editorContext = useEditor();
+  const {
+    showPageBreaks,
+    setShowPageBreaks,
+    sectionVisibility,
+    subItemVisibility,
+    toggleSection,
+    toggleSubItem,
+    reorderSections,
+    sectionOrder,
+    reorderSubItems,
+    subItemOrder,
+    selectedProject,
+  } = editorContext;
+  const { pdfBlob } = usePdf();
+  const [isExporting, setIsExporting] = useState(false);
+  const [isPrinting, setIsPrinting] = useState(false);
+
+  const dndId = useId();
+  const subDndId = useId();
+
+  // Track expanded state for each section
+  const [expandedSections, setExpandedSections] = useState<
+    Record<string, boolean>
+  >(() => {
+    // Initialize all sections as collapsed
+    return Object.values(SECTION_CONFIG).reduce(
+      (acc, section) => ({
+        ...acc,
+        [section.id]: false,
+      }),
+      {}
+    );
+  });
+
+  // Get available sections based on data and order them according to sectionOrder
+  const availableSections = useMemo(() => {
+    const sections = Object.values(SECTION_CONFIG).filter((section) => {
+      if (section.id === 'reportInfo') return true;
+      const subItems = section.getSubItems?.(editorContext);
+      return subItems && subItems.length > 0;
+    });
+
+    // Sort sections based on sectionOrder
+    return [...sections].sort(
+      (a, b) => sectionOrder.indexOf(a.id) - sectionOrder.indexOf(b.id)
+    );
+  }, [editorContext, sectionOrder]);
+
+  const handleSubItemToggle = (sectionId: string, itemId: string) => {
+    // Get all sub-items for this section
+    const subItems =
+      SECTION_CONFIG[sectionId]?.getSubItems?.(editorContext) || [];
+
+    // Toggle the sub-item
+    toggleSubItem(sectionId, itemId);
+
+    // After toggling, check if any items are visible
+    const anyVisible = subItems.some((item) => {
+      if (item.id === itemId) {
+        // Use the new state for the toggled item
+        return !subItemVisibility[sectionId]?.[itemId];
+      }
+      // Use current state for other items
+      return subItemVisibility[sectionId]?.[item.id];
+    });
+
+    // Update parent section visibility if needed
+    if (anyVisible && !sectionVisibility[sectionId]) {
+      toggleSection(sectionId);
+    } else if (!anyVisible && sectionVisibility[sectionId]) {
+      toggleSection(sectionId);
+    }
   };
-};
 
-type EquipmentItem = {
-  nameRow: {
-    nameCell: {
-      equipName: string;
-    };
+  const handleSectionToggle = (sectionId: string) => {
+    const subItems = SECTION_CONFIG[sectionId]?.getSubItems?.(editorContext);
+    if (!subItems) {
+      toggleSection(sectionId);
+      return;
+    }
+
+    const willBeVisible = !sectionVisibility[sectionId];
+
+    // If turning section on, turn on all sub-items that are off
+    // If turning section off, turn off all sub-items that are on
+    subItems.forEach((item) => {
+      const isItemVisible = subItemVisibility[sectionId]?.[item.id] ?? false;
+      if (willBeVisible !== isItemVisible) {
+        toggleSubItem(sectionId, item.id);
+      }
+    });
+
+    // Toggle the section last
+    toggleSection(sectionId);
   };
-};
 
-type PhotoItem = {
-  url: string;
-  note: string;
-};
+  const toggleExpand = (sectionId: string) => {
+    setExpandedSections((prev: Record<string, boolean>) => ({
+      ...prev,
+      [sectionId]: !prev[sectionId],
+    }));
+  };
 
-type QuestionItem = {
-  fullName: string;
-};
+  const toggleAllSections = (expand: boolean) => {
+    setExpandedSections((prev: Record<string, boolean>) => {
+      const newState = { ...prev };
+      Object.keys(prev).forEach((key) => {
+        newState[key] = expand;
+      });
+      return newState;
+    });
+  };
 
-type QuantityItem = {
-  itemNumber: string;
-  _costCodeAndDescription: string;
-};
-
-type DeliveryItem = {
-  itemNumber: string;
-  deliveryFrom: string;
-  deliveryContents: string;
-};
-
-type InspectionItem = {
-  itemNumber: string;
-  inspectionType: string;
-  inspectorName: string;
-};
-
-type VisitorItem = {
-  itemNumber: string;
-  visitorName: string;
-  startTimeLocalString: string;
-};
-
-type NoteItem = {
-  itemNumber: string;
-  noteLocation: string;
-  notes: string;
-};
-
-// Update the selectedProject type
-type Project = {
-  weather?: { summary: WeatherItem[] };
-  labor?: { details: LaborItem[] };
-  equipment?: { details: EquipmentItem[] };
-  images?: { details: PhotoItem[] };
-  questions?: { details: QuestionItem[] };
-  quantities?: { details: QuantityItem[] };
-  deliveries?: { details: DeliveryItem[] };
-  inspections?: { details: InspectionItem[] };
-  visitors?: { details: VisitorItem[] };
-  notes?: { details: NoteItem[] };
-};
-
-type SidebarProps = {
-  isGenerating: boolean;
-  onExport: () => void;
-  sectionVisibility: SectionVisibility;
-  setSectionVisibility: (
-    visibility:
-      | SectionVisibility
-      | ((prev: SectionVisibility) => SectionVisibility)
-  ) => void;
-  subItemVisibility: SubItemVisibility;
-  onToggleSubItem: (section: keyof SubItemVisibility, itemKey: string) => void;
-  sectionOrder: Array<keyof SectionVisibility>;
-  orderedSections: SectionConfig[];
-  onDragEnd: (event: DragEndEvent) => void;
-  showPageBreaks?: boolean;
-  onTogglePageBreaks?: (show: boolean) => void;
-  selectedProject: Project;
-  subItemOrder: { [K in keyof SubItemVisibility]: string[] };
-};
-
-export function Sidebar({
-  isGenerating,
-  onExport,
-  sectionVisibility,
-  setSectionVisibility,
-  subItemVisibility,
-  onToggleSubItem,
-  sectionOrder,
-  orderedSections,
-  onDragEnd,
-  showPageBreaks = true,
-  onTogglePageBreaks,
-  selectedProject,
-  subItemOrder,
-}: SidebarProps) {
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
     })
   );
 
-  const toggleSection = (section: keyof SectionVisibility) => {
-    setSectionVisibility((prev) => ({
-      ...prev,
-      [section]: !prev[section],
-    }));
+  const handleDragOver = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (active.id !== over?.id) {
+      const oldIndex = sectionOrder.indexOf(active.id as string);
+      const newIndex = sectionOrder.indexOf(over?.id as string);
+
+      if (oldIndex !== -1 && newIndex !== -1) {
+        reorderSections(oldIndex, newIndex);
+      }
+    }
   };
 
-  // Get sub-items for each section
-  const getSubItems = (
-    section: SectionConfig
-  ): { id: string; label: string }[] => {
-    const items = (() => {
-      switch (section.id) {
-        case 'weather':
-          return (
-            selectedProject.weather?.summary.map((w: WeatherItem) => ({
-              id: w.forecastTimeTzFormatted,
-              label: `${w.forecastTimeTzFormatted} - ${w.tempF}°F`,
-            })) || []
-          );
-        case 'labor':
-          return (
-            selectedProject.labor?.details.map((l: any) => ({
-              id: l.nameRow.nameCell.crewName,
-              label: l.nameRow.nameCell.crewName,
-            })) || []
-          );
-        case 'equipment':
-          return (
-            selectedProject.equipment?.details.map((e: any) => ({
-              id: e.nameRow.nameCell.equipName,
-              label: e.nameRow.nameCell.equipName,
-            })) || []
-          );
-        case 'photos':
-          return (
-            selectedProject.images?.details.map((p: any, idx: number) => ({
-              id: p.url || `photo-${idx}`,
-              label: p.note || `Photo ${idx + 1}`,
-            })) || []
-          );
-        case 'questions':
-          return (
-            selectedProject.questions?.details.map((q: any) => ({
-              id: q.fullName,
-              label: q.fullName,
-            })) || []
-          );
-        case 'quantities':
-          return (
-            selectedProject.quantities?.details.map((q: any) => ({
-              id: q.itemNumber,
-              label: `Item ${q.itemNumber} - ${q._costCodeAndDescription || 'No Description'}`,
-            })) || []
-          );
-        case 'deliveries':
-          return (
-            selectedProject.deliveries?.details.map((d: any) => ({
-              id: d.itemNumber,
-              label: `${d.deliveryFrom} - ${d.deliveryContents}`,
-            })) || []
-          );
-        case 'inspections':
-          return (
-            selectedProject.inspections?.details.map((i: any) => ({
-              id: i.itemNumber,
-              label: `${i.inspectionType} - ${i.inspectorName}`,
-            })) || []
-          );
-        case 'visitors':
-          return (
-            selectedProject.visitors?.details.map((v: any) => ({
-              id: v.itemNumber,
-              label: `${v.visitorName} - ${v.startTimeLocalString}`,
-            })) || []
-          );
-        case 'notes':
-          return (
-            selectedProject.notes?.details.map((n: any) => ({
-              id: n.itemNumber,
-              label: `${n.noteLocation} - ${n.notes.substring(0, 30)}${n.notes.length > 30 ? '...' : ''}`,
-            })) || []
-          );
-        default:
-          return [];
+  const isEverythingVisible = () => {
+    return availableSections.every((section) => {
+      // Check if section is visible
+      if (!sectionVisibility[section.id]) return false;
+
+      // Check if all sub-items are visible
+      const subItems = section.getSubItems?.(editorContext);
+      if (subItems) {
+        return subItems.every(
+          (item) => subItemVisibility[section.id]?.[item.id]
+        );
       }
-    })();
 
-    // Update the sorting to use proper types
-    if (subItemOrder[section.id as keyof SubItemVisibility]) {
-      const order = subItemOrder[section.id as keyof SubItemVisibility];
-      return items.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
+      return true;
+    });
+  };
+
+  const handleShowHideAll = () => {
+    const willShow = !isEverythingVisible();
+
+    // First, handle all sub-items
+    availableSections.forEach((section) => {
+      const subItems = section.getSubItems?.(editorContext);
+      if (subItems) {
+        subItems.forEach((item) => {
+          const isItemVisible =
+            subItemVisibility[section.id]?.[item.id] ?? false;
+          if (willShow !== isItemVisible) {
+            toggleSubItem(section.id, item.id);
+          }
+        });
+      }
+    });
+
+    // Then toggle the sections
+    toggleSection(willShow ? 'showAll' : 'hideAll');
+  };
+
+  const handleExportPDF = async () => {
+    if (!pdfBlob) return;
+    setIsExporting(true);
+    try {
+      // Save the file
+      const pdfUrl = URL.createObjectURL(pdfBlob);
+      const link = document.createElement('a');
+      link.href = pdfUrl;
+      link.download = `daily-report-${selectedProject.projectNumber}-${selectedProject.dailyLogDate}.pdf`;
+      link.click();
+      URL.revokeObjectURL(pdfUrl);
+    } finally {
+      setIsExporting(false);
     }
+  };
 
-    return items;
+  const handlePrint = async () => {
+    if (!pdfBlob) return;
+    setIsPrinting(true);
+    try {
+      // Create a URL for the PDF blob
+      const pdfUrl = URL.createObjectURL(pdfBlob);
+
+      // Open PDF in new window and trigger print
+      const printWindow = window.open(pdfUrl);
+
+      if (printWindow) {
+        printWindow.onload = () => {
+          printWindow.print();
+          setIsPrinting(false);
+        };
+      } else {
+        // If popup was blocked, try downloading instead
+        const link = document.createElement('a');
+        link.href = pdfUrl;
+        link.target = '_blank';
+        link.click();
+        setIsPrinting(false);
+      }
+
+      // Clean up the URL after a delay
+      setTimeout(() => {
+        URL.revokeObjectURL(pdfUrl);
+      }, 1000);
+    } catch (error) {
+      console.error('Error printing PDF:', error);
+      setIsPrinting(false);
+    }
   };
 
   return (
-    <div className='w-80 flex-none border-l border-gray-200 bg-white/70 backdrop-blur-xl backdrop-saturate-150 dark:border-white/[0.1] dark:bg-black/30'>
-      <div className='flex h-[calc(100vh-4rem)] flex-col'>
-        {/* Fixed header */}
-        <div className='flex-none space-y-6 border-b border-gray-200 p-6 dark:border-white/[0.1]'>
+    <aside className='h-[calc(100vh-4rem)] w-[400px] border-l border-gray-200 dark:border-gray-800'>
+      <div className='flex h-full flex-col bg-white dark:bg-black/30'>
+        {/* Fixed Header */}
+        <div className='border-b border-gray-200 px-6 py-4 dark:border-gray-800'>
           <div className='space-y-4'>
-            <button
-              onClick={onExport}
-              disabled={isGenerating}
-              className='group inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-b from-blue-500 to-blue-600 px-4 py-2 text-sm font-medium text-white transition-all duration-200 hover:from-blue-400 hover:to-blue-500 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] disabled:opacity-50'>
-              <Download className='size-4' />
-              <span>{isGenerating ? 'Generating PDF...' : 'Export PDF'}</span>
-            </button>
-          </div>
-          <div className='h-px bg-gray-200 dark:bg-white/[0.1]' />
-          <div className='flex items-center justify-between'>
-            <h2 className='flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-white'>
-              <Scissors className='size-4 text-blue-500' />
-              Page Breaks
-            </h2>
-            <button
-              onClick={() => onTogglePageBreaks?.(!showPageBreaks)}
-              className='inline-flex items-center gap-1.5 rounded-lg border border-gray-200 px-2.5 py-1.5 text-xs font-medium text-gray-700 transition-colors duration-200 hover:border-gray-300 hover:bg-gray-50 dark:border-white/[0.1] dark:text-zinc-400 dark:hover:border-white/[0.2] dark:hover:bg-white/[0.02]'>
-              {showPageBreaks ? (
-                <>
-                  <EyeOff className='size-3.5' />
-                  Hide
-                </>
-              ) : (
-                <>
-                  <Eye className='size-3.5' />
-                  Show
-                </>
-              )}
-            </button>
-          </div>
-          <div className='h-px bg-gray-200 dark:bg-white/[0.1]' />
-          <div className='flex items-center justify-between'>
-            <h2 className='flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-white'>
-              <Layers className='size-4 text-blue-500' />
-              Document Sections
-            </h2>
-            <button
-              onClick={() =>
-                setSectionVisibility((prev) => {
-                  const allVisible = Object.values(prev).every(Boolean);
-                  return {
-                    ...prev,
-                    reportInfo: !allVisible,
-                    weather: !allVisible,
-                    labor: !allVisible,
-                    equipment: !allVisible,
-                    photos: !allVisible,
-                    questions: !allVisible,
-                  };
-                })
-              }
-              className='inline-flex items-center gap-1.5 rounded-lg border border-gray-200 px-2.5 py-1.5 text-xs font-medium text-gray-700 transition-colors duration-200 hover:border-gray-300 hover:bg-gray-50 dark:border-white/[0.1] dark:text-zinc-400 dark:hover:border-white/[0.2] dark:hover:bg-white/[0.02]'>
-              {Object.values(sectionVisibility).every(Boolean) ? (
-                <>
-                  <EyeOff className='size-3.5' />
-                  Hide All
-                </>
-              ) : (
-                <>
-                  <Eye className='size-3.5' />
-                  Show All
-                </>
-              )}
-            </button>
+            {/* Export Buttons */}
+            <div className='space-y-2'>
+              <Button
+                variant='default'
+                size='full'
+                onClick={handleExportPDF}
+                disabled={isExporting}
+                className='group'>
+                {isExporting ? (
+                  <>
+                    <div className='size-4 animate-spin rounded-full border-2 border-gray-300 border-t-white' />
+                    <span className='ml-2'>Exporting...</span>
+                  </>
+                ) : (
+                  <>
+                    <FileDown className='size-4' />
+                    <span className='ml-2'>Export PDF</span>
+                  </>
+                )}
+              </Button>
+              <Button
+                variant='outline'
+                size='full'
+                onClick={handlePrint}
+                disabled={isPrinting}
+                className='group'>
+                {isPrinting ? (
+                  <>
+                    <div className='size-4 animate-spin rounded-full border-2 border-gray-300 border-t-black' />
+                    <span>Preparing Print...</span>
+                  </>
+                ) : (
+                  <>
+                    <Printer className='size-4' />
+                    <span>Print</span>
+                  </>
+                )}
+              </Button>
+            </div>
+
+            <div className='h-px bg-gray-200 dark:bg-gray-800' />
+
+            {/* Page Breaks Control */}
+            <div className='flex items-center justify-between'>
+              <h2 className='flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-gray-100'>
+                <Scissors className='size-4 text-blue-500' />
+                Page Breaks
+              </h2>
+              <Button
+                variant='toggle'
+                onClick={() => setShowPageBreaks(!showPageBreaks)}>
+                {showPageBreaks ? (
+                  <>
+                    <EyeOff className='size-3.5' />
+                    Hide
+                  </>
+                ) : (
+                  <>
+                    <Eye className='size-3.5' />
+                    Show
+                  </>
+                )}
+              </Button>
+            </div>
+
+            <div className='h-px bg-gray-200 dark:bg-gray-800' />
+
+            {/* Section Controls */}
+            <div className='flex items-center justify-between gap-2'>
+              <h2 className='flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-gray-100'>
+                <Layers className='size-4 text-blue-500' />
+                Sections
+              </h2>
+              <div className='flex gap-2'>
+                <Button variant='toggle' onClick={handleShowHideAll}>
+                  {isEverythingVisible() ? (
+                    <>
+                      <EyeOff className='size-3.5' />
+                      <span className='w-8'>Hide</span>
+                    </>
+                  ) : (
+                    <>
+                      <Eye className='size-3.5' />
+                      <span className='w-8'>Show</span>
+                    </>
+                  )}
+                </Button>
+                <Button
+                  variant='toggle'
+                  onClick={() =>
+                    toggleAllSections(
+                      !Object.values(expandedSections).every(Boolean)
+                    )
+                  }>
+                  {Object.values(expandedSections).every(Boolean) ? (
+                    <>
+                      <ChevronDown className='size-3.5' />
+                      <span className='w-14'>Collapse</span>
+                    </>
+                  ) : (
+                    <>
+                      <ChevronRight className='size-3.5' />
+                      <span className='w-14'>Expand</span>
+                    </>
+                  )}
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Scrollable content */}
+        {/* Scrollable Content */}
         <div className='flex-1 overflow-y-auto p-6'>
           <DndContext
+            id={dndId}
             sensors={sensors}
             collisionDetection={closestCenter}
-            onDragEnd={onDragEnd}>
-            <SortableContext items={sectionOrder} strategy={verticalListSortingStrategy}>
-              <div className='space-y-4'>
-                {orderedSections.map((section) => {
-                  const sectionSubItems = getSubItems(section);
+            onDragOver={handleDragOver}>
+            <SortableContext
+              items={availableSections.map((s) => s.id)}
+              strategy={verticalListSortingStrategy}>
+              <div className='space-y-2'>
+                {availableSections.map((section) => {
+                  const subItems = section.getSubItems?.(editorContext);
+                  const isExpanded = expandedSections[section.id];
+                  const orderedSubItems =
+                    subItems && subItemOrder[section.id]
+                      ? (subItemOrder[section.id]
+                          .map((id) => subItems.find((item) => item.id === id))
+                          .filter(Boolean) as typeof subItems)
+                      : subItems;
+
                   return (
-                    <div key={section.id}>
-                      <SortableSection
-                        section={section}
-                        isVisible={sectionVisibility[section.id]}
-                        onToggle={() => toggleSection(section.id)}
-                        subItems={sectionSubItems}
-                        subItemVisibility={
-                          subItemVisibility[section.id as keyof SubItemVisibility]
-                        }
-                        onToggleSubItem={(itemId) =>
-                          onToggleSubItem(
-                            section.id as keyof SubItemVisibility,
-                            itemId
-                          )
-                        }
-                      />
-                    </div>
+                    <SortableItem
+                      key={section.id}
+                      id={section.id}
+                      title={section.label}
+                      isVisible={sectionVisibility[section.id]}
+                      isExpanded={isExpanded}
+                      onToggle={() => handleSectionToggle(section.id)}
+                      onToggleExpand={
+                        subItems ? () => toggleExpand(section.id) : undefined
+                      }
+                      hasPartialVisibility={
+                        subItems
+                          ? subItems.some(
+                              (item) =>
+                                !subItemVisibility[section.id]?.[item.id]
+                            ) &&
+                            subItems.some(
+                              (item) => subItemVisibility[section.id]?.[item.id]
+                            )
+                          : false
+                      }>
+                      {orderedSubItems && isExpanded && (
+                        <DndContext
+                          id={`${subDndId}-${section.id}`}
+                          sensors={sensors}
+                          collisionDetection={closestCenter}
+                          onDragOver={(event) => {
+                            const { active, over } = event;
+                            if (active.id !== over?.id) {
+                              const oldIndex =
+                                subItemOrder[section.id]?.indexOf(
+                                  active.id as string
+                                ) ?? -1;
+                              const newIndex =
+                                subItemOrder[section.id]?.indexOf(
+                                  over?.id as string
+                                ) ?? -1;
+
+                              if (oldIndex !== -1 && newIndex !== -1) {
+                                reorderSubItems(section.id, oldIndex, newIndex);
+                              }
+                            }
+                          }}>
+                          <SortableContext
+                            items={orderedSubItems.map((item) => item.id)}
+                            strategy={verticalListSortingStrategy}>
+                            {orderedSubItems.map((item) => (
+                              <SidebarSubItem
+                                key={item.id}
+                                id={item.id}
+                                label={item.label}
+                                isVisible={
+                                  !!subItemVisibility[section.id]?.[item.id]
+                                }
+                                onToggle={() =>
+                                  handleSubItemToggle(section.id, item.id)
+                                }
+                              />
+                            ))}
+                          </SortableContext>
+                        </DndContext>
+                      )}
+                    </SortableItem>
                   );
                 })}
               </div>
@@ -374,6 +578,6 @@ export function Sidebar({
           </DndContext>
         </div>
       </div>
-    </div>
+    </aside>
   );
 }
