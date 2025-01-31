@@ -158,6 +158,8 @@ export function Sidebar() {
     selectedProject,
   } = editorContext;
   const { pdfBlob } = usePdf();
+  const [isExporting, setIsExporting] = useState(false);
+  const [isPrinting, setIsPrinting] = useState(false);
 
   const dndId = useId();
   const subDndId = useId();
@@ -319,14 +321,52 @@ export function Sidebar() {
 
   const handleExportPDF = async () => {
     if (!pdfBlob) return;
+    setIsExporting(true);
+    try {
+      // Save the file
+      const pdfUrl = URL.createObjectURL(pdfBlob);
+      const link = document.createElement('a');
+      link.href = pdfUrl;
+      link.download = `daily-report-${selectedProject.projectNumber}-${selectedProject.dailyLogDate}.pdf`;
+      link.click();
+      URL.revokeObjectURL(pdfUrl);
+    } finally {
+      setIsExporting(false);
+    }
+  };
 
-    // Save the file
-    const pdfUrl = URL.createObjectURL(pdfBlob);
-    const link = document.createElement('a');
-    link.href = pdfUrl;
-    link.download = `daily-report-${selectedProject.projectNumber}-${selectedProject.dailyLogDate}.pdf`;
-    link.click();
-    URL.revokeObjectURL(pdfUrl);
+  const handlePrint = async () => {
+    if (!pdfBlob) return;
+    setIsPrinting(true);
+    try {
+      // Create a URL for the PDF blob
+      const pdfUrl = URL.createObjectURL(pdfBlob);
+
+      // Open PDF in new window and trigger print
+      const printWindow = window.open(pdfUrl);
+
+      if (printWindow) {
+        printWindow.onload = () => {
+          printWindow.print();
+          setIsPrinting(false);
+        };
+      } else {
+        // If popup was blocked, try downloading instead
+        const link = document.createElement('a');
+        link.href = pdfUrl;
+        link.target = '_blank';
+        link.click();
+        setIsPrinting(false);
+      }
+
+      // Clean up the URL after a delay
+      setTimeout(() => {
+        URL.revokeObjectURL(pdfUrl);
+      }, 1000);
+    } catch (error) {
+      console.error('Error printing PDF:', error);
+      setIsPrinting(false);
+    }
   };
 
   return (
@@ -341,17 +381,37 @@ export function Sidebar() {
                 variant='default'
                 size='full'
                 onClick={handleExportPDF}
+                disabled={isExporting}
                 className='group'>
-                <FileDown className='size-4' />
-                <span className='ml-2'>Export PDF</span>
+                {isExporting ? (
+                  <>
+                    <div className='size-4 animate-spin rounded-full border-2 border-gray-300 border-t-white' />
+                    <span className='ml-2'>Exporting...</span>
+                  </>
+                ) : (
+                  <>
+                    <FileDown className='size-4' />
+                    <span className='ml-2'>Export PDF</span>
+                  </>
+                )}
               </Button>
               <Button
                 variant='outline'
                 size='full'
-                onClick={() => window.print()}
+                onClick={handlePrint}
+                disabled={isPrinting}
                 className='group'>
-                <Printer className='size-4' />
-                <span>Print</span>
+                {isPrinting ? (
+                  <>
+                    <div className='size-4 animate-spin rounded-full border-2 border-gray-300 border-t-black' />
+                    <span>Preparing Print...</span>
+                  </>
+                ) : (
+                  <>
+                    <Printer className='size-4' />
+                    <span>Print</span>
+                  </>
+                )}
               </Button>
             </div>
 
