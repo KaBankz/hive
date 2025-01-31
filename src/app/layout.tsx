@@ -48,7 +48,7 @@ export default async function RootLayout({
             <Header />
             <main className='flex-1'>{children}</main>
             <Footer />
-            {user && <ChatButton />}
+            {process.env.NODE_ENV === 'development' && user && <ChatButton />}
           </div>
         </PdfProvider>
       </body>
