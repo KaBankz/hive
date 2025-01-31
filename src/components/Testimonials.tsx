@@ -135,7 +135,7 @@ const TestimonialCard = ({
         </div>
       </div>
       <blockquote className='mt-6 text-gray-700 dark:text-zinc-300'>
-        "{testimonial.quote}"
+        &ldquo;{testimonial.quote}&rdquo;
       </blockquote>
     </div>
   );

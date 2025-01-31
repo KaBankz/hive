@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-import { Brain, MessageCircle, Sparkles, Wand2, X } from 'lucide-react';
+import { Brain, MessageCircle, Sparkles, X } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 
 import { usePdf } from '@/context/PdfContext';

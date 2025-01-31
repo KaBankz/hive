@@ -37,7 +37,7 @@ export default async function RootLayout({
   } = await supabase.auth.getUser();
 
   return (
-    <html lang='en' className="dark">
+    <html lang='en' className='dark'>
       <head>
         <link rel='icon' href='/icon.png' />
       </head>

@@ -1,7 +1,8 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
 import { Github, Linkedin, Mail, Twitter } from 'lucide-react';
-import Image from 'next/image';
+
 export function Footer() {
   return (
     <footer className='relative border-t border-gray-200 bg-white/70 backdrop-blur-xl backdrop-saturate-150 dark:border-white/[0.1] dark:bg-black/30'>
@@ -9,12 +10,7 @@ export function Footer() {
         <div className='grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4'>
           <div className='flex flex-col gap-6'>
             <div className='flex items-center gap-2'>
-              <Image
-                src='/hive.png'
-                alt='Hive Logo'
-                width={50}
-                height={50}
-              />
+              <Image src='/hive.png' alt='Hive Logo' width={50} height={50} />
               <span className='text-lg font-bold text-gray-900 dark:text-white'>
                 Hive
               </span>

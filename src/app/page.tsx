@@ -4,10 +4,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import { ChevronRight } from 'lucide-react';
+
+import { Features } from '@/components/Features';
+import { Impact } from '@/components/Impact';
 import { Testimonials } from '@/components/Testimonials';
 import { BorderBeam } from '@/components/ui/border-beam';
-import { Impact } from '@/components/Impact';
-import { Features } from '@/components/Features';
 
 export default function Home() {
   return (
@@ -21,8 +22,8 @@ export default function Home() {
             Redefined
           </h1>
           <p className='mx-auto mt-6 max-w-2xl text-lg text-zinc-400'>
-            Stop skipping your daily reports! Create professional construction reports in minutes with our
-            intuitive drag-and-drop editor.
+            Stop skipping your daily reports! Create professional construction
+            reports in minutes with our intuitive drag-and-drop editor.
           </p>
           <div className='mt-10 flex items-center justify-center gap-4'>
             <Link
