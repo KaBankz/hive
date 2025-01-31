@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import Image from 'next/image';
 
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 
 import { useEditor } from '@/context/EditorContext';
 import { usePdf } from '@/context/PdfContext';
