@@ -10,15 +10,8 @@ export function Footer() {
         <div className='grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4'>
           <div className='flex flex-col gap-6'>
             <div className='flex items-center gap-2'>
-              <Image
-                src='/hive.png'
-                alt='Hive Logo'
-                width={50}
-                height={50}
-              />
-              <span className='text-lg font-bold text-white'>
-                Hive
-              </span>
+              <Image src='/hive.png' alt='Hive Logo' width={50} height={50} />
+              <span className='text-lg font-bold text-white'>Hive</span>
             </div>
             <p className='text-sm text-zinc-400'>
               Empowering construction managers with next-generation project

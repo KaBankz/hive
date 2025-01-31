@@ -126,9 +126,7 @@ const TestimonialCard = ({
           className='rounded-full'
         />
         <div>
-          <div className='font-medium text-white'>
-            {testimonial.author}
-          </div>
+          <div className='font-medium text-white'>{testimonial.author}</div>
           <div className='text-sm text-zinc-400'>
             {testimonial.role} at {testimonial.company}
           </div>

@@ -33,9 +33,7 @@ export async function Header() {
             height={100}
             className='size-6'
           />
-          <span className='text-lg font-bold text-white'>
-            Hive
-          </span>
+          <span className='text-lg font-bold text-white'>Hive</span>
         </Link>
         <nav className='hidden space-x-8 sm:flex'>
           <Link
