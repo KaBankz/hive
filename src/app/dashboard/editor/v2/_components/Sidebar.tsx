@@ -29,7 +29,7 @@ import {
 
 import { Button } from '@/components/Button';
 import { useEditor } from '@/context/EditorContext';
-import { usePdfExport } from '@/hooks/usePdfExport';
+import { usePdf } from '@/context/PdfContext';
 
 import { SidebarSubItem } from './sections/SidebarSection';
 import { SortableItem } from './sections/SortableItem';
@@ -143,7 +143,6 @@ const SECTION_CONFIG: Record<string, SectionConfig> = {
 };
 
 export function Sidebar() {
-  const [isGenerating, setIsGenerating] = useState(false);
   const editorContext = useEditor();
   const {
     showPageBreaks,
@@ -158,7 +157,7 @@ export function Sidebar() {
     subItemOrder,
     selectedProject,
   } = editorContext;
-  const { exportToPdf } = usePdfExport();
+  const { pdfBlob } = usePdf();
 
   const dndId = useId();
   const subDndId = useId();
@@ -240,14 +239,14 @@ export function Sidebar() {
   };
 
   const toggleExpand = (sectionId: string) => {
-    setExpandedSections((prev) => ({
+    setExpandedSections((prev: Record<string, boolean>) => ({
       ...prev,
       [sectionId]: !prev[sectionId],
     }));
   };
 
   const toggleAllSections = (expand: boolean) => {
-    setExpandedSections((prev) => {
+    setExpandedSections((prev: Record<string, boolean>) => {
       const newState = { ...prev };
       Object.keys(prev).forEach((key) => {
         newState[key] = expand;
@@ -319,20 +318,15 @@ export function Sidebar() {
   };
 
   const handleExportPDF = async () => {
-    setIsGenerating(true);
-    try {
-      const element = document.querySelector('[data-document-preview]');
-      if (!element) return;
+    if (!pdfBlob) return;
 
-      await exportToPdf(element as HTMLElement, {
-        filename: `daily-report-${selectedProject.projectNumber}-${selectedProject.dailyLogDate}.pdf`,
-        margin: [6, 12, 6, 12],
-        imageQuality: 1,
-        scale: 3,
-      });
-    } finally {
-      setIsGenerating(false);
-    }
+    // Save the file
+    const pdfUrl = URL.createObjectURL(pdfBlob);
+    const link = document.createElement('a');
+    link.href = pdfUrl;
+    link.download = `daily-report-${selectedProject.projectNumber}-${selectedProject.dailyLogDate}.pdf`;
+    link.click();
+    URL.revokeObjectURL(pdfUrl);
   };
 
   return (
@@ -346,13 +340,10 @@ export function Sidebar() {
               <Button
                 variant='default'
                 size='full'
-                disabled={isGenerating}
                 onClick={handleExportPDF}
                 className='group'>
                 <FileDown className='size-4' />
-                <span className='ml-2'>
-                  {isGenerating ? 'Generating PDF...' : 'Export PDF'}
-                </span>
+                <span className='ml-2'>Export PDF</span>
               </Button>
               <Button
                 variant='outline'

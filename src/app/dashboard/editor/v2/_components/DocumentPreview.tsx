@@ -1,8 +1,10 @@
+import { useEffect } from 'react';
 import Image from 'next/image';
 
-import { AnimatePresence, motion } from 'motion/react';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import { useEditor } from '@/context/EditorContext';
+import { usePdf } from '@/context/PdfContext';
 
 import { DeliveriesSection } from './sections/DeliveriesSection';
 import { EquipmentSection } from './sections/EquipmentSection';
@@ -48,6 +50,56 @@ export function DocumentPreview() {
     sectionOrder,
     subItemOrder,
   } = useEditor();
+  const { setPdfBlob } = usePdf();
+
+  // Auto-generate PDF for context when content changes
+  useEffect(() => {
+    const generatePdfForContext = async () => {
+      const html2pdf = (await import('html2pdf.js')).default;
+      const element = document.querySelector(
+        '[data-document-preview]'
+      ) as HTMLDivElement;
+      if (!element) return;
+
+      const opt = {
+        margin: [6, 12, 6, 12] as [number, number, number, number],
+        image: { type: 'jpeg' as const, quality: 0.8 },
+        html2canvas: {
+          scale: 2,
+          useCORS: true,
+          letterRendering: true,
+          scrollX: 0,
+          scrollY: 0,
+          width: element.offsetWidth,
+        },
+        jsPDF: {
+          unit: 'pt' as const,
+          format: 'a4',
+          orientation: 'portrait' as const,
+          compress: true,
+        },
+      };
+
+      try {
+        const pdf = await html2pdf().set(opt).from(element).output('blob');
+        if (pdf instanceof Blob) {
+          setPdfBlob(pdf);
+        }
+      } catch (error) {
+        console.error('Error generating PDF for context:', error);
+      }
+    };
+
+    // Debounce the PDF generation to avoid too frequent updates
+    const timeoutId = setTimeout(generatePdfForContext, 1000);
+    return () => clearTimeout(timeoutId);
+  }, [
+    setPdfBlob,
+    sectionVisibility,
+    subItemVisibility,
+    sectionOrder,
+    subItemOrder,
+  ]);
 
   // Helper to filter and order visible items
   const filterVisibleItems = <T extends { id: string }>(
