@@ -325,10 +325,6 @@ export function DocumentPreview() {
               className='object-contain'
               unoptimized
               crossOrigin='anonymous'
-              onError={(e) => {
-                const img = e.target as HTMLImageElement;
-                img.src = '/next.svg';
-              }}
               priority
             />
           </div>
