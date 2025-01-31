@@ -11,7 +11,7 @@ type ImageDetail = {
 };
 
 // Weather types
-export type WeatherSummary = {
+type WeatherSummary = {
   forecastTimeTzFormatted: string;
   tempF: string;
   wind?: string;
@@ -51,7 +51,7 @@ type LaborNameRow = BaseRow & {
   nameCell: LaborNameCell;
 };
 
-export type LaborDetail = {
+type LaborDetail = {
   nameRow: LaborNameRow;
   additionalCostCodeRows: BaseRow[];
 };
@@ -68,7 +68,7 @@ type EquipmentNameRow = BaseRow & {
   nameCell: EquipmentNameCell;
 };
 
-export type EquipmentDetail = {
+type EquipmentDetail = {
   nameRow: EquipmentNameRow;
   additionalCostCodeRows: BaseRow[];
 };
