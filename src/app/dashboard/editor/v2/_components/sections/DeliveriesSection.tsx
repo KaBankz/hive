@@ -8,13 +8,11 @@ type Props = {
 
 function DeliveryRow({
   detail,
-  isEven,
 }: {
   detail: NonNullable<DailyLog['deliveries']>['details'][number];
-  isEven: boolean;
 }) {
   return (
-    <tr className={isEven ? 'bg-gray-50/50' : undefined}>
+    <tr>
       <td className='p-3 text-xs text-gray-900'>{detail.itemNumber}</td>
       <td className='p-3 text-xs text-gray-900'>
         {detail.deliveryTimeLocalString}
@@ -95,12 +93,8 @@ export function DeliveriesSection({ deliveries }: Props) {
             </tr>
           </thead>
           <tbody className='divide-y divide-gray-200'>
-            {deliveries.details.map((detail, idx) => (
-              <DeliveryRow
-                key={`${detail.itemNumber}-${idx}`}
-                detail={detail}
-                isEven={idx % 2 === 0}
-              />
+            {deliveries.details.map((detail) => (
+              <DeliveryRow key={`${detail.itemNumber}`} detail={detail} />
             ))}
           </tbody>
         </table>

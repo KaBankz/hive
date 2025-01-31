@@ -41,11 +41,9 @@ function LaborTags({
 function LaborRow({
   detail,
   hasNotes,
-  isEven,
 }: {
   detail: DailyLog['labor']['details'][number];
   hasNotes: DailyLog['labor']['hasNotes'];
-  isEven: boolean;
 }) {
   const { nameRow, additionalCostCodeRows } = detail;
   const { nameCell, costCodeCell, hoursCell, notesCell } = nameRow;
@@ -53,7 +51,7 @@ function LaborRow({
 
   return (
     <>
-      <tr className={cn(isEven && 'bg-gray-50/50')}>
+      <tr>
         <td className='py-3 pl-3' rowSpan={totalRows}>
           <div className='text-xs font-medium text-gray-900'>
             {nameCell.crewName}
@@ -95,9 +93,7 @@ function LaborRow({
         )}
       </tr>
       {additionalCostCodeRows.map((row, idx) => (
-        <tr
-          key={`${costCodeCell.costCode}-${idx}`}
-          className={cn(isEven && 'bg-gray-50/50')}>
+        <tr key={`${costCodeCell.costCode}-${idx}`}>
           <td className='p-3'>
             <div className='text-xs font-medium text-gray-900'>
               {row.costCodeCell.costCode}
@@ -153,7 +149,6 @@ export function LaborSection({ labor, hoursLabels }: Props) {
                 key={`${detail.nameRow.nameCell.crewName}-${idx}`}
                 detail={detail}
                 hasNotes={labor.hasNotes}
-                isEven={idx % 2 === 0}
               />
             ))}
             <tr className='border-t border-gray-200 bg-gray-50/80'>

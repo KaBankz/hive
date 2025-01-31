@@ -39,11 +39,9 @@ function EquipmentTags({
 function EquipmentRow({
   detail,
   hasNotes,
-  isEven,
 }: {
   detail: NonNullable<DailyLog['equipment']>['details'][number];
   hasNotes: NonNullable<DailyLog['equipment']>['hasNotes'];
-  isEven: boolean;
 }) {
   const { nameRow, additionalCostCodeRows } = detail;
   const { nameCell, costCodeCell, hoursCell, notesCell } = nameRow;
@@ -51,7 +49,7 @@ function EquipmentRow({
 
   return (
     <>
-      <tr className={cn(isEven && 'bg-gray-50/50')}>
+      <tr>
         <td className='py-3 pl-3' rowSpan={totalRows}>
           <div className='text-xs font-medium text-gray-900'>
             {nameCell.equipName}
@@ -78,9 +76,7 @@ function EquipmentRow({
         )}
       </tr>
       {additionalCostCodeRows?.map((row, idx) => (
-        <tr
-          key={`${costCodeCell.costCode}-${idx}`}
-          className={cn(isEven && 'bg-gray-50/50')}>
+        <tr key={`${costCodeCell.costCode}-${idx}`}>
           <td className='p-3'>
             <div className='text-xs font-medium text-gray-900'>
               {row.costCodeCell.costCode}
@@ -136,7 +132,6 @@ export function EquipmentSection({ equipment, hoursLabels }: Props) {
                 key={`${detail.nameRow.nameCell.equipName}-${idx}`}
                 detail={detail}
                 hasNotes={equipment.hasNotes}
-                isEven={idx % 2 === 0}
               />
             ))}
             <tr className='border-t border-gray-200 bg-gray-50/80'>

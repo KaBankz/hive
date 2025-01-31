@@ -6,13 +6,11 @@ type Props = {
 
 function NoteRow({
   detail,
-  isEven,
 }: {
   detail: NonNullable<DailyLog['notes']>['details'][number];
-  isEven: boolean;
 }) {
   return (
-    <tr className={isEven ? 'bg-gray-50/50' : undefined}>
+    <tr>
       <td className='p-3 text-xs text-gray-900'>{detail.itemNumber}</td>
       <td className='p-3 text-xs text-gray-900'>{detail.noteLocation}</td>
       <td className='p-3 text-xs text-gray-500'>{detail.notes}</td>
@@ -48,12 +46,8 @@ export function NotesSection({ notes }: Props) {
             </tr>
           </thead>
           <tbody className='divide-y divide-gray-200'>
-            {notes.details.map((detail, idx) => (
-              <NoteRow
-                key={`${detail.itemNumber}-${idx}`}
-                detail={detail}
-                isEven={idx % 2 === 0}
-              />
+            {notes.details.map((detail) => (
+              <NoteRow key={`${detail.itemNumber}`} detail={detail} />
             ))}
           </tbody>
         </table>

@@ -8,13 +8,11 @@ type Props = {
 
 function QuantityRow({
   detail,
-  isEven,
 }: {
   detail: NonNullable<DailyLog['quantities']>['details'][number];
-  isEven: boolean;
 }) {
   return (
-    <tr className={isEven ? 'bg-gray-50/50' : undefined}>
+    <tr>
       <td className='p-3 text-xs text-gray-900'>{detail.itemNumber}</td>
       <td className='p-3 text-xs text-gray-900'>
         {detail._costCodeAndDescription}
@@ -99,12 +97,8 @@ export function QuantitiesSection({ quantities }: Props) {
             </tr>
           </thead>
           <tbody className='divide-y divide-gray-200'>
-            {quantities.details.map((detail, idx) => (
-              <QuantityRow
-                key={`${detail.itemNumber}-${idx}`}
-                detail={detail}
-                isEven={idx % 2 === 0}
-              />
+            {quantities.details.map((detail) => (
+              <QuantityRow key={`${detail.itemNumber}`} detail={detail} />
             ))}
           </tbody>
         </table>

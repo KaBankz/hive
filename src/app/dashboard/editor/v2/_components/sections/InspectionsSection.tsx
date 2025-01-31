@@ -8,13 +8,11 @@ type Props = {
 
 function InspectionRow({
   detail,
-  isEven,
 }: {
   detail: NonNullable<DailyLog['inspections']>['details'][number];
-  isEven: boolean;
 }) {
   return (
-    <tr className={isEven ? 'bg-gray-50/50' : undefined}>
+    <tr>
       <td className='p-3 text-xs text-gray-900'>{detail.itemNumber}</td>
       <td className='p-3 text-xs text-gray-900'>
         {detail.startTimeLocalString}
@@ -101,12 +99,8 @@ export function InspectionsSection({ inspections }: Props) {
             </tr>
           </thead>
           <tbody className='divide-y divide-gray-200'>
-            {inspections.details.map((detail, idx) => (
-              <InspectionRow
-                key={`${detail.itemNumber}-${idx}`}
-                detail={detail}
-                isEven={idx % 2 === 0}
-              />
+            {inspections.details.map((detail) => (
+              <InspectionRow key={`${detail.itemNumber}`} detail={detail} />
             ))}
           </tbody>
         </table>

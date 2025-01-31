@@ -6,20 +6,17 @@ type Props = {
 
 function VisitorRow({
   detail,
-  isEven,
 }: {
   detail: NonNullable<DailyLog['visitors']>['details'][number];
-  isEven: boolean;
 }) {
   return (
-    <tr className={isEven ? 'bg-gray-50/50' : undefined}>
+    <tr>
       <td className='p-3 text-xs text-gray-900'>{detail.itemNumber}</td>
-      <td className='p-3 text-xs text-gray-900'>{detail.visitorName}</td>
       <td className='p-3 text-xs text-gray-900'>
         {detail.startTimeLocalString}
       </td>
       <td className='p-3 text-xs text-gray-900'>{detail.endTimeLocalString}</td>
-      <td className='p-3 text-xs text-gray-500'>{detail.visitorNotes}</td>
+      <td className='p-3 text-xs text-gray-900'>{detail.visitorNotes}</td>
       <td className='p-3 text-xs text-gray-500'>{detail._userFullName}</td>
     </tr>
   );
@@ -58,12 +55,8 @@ export function VisitorsSection({ visitors }: Props) {
             </tr>
           </thead>
           <tbody className='divide-y divide-gray-200'>
-            {visitors.details.map((detail, idx) => (
-              <VisitorRow
-                key={`${detail.itemNumber}-${idx}`}
-                detail={detail}
-                isEven={idx % 2 === 0}
-              />
+            {visitors.details.map((detail) => (
+              <VisitorRow key={`${detail.itemNumber}`} detail={detail} />
             ))}
           </tbody>
         </table>

@@ -6,15 +6,13 @@ type Props = {
 
 function QuestionRow({
   response,
-  isEven,
 }: {
   response: NonNullable<
     DailyLog['questions']
   >['details'][number]['responses'][number];
-  isEven: boolean;
 }) {
   return (
-    <tr className={isEven ? 'bg-gray-50/50' : undefined}>
+    <tr>
       <td className='p-3 text-xs text-gray-900'>{response.questionText}</td>
       <td className='p-3'>
         <div className='text-xs text-gray-900'>{response.responseValue}</div>
@@ -28,10 +26,8 @@ function QuestionRow({
 
 function PersonResponses({
   detail,
-  isEven,
 }: {
   detail: NonNullable<DailyLog['questions']>['details'][number];
-  isEven: boolean;
 }) {
   return (
     <>
@@ -48,7 +44,6 @@ function PersonResponses({
           <QuestionRow
             key={`${response.questionText}-${response.responseValue}`}
             response={response}
-            isEven={isEven}
           />
         ))}
     </>
@@ -76,12 +71,8 @@ export function QuestionsSection({ questions }: Props) {
             </tr>
           </thead>
           <tbody>
-            {questions.details.map((detail, idx) => (
-              <PersonResponses
-                key={detail.fullName}
-                detail={detail}
-                isEven={idx % 2 === 0}
-              />
+            {questions.details.map((detail) => (
+              <PersonResponses key={detail.fullName} detail={detail} />
             ))}
           </tbody>
         </table>
