@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useId, useMemo, useState } from 'react';
 
 import {
   closestCenter,
@@ -151,6 +151,9 @@ export function Sidebar({ isGenerating = false, onExport }: SidebarProps) {
     reorderSubItems,
     subItemOrder,
   } = editorContext;
+
+  const dndId = useId();
+  const subDndId = useId();
 
   // Track expanded state for each section
   const [expandedSections, setExpandedSections] = useState<
@@ -337,6 +340,7 @@ export function Sidebar({ isGenerating = false, onExport }: SidebarProps) {
         {/* Scrollable Content */}
         <div className='flex-1 overflow-y-auto p-6'>
           <DndContext
+            id={dndId}
             sensors={sensors}
             collisionDetection={closestCenter}
             onDragOver={handleDragOver}>
@@ -378,6 +382,7 @@ export function Sidebar({ isGenerating = false, onExport }: SidebarProps) {
                       }>
                       {orderedSubItems && isExpanded && (
                         <DndContext
+                          id={`${subDndId}-${section.id}`}
                           sensors={sensors}
                           collisionDetection={closestCenter}
                           onDragOver={(event) => {
