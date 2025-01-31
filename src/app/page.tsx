@@ -14,7 +14,7 @@ import { Meteors } from '@/components/ui/meteors';
 
 export default function Home() {
   return (
-    <div className='relative min-h-screen bg-zinc-950'>
+    <div className='relative min-h-screen overflow-hidden bg-zinc-950'>
       <div className='absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-blue-800/20 via-transparent to-transparent'></div>
       <div className='relative mx-auto max-w-7xl px-4 pt-32 sm:px-6 lg:pt-[28vh]'>
         <div className='text-center'>
