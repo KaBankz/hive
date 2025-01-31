@@ -46,15 +46,29 @@ export function DocumentPreview() {
     sectionVisibility,
     subItemVisibility,
     sectionOrder,
+    subItemOrder,
   } = useEditor();
 
-  // Helper to filter visible items
+  // Helper to filter and order visible items
   const filterVisibleItems = <T extends { id: string }>(
     items: T[] | undefined,
     sectionId: string
   ): T[] => {
     if (!items) return [];
-    return items.filter((item) => subItemVisibility[sectionId]?.[item.id]);
+    const visibleItems = items.filter(
+      (item) => subItemVisibility[sectionId]?.[item.id]
+    );
+
+    // Order items according to subItemOrder
+    if (subItemOrder[sectionId]) {
+      return [...visibleItems].sort(
+        (a, b) =>
+          subItemOrder[sectionId].indexOf(a.id) -
+          subItemOrder[sectionId].indexOf(b.id)
+      );
+    }
+
+    return visibleItems;
   };
 
   // Create a map of section components to render

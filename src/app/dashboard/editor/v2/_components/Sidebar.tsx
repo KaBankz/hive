@@ -148,6 +148,8 @@ export function Sidebar({ isGenerating = false, onExport }: SidebarProps) {
     toggleSubItem,
     reorderSections,
     sectionOrder,
+    reorderSubItems,
+    subItemOrder,
   } = editorContext;
 
   // Track expanded state for each section
@@ -345,6 +347,12 @@ export function Sidebar({ isGenerating = false, onExport }: SidebarProps) {
                 {availableSections.map((section) => {
                   const subItems = section.getSubItems?.(editorContext);
                   const isExpanded = expandedSections[section.id];
+                  const orderedSubItems =
+                    subItems && subItemOrder[section.id]
+                      ? (subItemOrder[section.id]
+                          .map((id) => subItems.find((item) => item.id === id))
+                          .filter(Boolean) as typeof subItems)
+                      : subItems;
 
                   return (
                     <SortableItem
@@ -368,20 +376,46 @@ export function Sidebar({ isGenerating = false, onExport }: SidebarProps) {
                             )
                           : false
                       }>
-                      {subItems &&
-                        isExpanded &&
-                        subItems.map((item) => (
-                          <SidebarSubItem
-                            key={item.id}
-                            label={item.label}
-                            isVisible={
-                              !!subItemVisibility[section.id]?.[item.id]
+                      {orderedSubItems && isExpanded && (
+                        <DndContext
+                          sensors={sensors}
+                          collisionDetection={closestCenter}
+                          onDragOver={(event) => {
+                            const { active, over } = event;
+                            if (active.id !== over?.id) {
+                              const oldIndex =
+                                subItemOrder[section.id]?.indexOf(
+                                  active.id as string
+                                ) ?? -1;
+                              const newIndex =
+                                subItemOrder[section.id]?.indexOf(
+                                  over?.id as string
+                                ) ?? -1;
+
+                              if (oldIndex !== -1 && newIndex !== -1) {
+                                reorderSubItems(section.id, oldIndex, newIndex);
+                              }
                             }
-                            onToggle={() =>
-                              handleSubItemToggle(section.id, item.id)
-                            }
-                          />
-                        ))}
+                          }}>
+                          <SortableContext
+                            items={orderedSubItems.map((item) => item.id)}
+                            strategy={verticalListSortingStrategy}>
+                            {orderedSubItems.map((item) => (
+                              <SidebarSubItem
+                                key={item.id}
+                                id={item.id}
+                                label={item.label}
+                                isVisible={
+                                  !!subItemVisibility[section.id]?.[item.id]
+                                }
+                                onToggle={() =>
+                                  handleSubItemToggle(section.id, item.id)
+                                }
+                              />
+                            ))}
+                          </SortableContext>
+                        </DndContext>
+                      )}
                     </SortableItem>
                   );
                 })}

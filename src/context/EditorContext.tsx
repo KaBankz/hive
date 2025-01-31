@@ -18,10 +18,16 @@ type EditorContextType = {
   sectionVisibility: Record<string, boolean>;
   subItemVisibility: Record<string, Record<string, boolean>>;
   sectionOrder: string[];
+  subItemOrder: Record<string, string[]>;
   setShowPageBreaks: (show: boolean) => void;
   toggleSection: (section: string) => void;
   toggleSubItem: (section: string, itemId: string) => void;
   reorderSections: (startIndex: number, endIndex: number) => void;
+  reorderSubItems: (
+    sectionId: string,
+    startIndex: number,
+    endIndex: number
+  ) => void;
 };
 
 const EditorContext = createContext<EditorContextType | null>(null);
@@ -165,6 +171,83 @@ export function EditorProvider({
     return initial;
   });
 
+  // Initialize sub-item order
+  const [subItemOrder, setSubItemOrder] = useState<Record<string, string[]>>(
+    () => {
+      const initial: Record<string, string[]> = {};
+
+      // Weather
+      if (selectedProject.weather?.summary) {
+        initial.weather = selectedProject.weather.summary.map(
+          (w) => w.forecastTimeTzFormatted
+        );
+      }
+
+      // Labor
+      if (selectedProject.labor?.details) {
+        initial.labor = selectedProject.labor.details.map(
+          (l) => l.nameRow.nameCell.crewName
+        );
+      }
+
+      // Equipment
+      if (selectedProject.equipment?.details) {
+        initial.equipment = selectedProject.equipment.details.map(
+          (e) => e.nameRow.nameCell.equipName
+        );
+      }
+
+      // Photos
+      if (selectedProject.images?.details) {
+        initial.photos = selectedProject.images.details.map(
+          (p, i) => p.url || `photo-${i}`
+        );
+      }
+
+      // Questions
+      if (selectedProject.questions?.details) {
+        initial.questions = selectedProject.questions.details.map(
+          (q) => q.fullName
+        );
+      }
+
+      // Quantities
+      if (selectedProject.quantities?.details) {
+        initial.quantities = selectedProject.quantities.details.map(
+          (q) => q.itemNumber
+        );
+      }
+
+      // Deliveries
+      if (selectedProject.deliveries?.details) {
+        initial.deliveries = selectedProject.deliveries.details.map(
+          (d) => d.itemNumber
+        );
+      }
+
+      // Inspections
+      if (selectedProject.inspections?.details) {
+        initial.inspections = selectedProject.inspections.details.map(
+          (i) => i.itemNumber
+        );
+      }
+
+      // Visitors
+      if (selectedProject.visitors?.details) {
+        initial.visitors = selectedProject.visitors.details.map(
+          (v) => v.itemNumber
+        );
+      }
+
+      // Notes
+      if (selectedProject.notes?.details) {
+        initial.notes = selectedProject.notes.details.map((n) => n.itemNumber);
+      }
+
+      return initial;
+    }
+  );
+
   const toggleSection = useCallback((section: string) => {
     if (section === 'showAll' || section === 'hideAll') {
       const value = section === 'showAll';
@@ -217,6 +300,20 @@ export function EditorProvider({
     []
   );
 
+  const reorderSubItems = useCallback(
+    (sectionId: string, startIndex: number, endIndex: number) => {
+      setSubItemOrder((prev) => {
+        const result = { ...prev };
+        const items = Array.from(result[sectionId] || []);
+        const [removed] = items.splice(startIndex, 1);
+        items.splice(endIndex, 0, removed);
+        result[sectionId] = items;
+        return result;
+      });
+    },
+    []
+  );
+
   const value = useMemo(
     () => ({
       report,
@@ -225,10 +322,12 @@ export function EditorProvider({
       sectionVisibility,
       subItemVisibility,
       sectionOrder,
+      subItemOrder,
       setShowPageBreaks,
       toggleSection,
       toggleSubItem,
       reorderSections,
+      reorderSubItems,
     }),
     [
       report,
@@ -237,9 +336,11 @@ export function EditorProvider({
       sectionVisibility,
       subItemVisibility,
       sectionOrder,
+      subItemOrder,
       toggleSection,
       toggleSubItem,
       reorderSections,
+      reorderSubItems,
     ]
   );
 
