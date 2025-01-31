@@ -9,7 +9,7 @@ const buttonVariants = cva(
         default:
           'rounded-full bg-gradient-to-b from-blue-500 to-blue-600 text-white hover:opacity-90 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)]',
         outline:
-          'rounded-full border border-gray-200 bg-white text-gray-700 hover:border-gray-300 hover:bg-gray-50',
+          'rounded-full border border-gray-200 bg-white text-gray-700 shadow-[0_2px_4px_rgba(0,0,0,0.02)] hover:border-gray-300 hover:shadow-[0_4px_8px_rgba(0,0,0,0.05)] dark:bg-white/[0.05] dark:text-gray-200 dark:hover:bg-white/[0.1]',
         toggle:
           'inline-flex items-center gap-1.5 rounded-lg border border-gray-200 px-2.5 py-1.5 text-xs font-medium text-gray-700 transition-colors duration-200 hover:border-gray-300 hover:bg-gray-50 dark:border-white/[0.1] dark:text-zinc-400 dark:hover:border-white/[0.2] dark:hover:bg-white/[0.02]',
       },

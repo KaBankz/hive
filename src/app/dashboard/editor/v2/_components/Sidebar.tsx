@@ -16,7 +16,16 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
-import { Eye, EyeOff, FileDown, Layers, Scissors } from 'lucide-react';
+import {
+  ChevronDown,
+  ChevronRight,
+  Eye,
+  EyeOff,
+  FileDown,
+  Layers,
+  Printer,
+  Scissors,
+} from 'lucide-react';
 
 import { Button } from '@/components/Button';
 import { useEditor } from '@/context/EditorContext';
@@ -159,11 +168,11 @@ export function Sidebar({ isGenerating = false, onExport }: SidebarProps) {
   const [expandedSections, setExpandedSections] = useState<
     Record<string, boolean>
   >(() => {
-    // Initialize all sections as expanded
+    // Initialize all sections as collapsed
     return Object.values(SECTION_CONFIG).reduce(
       (acc, section) => ({
         ...acc,
-        [section.id]: true,
+        [section.id]: false,
       }),
       {}
     );
@@ -238,6 +247,16 @@ export function Sidebar({ isGenerating = false, onExport }: SidebarProps) {
     }));
   };
 
+  const toggleAllSections = (expand: boolean) => {
+    setExpandedSections((prev) => {
+      const newState = { ...prev };
+      Object.keys(prev).forEach((key) => {
+        newState[key] = expand;
+      });
+      return newState;
+    });
+  };
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -267,17 +286,27 @@ export function Sidebar({ isGenerating = false, onExport }: SidebarProps) {
       <div className='flex h-full flex-col bg-white dark:bg-black/30'>
         {/* Fixed Header */}
         <div className='border-b border-gray-200 px-6 py-4 dark:border-gray-800'>
-          <div className='space-y-6'>
-            {/* Export Button */}
-            <Button
-              variant='default'
-              size='full'
-              disabled={isGenerating}
-              onClick={onExport}
-              className='group'>
-              <FileDown className='size-4' />
-              <span>{isGenerating ? 'Generating PDF...' : 'Export PDF'}</span>
-            </Button>
+          <div className='space-y-4'>
+            {/* Export Buttons */}
+            <div className='space-y-2'>
+              <Button
+                variant='default'
+                size='full'
+                disabled={isGenerating}
+                onClick={onExport}
+                className='group'>
+                <FileDown className='size-4' />
+                <span>{isGenerating ? 'Generating PDF...' : 'Export PDF'}</span>
+              </Button>
+              <Button
+                variant='outline'
+                size='full'
+                onClick={() => window.print()}
+                className='group'>
+                <Printer className='size-4' />
+                <span>Print</span>
+              </Button>
+            </div>
 
             <div className='h-px bg-gray-200 dark:bg-gray-800' />
 
@@ -307,32 +336,53 @@ export function Sidebar({ isGenerating = false, onExport }: SidebarProps) {
             <div className='h-px bg-gray-200 dark:bg-gray-800' />
 
             {/* Section Controls */}
-            <div className='flex items-center justify-between'>
+            <div className='flex items-center justify-between gap-2'>
               <h2 className='flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-gray-100'>
                 <Layers className='size-4 text-blue-500' />
                 Sections
               </h2>
-              <Button
-                variant='toggle'
-                onClick={() =>
-                  toggleSection(
-                    Object.values(sectionVisibility).every(Boolean)
-                      ? 'hideAll'
-                      : 'showAll'
-                  )
-                }>
-                {Object.values(sectionVisibility).every(Boolean) ? (
-                  <>
-                    <EyeOff className='size-3.5' />
-                    Hide All
-                  </>
-                ) : (
-                  <>
-                    <Eye className='size-3.5' />
-                    Show All
-                  </>
-                )}
-              </Button>
+              <div className='flex gap-2'>
+                <Button
+                  variant='toggle'
+                  onClick={() =>
+                    toggleSection(
+                      Object.values(sectionVisibility).every(Boolean)
+                        ? 'hideAll'
+                        : 'showAll'
+                    )
+                  }>
+                  {Object.values(sectionVisibility).every(Boolean) ? (
+                    <>
+                      <EyeOff className='size-3.5' />
+                      <span className='w-8'>Hide</span>
+                    </>
+                  ) : (
+                    <>
+                      <Eye className='size-3.5' />
+                      <span className='w-8'>Show</span>
+                    </>
+                  )}
+                </Button>
+                <Button
+                  variant='toggle'
+                  onClick={() =>
+                    toggleAllSections(
+                      !Object.values(expandedSections).every(Boolean)
+                    )
+                  }>
+                  {Object.values(expandedSections).every(Boolean) ? (
+                    <>
+                      <ChevronDown className='size-3.5' />
+                      <span className='w-14'>Collapse</span>
+                    </>
+                  ) : (
+                    <>
+                      <ChevronRight className='size-3.5' />
+                      <span className='w-14'>Expand</span>
+                    </>
+                  )}
+                </Button>
+              </div>
             </div>
           </div>
         </div>
