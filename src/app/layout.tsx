@@ -5,6 +5,7 @@ import { ChatButton } from '@/components/ChatButton';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { PdfProvider } from '@/context/PdfContext';
+import { CSPostHogProvider } from '@/context/PosthogProvider';
 import { createClient } from '@/utils/supabase/server';
 
 import '@/app/globals.css';
@@ -40,24 +41,20 @@ export default async function RootLayout({
     <html lang='en' className='dark'>
       <head>
         <link rel='icon' href='/icon.png' />
-        {/* Cloudflare Web Analytics */}
-        <script
-          defer
-          src='https://static.cloudflareinsights.com/beacon.min.js'
-          data-cf-beacon='{"token": "b2142fb66d8445ba8d1e61ec05e953ab"}'
-        />
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} bg-black antialiased`}>
+      <CSPostHogProvider>
         <PdfProvider>
-          <div className='flex min-h-screen flex-col bg-gradient-to-b from-black to-zinc-900 text-white'>
-            <Header />
-            <main className='flex-1'>{children}</main>
-            <Footer />
-            {process.env.NODE_ENV === 'development' && user && <ChatButton />}
-          </div>
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} bg-black antialiased`}>
+            <div className='flex min-h-screen flex-col bg-gradient-to-b from-black to-zinc-900 text-white'>
+              <Header />
+              <main className='flex-1'>{children}</main>
+              <Footer />
+              {process.env.NODE_ENV === 'development' && user && <ChatButton />}
+            </div>
+          </body>
         </PdfProvider>
-      </body>
+      </CSPostHogProvider>
     </html>
   );
 }
