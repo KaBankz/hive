@@ -60,6 +60,7 @@ export default function Home() {
             className='rounded-lg'
             width={1500}
             height={1500}
+            priority
           />
           <BorderBeam size={250} duration={12} delay={9} />
         </motion.div>
