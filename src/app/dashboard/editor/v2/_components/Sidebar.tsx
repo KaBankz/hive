@@ -281,6 +281,44 @@ export function Sidebar({ isGenerating = false, onExport }: SidebarProps) {
     }
   };
 
+  const isEverythingVisible = () => {
+    return availableSections.every((section) => {
+      // Check if section is visible
+      if (!sectionVisibility[section.id]) return false;
+
+      // Check if all sub-items are visible
+      const subItems = section.getSubItems?.(editorContext);
+      if (subItems) {
+        return subItems.every(
+          (item) => subItemVisibility[section.id]?.[item.id]
+        );
+      }
+
+      return true;
+    });
+  };
+
+  const handleShowHideAll = () => {
+    const willShow = !isEverythingVisible();
+
+    // First, handle all sub-items
+    availableSections.forEach((section) => {
+      const subItems = section.getSubItems?.(editorContext);
+      if (subItems) {
+        subItems.forEach((item) => {
+          const isItemVisible =
+            subItemVisibility[section.id]?.[item.id] ?? false;
+          if (willShow !== isItemVisible) {
+            toggleSubItem(section.id, item.id);
+          }
+        });
+      }
+    });
+
+    // Then toggle the sections
+    toggleSection(willShow ? 'showAll' : 'hideAll');
+  };
+
   return (
     <aside className='h-[calc(100vh-4rem)] w-[400px] border-l border-gray-200 dark:border-gray-800'>
       <div className='flex h-full flex-col bg-white dark:bg-black/30'>
@@ -342,16 +380,8 @@ export function Sidebar({ isGenerating = false, onExport }: SidebarProps) {
                 Sections
               </h2>
               <div className='flex gap-2'>
-                <Button
-                  variant='toggle'
-                  onClick={() =>
-                    toggleSection(
-                      Object.values(sectionVisibility).every(Boolean)
-                        ? 'hideAll'
-                        : 'showAll'
-                    )
-                  }>
-                  {Object.values(sectionVisibility).every(Boolean) ? (
+                <Button variant='toggle' onClick={handleShowHideAll}>
+                  {isEverythingVisible() ? (
                     <>
                       <EyeOff className='size-3.5' />
                       <span className='w-8'>Hide</span>
