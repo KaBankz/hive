@@ -23,19 +23,22 @@ export async function Header() {
   return (
     <header className='fixed top-0 z-50 w-full border-b border-white/[0.1] bg-zinc-950/30 backdrop-blur-xl backdrop-saturate-150'>
       <div className='mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6'>
-        <Link
-          href='/'
-          className='flex items-center space-x-2 transition-opacity hover:opacity-80'>
-          <Image
-            src='/icon.png'
-            alt='Hive'
-            width={100}
-            height={100}
-            className='size-6'
-          />
-          <span className='text-lg font-bold text-white'>Hive</span>
-        </Link>
-        <nav className='hidden space-x-8 sm:flex'>
+        <div className='flex basis-[200px] items-center'>
+          <Link
+            href='/'
+            className='flex items-center space-x-2 transition-opacity hover:opacity-80'>
+            <Image
+              src='/icon.png'
+              alt='Hive'
+              width={100}
+              height={100}
+              className='size-6'
+            />
+            <span className='text-lg font-bold text-white'>Hive</span>
+          </Link>
+        </div>
+
+        <nav className='absolute left-1/2 hidden -translate-x-1/2 space-x-8 sm:flex'>
           <Link
             href='#'
             className='text-sm text-zinc-400 transition-colors duration-200 hover:text-white'>
@@ -52,7 +55,8 @@ export async function Header() {
             About
           </Link>
         </nav>
-        <div className='flex items-center space-x-4'>
+
+        <div className='flex basis-[200px] items-center justify-end space-x-4'>
           {user ? (
             <>
               <Link
