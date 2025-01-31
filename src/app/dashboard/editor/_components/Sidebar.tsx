@@ -31,7 +31,7 @@ import { Button } from '@/components/Button';
 import { useEditor } from '@/context/EditorContext';
 import { usePdf } from '@/context/PdfContext';
 
-import { SidebarSubItem } from './sections/SidebarSection';
+import { SidebarSubItem } from './sections/SidebarSubItem';
 import { SortableItem } from './sections/SortableItem';
 
 type SectionConfig = {
