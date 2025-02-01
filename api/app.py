@@ -15,13 +15,9 @@ from time import time
 from paste.translogger import TransLogger
 
 # Simple logging configuration
-log_format = "%(asctime)s [%(levelname)s] %(message)s"
-date_format = "%Y-%m-%d %H:%M:%S"
-
 logging.basicConfig(
     level=logging.INFO,
-    format=log_format,
-    datefmt=date_format,
+    format="[%(levelname)s] %(message)s",
 )
 
 # Ensure all loggers use the same format
@@ -150,7 +146,7 @@ def ask():
 
         if "file" in request.files:
             file = request.files["file"]
-            logger.info(f"Processing file upload: {file.filename}")
+            logger.info(f"Processing file: {file.filename}")
 
             if file.filename == "":
                 return jsonify({"error": "No selected file"}), 400
@@ -200,7 +196,7 @@ def upload_and_analyze():
             return jsonify({"error": "No file uploaded"}), 400
 
         file = request.files["file"]
-        logger.info(f"Processing file upload: {file.filename}")
+        logger.info(f"Processing file: {file.filename}")
 
         if file.filename == "":
             return jsonify({"error": "No selected file"}), 400
@@ -236,9 +232,9 @@ if __name__ == "__main__":
 
     class RequestLogger(TransLogger):
         def write_log(self, environ, method, req_uri, start, status, bytes):
-            msg = f"{environ.get('REMOTE_ADDR', '-')} - {method} {req_uri} - {status}"
+            msg = f"{method} {req_uri} - {status}"
             self.logger.info(msg)
 
     logged_app = RequestLogger(app, setup_console_handler=False)
-    logger.info("Starting server on port 3001")
+    logger.info("Server listening on port 3001")
     serve(logged_app, host="0.0.0.0", port=3001, _quiet=True)
