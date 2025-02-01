@@ -22,7 +22,7 @@ const nextConfig: NextConfig = {
         source: '/api/v1/hivemind/:path*',
         destination:
           process.env.NODE_ENV === 'development'
-            ? 'http://localhost:3001/:path*'
+            ? 'http://localhost:3001/api/v1/hivemind/:path*'
             : '/api/app.py',
       },
       // PostHog Analytics proxy to bypass ad blockers
