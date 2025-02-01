@@ -24,6 +24,7 @@ import {
   Sheet,
   SheetClose,
   SheetContent,
+  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -73,6 +74,10 @@ export async function Header() {
                   <SheetTitle>Hive</SheetTitle>
                 </Link>
               </SheetHeader>
+              <SheetDescription className='sr-only px-6 py-4 text-sm text-zinc-400'>
+                Empowering construction managers with next-generation project
+                management tools.
+              </SheetDescription>
 
               <div className='flex-1 overflow-y-auto'>
                 <div className='flex flex-col gap-1 p-2'>
