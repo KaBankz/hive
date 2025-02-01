@@ -9,8 +9,11 @@ import { createClient } from '@/utils/supabase/client';
 
 import PostHogPageView from './PostHogPageView';
 
+const isDev = process.env.NODE_ENV === 'development';
+
 function PostHogAuthWrapper({ children }: { children: React.ReactNode }) {
   useEffect(() => {
+    if (isDev) return;
     const supabase = createClient();
 
     const {
@@ -34,6 +37,8 @@ function PostHogAuthWrapper({ children }: { children: React.ReactNode }) {
 
 export function PostHogProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
+    if (isDev) return;
+
     if (!process.env.NEXT_PUBLIC_POSTHOG_KEY) {
       throw new Error('NEXT_PUBLIC_POSTHOG_KEY is not set');
     }
@@ -46,6 +51,8 @@ export function PostHogProvider({ children }: { children: React.ReactNode }) {
       capture_pageleave: true,
     });
   }, []);
+
+  if (isDev) return children;
 
   return (
     <PHProvider client={posthog}>
