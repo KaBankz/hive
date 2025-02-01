@@ -21,7 +21,7 @@ export const Marquee = ({
       )}>
       <div
         className={cn(
-          'flex w-max animate-marquee items-stretch gap-[--gap]',
+          'flex w-max animate-marquee items-stretch gap-[--gap] hover:paused',
           reverse && 'animate-marquee-reverse'
         )}>
         <div className='flex items-center gap-[--gap]'>{children}</div>

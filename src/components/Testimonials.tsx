@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { motion } from 'motion/react';
 
 import { Marquee } from '@/components/magicui/marquee';
-import { cn } from '@/lib/utils';
 
 const testimonials = [
   {
@@ -112,11 +111,7 @@ const TestimonialCard = ({
   testimonial: (typeof testimonials)[0];
 }) => {
   return (
-    <div
-      className={cn(
-        'relative mx-4 w-[400px] rounded-2xl border p-8',
-        'border-zinc-800/50 bg-zinc-900/50'
-      )}>
+    <div className='relative mx-4 w-[400px] rounded-2xl border border-zinc-800/50 bg-zinc-900/50 p-8'>
       <div className='flex items-center gap-4'>
         <Image
           src={testimonial.image}
@@ -171,8 +166,8 @@ export function Testimonials() {
               />
             ))}
           </Marquee>
-          <div className='pointer-events-none absolute inset-y-0 left-0 w-[15%] bg-gradient-to-r from-zinc-950/90 via-zinc-950/10 to-transparent' />
-          <div className='pointer-events-none absolute inset-y-0 right-0 w-[15%] bg-gradient-to-l from-zinc-950/90 via-zinc-950/10 to-transparent' />
+          <div className='pointer-events-none absolute inset-y-0 left-0 w-[15%] rounded-2xl bg-gradient-to-r from-zinc-950/50 via-zinc-950/10 to-transparent' />
+          <div className='pointer-events-none absolute inset-y-0 right-0 w-[15%] rounded-2xl bg-gradient-to-l from-zinc-950/50 via-zinc-950/10 to-transparent' />
         </div>
       </div>
     </section>
