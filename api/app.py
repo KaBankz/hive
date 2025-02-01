@@ -10,7 +10,11 @@ from werkzeug.utils import secure_filename
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
-load_dotenv(dotenv_path=Path("../.env.local"))
+
+current_dir = Path(__file__).resolve().parent
+parent_dir = current_dir.parent
+dotenv_path = parent_dir / ".env.local"
+load_dotenv(dotenv_path=dotenv_path)
 
 app = Flask(__name__)
 CORS(app)
