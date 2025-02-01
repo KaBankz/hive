@@ -8,9 +8,19 @@ from openai import OpenAI
 from dotenv import load_dotenv
 from werkzeug.utils import secure_filename
 from concurrent.futures import ThreadPoolExecutor
+from pathlib import Path
 
+# Load environment variables from both local and parent .env.local files
+parent_dotenv_path = Path("../.env.local")
+local_dotenv_path = Path(".env.local")
 
-load_dotenv()
+# Load parent .env.local first (base configuration)
+if parent_dotenv_path.exists():
+    load_dotenv(dotenv_path=parent_dotenv_path)
+
+# Load local .env.local second (can override parent configuration)
+if local_dotenv_path.exists():
+    load_dotenv(dotenv_path=local_dotenv_path)
 
 app = Flask(__name__)
 CORS(app)
@@ -186,4 +196,18 @@ def upload_and_analyze():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    import logging
+    from waitress import serve
+    from paste.translogger import TransLogger
+
+    # Configure logging
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    )
+
+    # Wrap the Flask app with TransLogger for request logging
+    logged_app = TransLogger(app, setup_console_handler=True)
+
+    # Run with waitress
+    serve(logged_app, host="0.0.0.0", port=3001, _quiet=False)
