@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 from werkzeug.utils import secure_filename
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
+from io import BytesIO
 
 
 current_dir = Path(__file__).resolve().parent
@@ -18,12 +19,6 @@ load_dotenv(dotenv_path=dotenv_path)
 
 app = Flask(__name__)
 CORS(app)
-
-app_dir = Path(__file__).parent
-app.config["UPLOAD_FOLDER"] = str(app_dir / "uploads")
-app.config["OUTPUT_FOLDER"] = str(app_dir / "output_images")
-os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
-os.makedirs(app.config["OUTPUT_FOLDER"], exist_ok=True)
 
 openai_api_key = os.getenv("OPENAI_API_KEY")
 if not openai_api_key:
@@ -41,48 +36,48 @@ def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-def encode_image_to_base64(image_path):
-    """Convert an image to a Base64-encoded string."""
-    with open(image_path, "rb") as image_file:
-        return base64.b64encode(image_file.read()).decode("utf-8")
+def convert_image_to_base64(image):
+    """Convert a PIL Image to a Base64-encoded string."""
+    buffered = BytesIO()
+    image.save(buffered, format="JPEG")
+    return base64.b64encode(buffered.getvalue()).decode("utf-8")
 
 
-def convert_page_to_image(page, output_folder, page_number, dpi=150):
-    """Convert a single page to an image."""
+def convert_page_to_image(page, dpi=150):
+    """Convert a single page to an image in memory."""
     pix = page.get_pixmap(dpi=dpi)
-    image = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
-    image_filename = f"page_{page_number + 1}.jpg"
-    image_path = os.path.join(output_folder, image_filename)
-    image.save(image_path, "JPEG")
-    return image_path
+    return Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
 
 
-def convert_pdf_to_images(pdf_path, output_folder, dpi=150):
+def convert_pdf_to_images(pdf_data, dpi=150):
     """Convert a PDF file into images (one per page) using threading."""
-    pdf_document = fitz.open(pdf_path)
+    pdf_stream = BytesIO(pdf_data)
+    pdf_document = fitz.open(stream=pdf_stream, filetype="pdf")
+
     with ThreadPoolExecutor() as executor:
-        image_paths = list(
+        images = list(
             executor.map(
                 lambda page_number: convert_page_to_image(
-                    pdf_document[page_number], output_folder, page_number, dpi
+                    pdf_document[page_number], dpi
                 ),
                 range(len(pdf_document)),
             )
         )
-    return image_paths
+    pdf_document.close()
+    return images
 
 
-def process_images_with_gpt(image_paths, question):
+def process_images_with_gpt(images, question):
     """Send images and a question to GPT-4 Vision for analysis in a single batch."""
     message_content = [{"type": "text", "text": question}]
     batch_base64_images = [
         {
             "type": "image_url",
             "image_url": {
-                "url": f"data:image/jpeg;base64,{encode_image_to_base64(path)}"
+                "url": f"data:image/jpeg;base64,{convert_image_to_base64(image)}"
             },
         }
-        for path in image_paths
+        for image in images
     ]
     message_content.extend(batch_base64_images)
 
@@ -107,7 +102,7 @@ def hello_world():
 def ask():
     """Handle questions, with optional PDF upload for document analysis."""
     question = request.form.get("question", "")
-    image_paths = []
+    images = []
 
     if "file" in request.files:
         file = request.files["file"]
@@ -118,21 +113,16 @@ def ask():
         if not allowed_file(file.filename):
             return jsonify({"error": "Only PDF files are allowed."}), 400
 
-        filename = secure_filename(file.filename)
-        pdf_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
-        file.save(pdf_path)
-
         try:
-            image_paths = convert_pdf_to_images(pdf_path, app.config["OUTPUT_FOLDER"])
+            pdf_data = file.read()
+            images = convert_pdf_to_images(pdf_data)
         except Exception as e:
             return jsonify({"error": f"Error processing PDF: {e}"}), 500
 
-        os.remove(pdf_path)
-
     try:
-        if image_paths:
+        if images:
             answer = process_images_with_gpt(
-                image_paths, question or "Analyze this document."
+                images, question or "Analyze this document."
             )
         else:
             if question:
@@ -148,9 +138,6 @@ def ask():
                 ), 400
     except Exception as e:
         return jsonify({"error": f"Error during GPT-4 Vision analysis: {e}"}), 500
-
-    for image_path in image_paths:
-        os.remove(image_path)
 
     return jsonify({"question": question, "answer": answer}), 200
 
@@ -169,21 +156,14 @@ def upload_and_analyze():
     if not allowed_file(file.filename):
         return jsonify({"error": "Only PDF files are allowed."}), 400
 
-    pdf_path = os.path.join(app.config["UPLOAD_FOLDER"], file.filename)
-    file.save(pdf_path)
-
     try:
-        image_paths = convert_pdf_to_images(pdf_path, app.config["OUTPUT_FOLDER"])
+        pdf_data = file.read()
+        images = convert_pdf_to_images(pdf_data)
     except Exception as e:
         return jsonify({"error": f"Error processing PDF: {e}"}), 500
 
     question = "Analyze this document and provide breif and short and bullet point responce of insights and warnings."
-    insights = process_images_with_gpt(image_paths, question)
-
-    for image_path in image_paths:
-        os.remove(image_path)
-
-    os.remove(pdf_path)
+    insights = process_images_with_gpt(images, question)
 
     return jsonify(
         {"message": "PDF uploaded and processed successfully.", "insights": insights}
