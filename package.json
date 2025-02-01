@@ -17,6 +17,7 @@
     "@dnd-kit/utilities": "^3.2.2",
     "@supabase/ssr": "^0.5.2",
     "@supabase/supabase-js": "^2.48.1",
+    "babel-plugin-react-compiler": "^19.0.0-beta-27714ef-20250124",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "html2pdf.js": "^0.10.2",
