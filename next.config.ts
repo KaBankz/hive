@@ -19,7 +19,7 @@ const nextConfig: NextConfig = {
       // The python backend runs on port 3001 locally, and on a vercel
       // edge function for production
       {
-        source: '/api/v1/chat/:path*',
+        source: '/api/v1/hivemind/:path*',
         destination:
           process.env.NODE_ENV === 'development'
             ? 'http://localhost:3001/:path*'

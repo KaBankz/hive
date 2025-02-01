@@ -50,6 +50,8 @@ gpt_model = "gpt-4o-mini"
 
 ALLOWED_EXTENSIONS = {"pdf"}
 
+FLASK_API_BASE = "/api/v1/hivemind"
+
 
 def handle_error(error, context=""):
     """Unified error handling function that logs errors and returns safe messages."""
@@ -139,13 +141,7 @@ def process_images_with_gpt(images, question):
         raise
 
 
-@app.route("/")
-def hello_world():
-    """Basic endpoint to check if the app is running."""
-    return "Hello, World! The Flask app is running."
-
-
-@app.route("/ask", methods=["POST"])
+@app.route(f"{FLASK_API_BASE}/ask", methods=["POST"])
 def ask():
     """Handle questions, with optional PDF upload for document analysis."""
     try:
@@ -196,7 +192,7 @@ def ask():
         return jsonify(error_response), 500
 
 
-@app.route("/upload-and-analyze", methods=["POST"])
+@app.route(f"{FLASK_API_BASE}/upload-and-analyze", methods=["POST"])
 def upload_and_analyze():
     """Endpoint for uploading a PDF and generating insights automatically."""
     try:

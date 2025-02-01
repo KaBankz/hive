@@ -84,7 +84,7 @@ export function ChatButton() {
           // formData.append('question', '');
           formData.append('file', pdfBlob, 'current-document.pdf');
 
-          const response = await fetch('/api/v1/chat/ask', {
+          const response = await fetch('/api/v1/hivemind/ask', {
             method: 'POST',
             body: formData,
           });
@@ -140,7 +140,7 @@ export function ChatButton() {
         formData.append('file', pdfBlob, 'current-document.pdf');
       }
 
-      const response = await fetch('/api/v1/chat/ask', {
+      const response = await fetch('/api/v1/hivemind/ask', {
         method: 'POST',
         body: formData,
       });
