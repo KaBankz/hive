@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
+import Script from 'next/script';
 
 import { PostHogProvider } from '@/analytics/PostHogProvider';
 import { ChatButton } from '@/components/ChatButton';
@@ -9,6 +10,9 @@ import { PdfProvider } from '@/context/PdfContext';
 import { createClient } from '@/utils/supabase/server';
 
 import '@/app/globals.css';
+
+// If performance is an issue, enable this and go debug :)
+const ENABLE_REACT_SCAN = false;
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -41,6 +45,12 @@ export default async function RootLayout({
     <html lang='en' className='dark'>
       <head>
         <link rel='icon' href='/icon.png' />
+        {ENABLE_REACT_SCAN && (
+          <Script
+            strategy='beforeInteractive'
+            src='https://unpkg.com/react-scan/dist/auto.global.js'
+          />
+        )}
       </head>
       <PostHogProvider>
         <PdfProvider>
