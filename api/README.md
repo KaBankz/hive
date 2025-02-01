@@ -59,4 +59,3 @@ This is a Flask-based API that allows users to upload PDF files, convert them in
 - PyMuPDF (fitz)
 - Python-dotenv
 - Waitress
-- Werkzeug

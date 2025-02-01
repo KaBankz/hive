@@ -6,7 +6,6 @@ from PIL import Image
 import base64
 from openai import OpenAI
 from dotenv import load_dotenv
-from werkzeug.utils import secure_filename
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from io import BytesIO
