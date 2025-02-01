@@ -56,7 +56,10 @@ export function Button({
     <button
       {...props}
       disabled={disabled}
-      className={buttonVariants({ variant, size, scale, className, disabled })}>
+      className={cn(
+        buttonVariants({ variant, size, scale, disabled }),
+        className
+      )}>
       {children}
       {cta && (
         <ChevronRight

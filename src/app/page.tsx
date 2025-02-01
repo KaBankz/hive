@@ -71,6 +71,8 @@ export default function Home() {
           <BorderBeam size={250} duration={12} delay={9} />
         </motion.div>
         <motion.div
+          id='features'
+          className='scroll-mt-24'
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
