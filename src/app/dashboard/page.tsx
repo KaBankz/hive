@@ -92,7 +92,7 @@ export default function DashboardPage() {
   return (
     <div className='min-h-screen bg-zinc-950 pt-16'>
       <div className='mx-auto max-w-7xl px-4 py-8'>
-        <div className='mb-8 flex items-center justify-between'>
+        <div className='mb-8 flex flex-col items-center justify-between gap-4 sm:flex-row'>
           <h1 className='text-2xl font-semibold text-white'>
             Construction Projects
           </h1>
