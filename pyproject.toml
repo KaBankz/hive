@@ -14,6 +14,3 @@ dependencies = [
   "python-dotenv>=1.0.1",
   "waitress>=3.0.2",
 ]
-
-[tool.poetry]
-packages = [{ include = "api" }]
