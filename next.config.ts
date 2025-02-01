@@ -15,6 +15,9 @@ const nextConfig: NextConfig = {
   },
   async rewrites() {
     return [
+      // Hivemind chatbot
+      // The python backend runs on port 3001 locally, and on a vercel
+      // edge function for production
       {
         source: '/api/v1/chat/:path*',
         destination:
