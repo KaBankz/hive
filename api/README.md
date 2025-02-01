@@ -4,7 +4,7 @@
 
 Hivemind is the chatbot for Hive, construction reporting redefined.
 
-# Flask PDF Analyzer with GPT-4 Vision
+## Flask PDF Analyzer with GPT-4 Vision
 
 This is a Flask-based API that allows users to upload PDF files, convert them into images, and process the images using OpenAI's GPT-4 Vision model. The application provides insights based on the extracted images and can also answer user questions related to the uploaded documents.
 
@@ -18,7 +18,7 @@ This is a Flask-based API that allows users to upload PDF files, convert them in
 
 ## API Endpoints
 
-#### 1. **Ask GPT-4 Vision**
+### 1. **Ask GPT-4 Vision**
 
 - **Endpoint:** `POST /ask`
 - **Description:** Allows users to ask a question with an optional PDF upload.
@@ -26,6 +26,7 @@ This is a Flask-based API that allows users to upload PDF files, convert them in
   - `question` (form-data) - The question to ask.
   - `file` (form-data) - Optional PDF file.
 - **Response Example:**
+
   ```json
   {
     "question": "Summarize the document.",
@@ -40,6 +41,7 @@ This is a Flask-based API that allows users to upload PDF files, convert them in
 - **Request:**
   - `file` (form-data) - The PDF file.
 - **Response Example:**
+
   ```json
   {
     "message": "PDF uploaded and processed successfully.",
@@ -51,8 +53,10 @@ This is a Flask-based API that allows users to upload PDF files, convert them in
 
 - Flask
 - Flask-CORS
-- PyMuPDF (fitz)
+- OpenAI
+- Paste
 - Pillow
-- OpenAI API
-- python-dotenv
+- PyMuPDF (fitz)
+- Python-dotenv
+- Waitress
 - Werkzeug
