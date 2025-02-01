@@ -10,23 +10,14 @@ from werkzeug.utils import secure_filename
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
-# Load environment variables from both local and parent .env.local files
-parent_dotenv_path = Path("../.env.local")
-local_dotenv_path = Path(".env.local")
-
-# Load parent .env.local first (base configuration)
-if parent_dotenv_path.exists():
-    load_dotenv(dotenv_path=parent_dotenv_path)
-
-# Load local .env.local second (can override parent configuration)
-if local_dotenv_path.exists():
-    load_dotenv(dotenv_path=local_dotenv_path)
+load_dotenv(dotenv_path=Path("../.env.local"))
 
 app = Flask(__name__)
 CORS(app)
 
-app.config["UPLOAD_FOLDER"] = "uploads"
-app.config["OUTPUT_FOLDER"] = "output_images"
+app_dir = Path(__file__).parent
+app.config["UPLOAD_FOLDER"] = str(app_dir / "uploads")
+app.config["OUTPUT_FOLDER"] = str(app_dir / "output_images")
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 os.makedirs(app.config["OUTPUT_FOLDER"], exist_ok=True)
 
