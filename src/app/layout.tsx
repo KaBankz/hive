@@ -25,9 +25,15 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Hive - Construction Management Reimagined',
-  description:
-    'The most powerful dashboard for construction managers. Track projects, manage resources, and make data-driven decisions in real-time.',
+  title: 'Hive - Construction Management Redefined',
+  description: 'The most powerful dashboard for construction managers.',
+  icons: { icon: '/icon.png' },
+  openGraph: {
+    title: 'Hive - Construction Management Redefined',
+    siteName: 'Hive',
+    description: 'The most powerful dashboard for construction managers.',
+    images: '/og.png',
+  },
 };
 
 export default async function RootLayout({
@@ -44,7 +50,6 @@ export default async function RootLayout({
   return (
     <html lang='en' className='dark'>
       <head>
-        <link rel='icon' href='/icon.png' />
         {ENABLE_REACT_SCAN && (
           <Script
             strategy='beforeInteractive'
