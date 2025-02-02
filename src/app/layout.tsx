@@ -25,13 +25,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Hive - Construction Management Redefined',
-  description: 'The most powerful dashboard for construction managers.',
+  title: 'Hive - Construction Reporting Redefined',
+  description: 'The most powerful reporting tool for construction managers.',
   icons: { icon: '/icon.png' },
   openGraph: {
-    title: 'Hive - Construction Management Redefined',
+    title: 'Hive - Construction Reporting Redefined',
     siteName: 'Hive',
-    description: 'The most powerful dashboard for construction managers.',
+    description: 'The most powerful reporting tool for construction managers.',
     images: '/og.png',
   },
 };
