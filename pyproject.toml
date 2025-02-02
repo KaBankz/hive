@@ -1,0 +1,16 @@
+[project]
+name = "Hivemind"
+version = "0.1.0"
+description = "Hivemind Chatbot"
+readme = "api/README.md"
+requires-python = ">=3.13"
+dependencies = [
+  "flask>=3.1.0",
+  "flask-cors>=5.0.0",
+  "openai>=1.61.0",
+  "paste>=3.10.1",
+  "pillow>=11.1.0",
+  "pymupdf>=1.25.2",
+  "python-dotenv>=1.0.1",
+  "waitress>=3.0.2",
+]

@@ -21,25 +21,59 @@ Hive revolutionizes construction reporting by transforming time-consuming docume
 - 📑 **PDF Export** - Generate professional reports with one click
 - ⚙️ **Smart Section Controls** - Show/hide report sections instantly
 
+## Project Structure
+
+```sh
+hive/
+├── api/ # Flask API for Hivemind Chatbot
+├── src/ # NextJS frontend
+├── .env.local.example # Environment variables
+```
+
+## Prerequisites
+
+- [Node.js](https://nodejs.org)
+- [Bun](https://bun.sh)
+- [Python](https://www.python.org)
+- [uv](https://docs.astral.sh/uv)
+
+> [!TIP]
+> Use [mise](https://mise.jdx.dev) to automatically install and manage the prerequisites in a single command 🚀
+>
+> ```sh
+> mise install
+> ```
+
 ## Getting Started
 
-1. Clone the repository:
+1. Install node dependencies:
 
-```sh
-git clone git@github.com:KaBankz/hive.git
-cd hive
-```
+   ```sh
+   bun install
+   ```
 
-2. Install dependencies:
+2. Install python dependencies:
 
-```sh
-bun install
-```
+   ```sh
+   uv sync
+   ```
 
-3. Run the development server:
+3. Add your own values to the `.env.local` file:
 
-```sh
-bun dev
-```
+   ```sh
+   cp .env.local.example .env.local
+   ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser
+4. Run the python API server:
+
+   ```sh
+   python -m api.app
+   ```
+
+5. Run the nextjs development server (in a different terminal):
+
+   ```sh
+   bun dev
+   ```
+
+6. Open [http://localhost:3000](http://localhost:3000) in your browser

@@ -15,6 +15,16 @@ const nextConfig: NextConfig = {
   },
   async rewrites() {
     return [
+      // Hivemind chatbot
+      // The python backend runs on port 3001 locally, and on a vercel
+      // edge function for production
+      {
+        source: '/api/v1/hivemind/:path*',
+        destination:
+          process.env.NODE_ENV === 'development'
+            ? 'http://localhost:3001/api/v1/hivemind/:path*'
+            : '/api/app.py',
+      },
       // PostHog Analytics proxy to bypass ad blockers
       // make sure the api_host is set to /api/v1/ingest in PostHogProvider
       // or whatever you want to call it
