@@ -33,6 +33,7 @@ export const metadata: Metadata = {
     siteName: 'Hive',
     description: 'The most powerful reporting tool for construction managers.',
     images: '/og.png',
+    url: 'https://hivereports.com',
   },
 };
 
